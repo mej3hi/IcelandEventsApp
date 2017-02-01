@@ -11,6 +11,6 @@ hérna er síðum um hvernig á að nota retrofit (Heimasíða http://square.git
 
 Hérna er síðum arrayAdapter sem sér um að láta okkur gita Scrolla upp og niður þegar við er 
 um að beyrta meira en það sem kemst fyrir á skjáinn.
-  https://guides.codepath.com/android/Using-an-ArrayAdapter-with-ListView#defining-the-adapter
+  https://guides.codepath.com/android/Using-an-ArrayAdapter-with-ListView#defining-the-adapter \n
   https://www.sitepoint.com/custom-data-layouts-with-your-own-android-arrayadapter/
   http://abhiandroid.com/ui/custom-arrayadapter-tutorial-example.html
