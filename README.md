@@ -1,10 +1,10 @@
 # IcelandEventsApp
 
 
-####hérna er myndband um hvernig á að gera http request frá lynda.com til að ná í gögn frá bakendan.
+####Hérna er myndband um hvernig á að gera http request frá lynda.com til að ná í gögn frá bakendan.
   * https://www.youtube.com/watch?v=_T0N3ot2BPI&index=1&list=PLVTeA3WccG_7Kgey8VtmFLCEVR5jeZNFK
 
-####hérna er síðum um hvernig á að nota retrofit (Heimasíða http://square.github.io/retrofit  )
+####Hérna er síðum um hvernig á að nota retrofit (Heimasíða http://square.github.io/retrofit  )
 
   * https://futurestud.io/tutorials/retrofit-getting-started-and-android-client 
   * https://zeroturnaround.com/rebellabs/getting-started-with-retrofit-2/
