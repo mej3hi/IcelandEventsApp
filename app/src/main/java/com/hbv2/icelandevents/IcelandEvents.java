@@ -84,7 +84,7 @@ public class IcelandEvents extends AppCompatActivity {
                     updateDisplay();
 
                 } else {
-                    System.out.println("Erro :"+ response.errorBody());
+                    System.out.println("Error :"+ response.errorBody());
                 }
             }
 
