@@ -96,7 +96,7 @@ public class IcelandEvents extends AppCompatActivity {
     }
 
 
-
+   //lallsaldlas
     protected void updateDisplay(){
         EventAdapter eventAdapter = new EventAdapter(this, R.layout.event_layout, eventsList);
         eventListView.setAdapter(eventAdapter);
