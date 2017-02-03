@@ -25,7 +25,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class IcelandEvents extends AppCompatActivity {
-
+//bara prufa comment skuli
     private List<Event> eventsList;
     private ListView eventListView;
     private ProgressBar loadingDisplay;
@@ -65,6 +65,7 @@ public class IcelandEvents extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    // Allt hér fyrir neðan er eftir Martin.....:
 
     private void requestEvents(){
         loadingDisplay.setVisibility(View.VISIBLE);
@@ -83,7 +84,7 @@ public class IcelandEvents extends AppCompatActivity {
                     updateDisplay();
 
                 } else {
-                    System.out.println("Erro :"+ response.errorBody());
+                    System.out.println("Error :"+ response.errorBody());
                 }
             }
 
