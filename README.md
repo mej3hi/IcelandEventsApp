@@ -14,3 +14,5 @@
   * https://guides.codepath.com/android/Using-an-ArrayAdapter-with-ListView 
   * https://www.sitepoint.com/custom-data-layouts-with-your-own-android-arrayadapter/
   * http://abhiandroid.com/ui/custom-arrayadapter-tutorial-example.html
+
+####Við erum að nota Picasso til að load up myndinar (Heimasíðan http://square.github.io/picasso/)

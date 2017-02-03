@@ -25,7 +25,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class IcelandEvents extends AppCompatActivity {
-
+//bara prufa comment skuli
     private List<Event> eventsList;
     private ListView eventListView;
     private ProgressBar loadingDisplay;
