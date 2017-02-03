@@ -77,7 +77,7 @@ public class IcelandEvents extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
                 System.out.println("response raw: " + response.raw());
-                System.out.println("response heade:  " + response.headers());
+                System.out.println("response header:  " + response.headers());
 
                 if(response.isSuccessful()){
                     eventsList = response.body();

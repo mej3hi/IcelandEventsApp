@@ -18,6 +18,8 @@ import java.util.List;
 
 /**
  * Created by martin on 25.1.2017.
+ * Þetta sér um að load-a bara efstu viðburði (sem sjást á skjá) í stað þess að
+ * load-a öllum eventum
  */
 
 public class EventAdapter extends ArrayAdapter<Event> {
@@ -50,6 +52,6 @@ public class EventAdapter extends ArrayAdapter<Event> {
         time.setText(event.getTime());
         Picasso.with(context).load(event.getImageurl()).into(eventImg);
 
-        return  view;
+        return view;
     }
 }
