@@ -65,7 +65,7 @@ public class IcelandEvents extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    // Allt hér fyrir neðan er eftir Martin:
+    // Allt hér fyrir neðan er eftir Martin...:
 
     private void requestEvents(){
         loadingDisplay.setVisibility(View.VISIBLE);
