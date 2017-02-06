@@ -19,8 +19,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ServiceGenerator {
 
-    private static final String BASE_URL = "https://raw.githubusercontent.com";
-
+    private static final String BASE_URL = "http://192.168.1.103:8080";
+    //private static final String BASE_URL = "http://localhost:8080";
 
 
     /*private static Gson gson = new GsonBuilder()

@@ -13,6 +13,6 @@ import retrofit2.http.GET;
 
 public interface EventAPI {
 
-    @GET("/mej3hi/tonlistv2/master/tonlist.json")
+    @GET("/m/")
     Call<List<Event>> getEvent();
 }

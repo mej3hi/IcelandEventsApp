@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.hbv2.icelandevents.API.EventAPI;
+import com.hbv2.icelandevents.API.UserAPI;
 import com.hbv2.icelandevents.Adapter.EventAdapter;
 import com.hbv2.icelandevents.Entities.Event;
 import com.hbv2.icelandevents.Entities.User;
@@ -24,6 +25,7 @@ import com.hbv2.icelandevents.Service.ServiceGenerator;
 
 
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.List;
 
 import retrofit2.Call;
@@ -95,16 +97,23 @@ public class IcelandEvents extends AppCompatActivity {
                     updateDisplay();
 
                 } else {
-                    System.out.println("Error :"+ response.errorBody());
+                    try {
+                        System.out.println("Error :"+ response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
+                loadingDisplay.setVisibility(View.INVISIBLE);
             }
 
             @Override
             public void onFailure(Call<List<Event>> call, Throwable t) {
                 System.out.println("Failure :" +t);
+
+
+                loadingDisplay.setVisibility(View.INVISIBLE);
             }
         });
-        loadingDisplay.setVisibility(View.INVISIBLE);
     }
 
 
@@ -158,6 +167,8 @@ public class IcelandEvents extends AppCompatActivity {
 
                 if(user.getUsername() != "" && user.getPassword() != ""){
                     Log.d("Temp","Þá loga okku inn");
+                    requestLogin(user.getUsername(),user.getPassword());
+
                 }
 
                 if(user.getUsername() == "" && user.getPassword() == ""){
@@ -171,6 +182,43 @@ public class IcelandEvents extends AppCompatActivity {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         }
+    }
+
+
+
+    private void requestLogin(String username, String password){
+        loadingDisplay.setVisibility(View.VISIBLE);
+
+        UserAPI userAPI = ServiceGenerator.createService(UserAPI.class,username,password);
+        Call<Void> call = userAPI.login();
+
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                System.out.println("response raw: " + response.raw());
+                System.out.println("response header:  " + response.headers());
+
+                if(response.isSuccessful()) {
+                    System.out.println("rétt passwor og username");
+                }
+                else if (response.code() == 401){
+                    System.out.println("Ekki rétt passwor eða username");
+                }else {
+                    try {
+                        System.out.println("Error :"+ response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                loadingDisplay.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                System.out.println("Failure :" +t);
+                loadingDisplay.setVisibility(View.INVISIBLE);
+            }
+        });
     }
 
 }
