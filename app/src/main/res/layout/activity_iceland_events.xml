@@ -20,6 +20,15 @@
             android:layout_weight="1"
             android:onClick="getEventBtn" />
 
+        <Button
+            android:text="Sign In"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/signInBtnId"
+            android:layout_weight="1"
+            android:textAlignment="viewStart"
+            android:onClick="signInOnClick" />
+
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"

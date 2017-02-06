@@ -1,11 +1,13 @@
 package com.hbv2.icelandevents;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,11 +15,15 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.hbv2.icelandevents.API.EventAPI;
 import com.hbv2.icelandevents.Adapter.EventAdapter;
 import com.hbv2.icelandevents.Entities.Event;
+import com.hbv2.icelandevents.Entities.User;
 import com.hbv2.icelandevents.Service.ServiceGenerator;
 
+
+import java.io.FileInputStream;
 import java.util.List;
 
 import retrofit2.Call;
@@ -30,6 +36,9 @@ public class IcelandEvents extends AppCompatActivity {
     private ListView eventListView;
     private ProgressBar loadingDisplay;
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +50,8 @@ public class IcelandEvents extends AppCompatActivity {
         loadingDisplay = (ProgressBar) findViewById(R.id.LoadingDisplayPB);
         loadingDisplay.setVisibility(View.INVISIBLE);
 
+
+        checkUserInfo();
     }
 
     @Override
@@ -112,6 +123,12 @@ public class IcelandEvents extends AppCompatActivity {
         }
     }
 
+    public void signInOnClick (View v){
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+
+    }
+
 
     protected boolean isOnline(){
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -124,9 +141,36 @@ public class IcelandEvents extends AppCompatActivity {
     }
 
 
+    private void checkUserInfo(){
+        User user;
+        Gson gson = new Gson();
+        String filename = "userInfo";
+        try {
+            FileInputStream fin = openFileInput(filename);
+            int c;
+            String temp = "";
+            while ((c = fin.read()) != -1) {
+                temp = temp + Character.toString((char) c);
+            }
+            if(temp != ""){
+                Log.d("Temp ","Temp er ekki tómur");
+                user = gson.fromJson(temp,User.class);
 
+                if(user.getUsername() != "" && user.getPassword() != ""){
+                    Log.d("Temp","Þá loga okku inn");
+                }
 
-
-
+                if(user.getUsername() == "" && user.getPassword() == ""){
+                    Log.d("Temp","Þá loga okkur ekki inn");
+                }
+            }
+            fin.close();
+        }
+        catch (Exception e){
+            Log.d("tempErro","temp er ekki til");
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+        }
+    }
 
 }
