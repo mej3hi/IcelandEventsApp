@@ -21,6 +21,8 @@ import com.hbv2.icelandevents.API.UserAPI;
 import com.hbv2.icelandevents.Adapter.EventAdapter;
 import com.hbv2.icelandevents.Entities.Event;
 import com.hbv2.icelandevents.Entities.User;
+import com.hbv2.icelandevents.Service.Http;
+import com.hbv2.icelandevents.Service.IndexController;
 import com.hbv2.icelandevents.Service.ServiceGenerator;
 
 
@@ -53,7 +55,7 @@ public class IcelandEvents extends AppCompatActivity {
         loadingDisplay.setVisibility(View.INVISIBLE);
 
 
-        checkUserInfo();
+        //checkUserInfo();
     }
 
     @Override
@@ -82,8 +84,13 @@ public class IcelandEvents extends AppCompatActivity {
 
     private void requestEvents(){
         loadingDisplay.setVisibility(View.VISIBLE);
+        IndexController i = new IndexController();
 
-        EventAPI eventAPI = ServiceGenerator.createService(EventAPI.class);
+        Http u = i.getIndexController();
+        //eventsList = u.getO().get(1);
+        //Log.d("Gögn frá index", u.getO().get(1).toString());
+
+       /* EventAPI eventAPI = ServiceGenerator.createService(EventAPI.class);
         Call<List<Event>> call = eventAPI.getEvent();
 
         call.enqueue(new Callback<List<Event>>() {
@@ -113,7 +120,7 @@ public class IcelandEvents extends AppCompatActivity {
 
                 loadingDisplay.setVisibility(View.INVISIBLE);
             }
-        });
+        });*/
     }
 
 
