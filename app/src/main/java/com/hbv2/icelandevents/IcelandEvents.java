@@ -3,7 +3,6 @@ package com.hbv2.icelandevents;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -15,32 +14,26 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.hbv2.icelandevents.API.UserAPI;
 import com.hbv2.icelandevents.Adapter.EventAdapter;
 import com.hbv2.icelandevents.Entities.Event;
-import com.hbv2.icelandevents.Entities.User;
-import com.hbv2.icelandevents.HttpResponse.Http;
-import com.hbv2.icelandevents.HttpRequest.IndexController;
-import com.hbv2.icelandevents.Service.ServiceGenerator;
+import com.hbv2.icelandevents.HttpResponse.HttpEvent;
+import com.hbv2.icelandevents.HttpRequest.HttpRequestIndex;
+import com.hbv2.icelandevents.Service.AutoLogin;
+import com.hbv2.icelandevents.Service.NetworkChecker;
 
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class IcelandEvents extends AppCompatActivity {
-//bara prufa comment skuli
+
     private List<Event> eventsList;
     private ListView eventListView;
     private ProgressBar loadingDisplay;
+    private ConnectivityManager cm;
 
 
 
@@ -55,9 +48,10 @@ public class IcelandEvents extends AppCompatActivity {
         eventListView = (ListView) findViewById(R.id.eventListView);
         loadingDisplay = (ProgressBar) findViewById(R.id.LoadingDisplayPB);
         loadingDisplay.setVisibility(View.INVISIBLE);
+        cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
 
-        //checkUserInfo();
+        checkUserInfo();
     }
 
     @Override
@@ -82,7 +76,7 @@ public class IcelandEvents extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
+    // Allt hér fyrir neðan er eftir Martin.....:
     @Override
     public void onStart() {
         super.onStart();
@@ -96,24 +90,21 @@ public class IcelandEvents extends AppCompatActivity {
     }
 
     @Subscribe
-    public void onHttp(Http event) {
-        eventsList = event.getO();
+    public void onHttp(HttpEvent event) {
+        if(event.getCode() == 200){
+        eventsList = event.getListEvent();
         updateDisplay();
+        }
         Log.d("Gögn frá index", "tóskt");
         loadingDisplay.setVisibility(View.INVISIBLE);
     }
 
 
-
-    // Allt hér fyrir neðan er eftir Martin.....:
     private void requestEvents(){
         loadingDisplay.setVisibility(View.VISIBLE);
-        new IndexController().getIndexController();
-
-
+        new HttpRequestIndex().getIndex();
     }
 
-   //lallsaldlas
     public  void updateDisplay(){
         EventAdapter eventAdapter = new EventAdapter(this, R.layout.event_layout, eventsList);
         eventListView.setAdapter(eventAdapter);
@@ -122,11 +113,12 @@ public class IcelandEvents extends AppCompatActivity {
 
     public void getEventBtn (View v){
         System.out.println("btnGetEvent");
-        if(isOnline()){
+         if(NetworkChecker.isOnline(cm)){
             requestEvents();
         }else{
             Toast.makeText(this, "Network isn't avilable",Toast.LENGTH_LONG).show();
         }
+
     }
 
     public void signInOnClick (View v){
@@ -135,86 +127,15 @@ public class IcelandEvents extends AppCompatActivity {
 
     }
 
-
-    protected boolean isOnline(){
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        if (netInfo != null && netInfo.isConnectedOrConnecting()){
-            return true;
-        } else{
-            return false;
-        }
-    }
-
-
     private void checkUserInfo(){
-        User user;
-        Gson gson = new Gson();
-        String filename = "userInfo";
-        try {
-            FileInputStream fin = openFileInput(filename);
-            int c;
-            String temp = "";
-            while ((c = fin.read()) != -1) {
-                temp = temp + Character.toString((char) c);
-            }
-            if(temp != ""){
-                Log.d("Temp ","Temp er ekki tómur");
-                user = gson.fromJson(temp,User.class);
-
-                if(user.getUsername() != "" && user.getPassword() != ""){
-                    Log.d("Temp","Þá loga okku inn");
-                    requestLogin(user.getUsername(),user.getPassword());
-
-                }
-
-                if(user.getUsername() == "" && user.getPassword() == ""){
-                    Log.d("Temp","Þá loga okkur ekki inn");
-                }
-            }
-            fin.close();
-        }
-        catch (Exception e){
-            Log.d("tempErro","temp er ekki til");
+        Log.d("checkUserInfo ","form inn í");
+        if(!AutoLogin.checkUserInfo(this)){
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         }
     }
 
 
-    private void requestLogin(String username, String password){
-        loadingDisplay.setVisibility(View.VISIBLE);
 
-        UserAPI userAPI = ServiceGenerator.createService(UserAPI.class,username,password);
-        Call<Void> call = userAPI.login();
-
-        call.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                System.out.println("response raw: " + response.raw());
-                System.out.println("response header:  " + response.headers());
-
-                if(response.isSuccessful()) {
-                    System.out.println("rétt passwor og username");
-                }
-                else if (response.code() == 401){
-                    System.out.println("Ekki rétt passwor eða username");
-                }else {
-                    try {
-                        System.out.println("Error :"+ response.errorBody().string());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                loadingDisplay.setVisibility(View.INVISIBLE);
-            }
-
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                System.out.println("Failure :" +t);
-                loadingDisplay.setVisibility(View.INVISIBLE);
-            }
-        });
-    }
 
 }

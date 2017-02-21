@@ -1,25 +1,23 @@
 package com.hbv2.icelandevents.HttpResponse;
 
-import com.hbv2.icelandevents.Entities.Event;
-
 import java.util.List;
 
 /**
- * Created by Martin on 10.2.2017.
+ * Created by Martin on 21.2.2017.
  */
 
-public class Http {
-
-
-
+public class httpErro {
 
     private List o;
     private String erro;
     private String failure;
     private int code;
 
-    public Http(List o) {
+    public httpErro(List o, String erro, String failure, int code) {
         this.o = o;
+        this.erro = erro;
+        this.failure = failure;
+        this.code = code;
     }
 
     public List getO() {
@@ -30,7 +28,7 @@ public class Http {
         this.o = o;
     }
 
-     public String getErro() {
+    public String getErro() {
         return erro;
     }
 
@@ -53,7 +51,4 @@ public class Http {
     public void setCode(int code) {
         this.code = code;
     }
-
-
-
 }
