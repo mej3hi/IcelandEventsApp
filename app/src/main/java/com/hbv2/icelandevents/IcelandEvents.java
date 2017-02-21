@@ -16,13 +16,17 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.hbv2.icelandevents.API.EventAPI;
 import com.hbv2.icelandevents.API.UserAPI;
 import com.hbv2.icelandevents.Adapter.EventAdapter;
 import com.hbv2.icelandevents.Entities.Event;
 import com.hbv2.icelandevents.Entities.User;
+import com.hbv2.icelandevents.HttpResponse.Http;
+import com.hbv2.icelandevents.HttpRequest.IndexController;
 import com.hbv2.icelandevents.Service.ServiceGenerator;
 
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -78,50 +82,43 @@ public class IcelandEvents extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    // Allt hér fyrir neðan er eftir Martin.....:
 
-    private void requestEvents(){
-        loadingDisplay.setVisibility(View.VISIBLE);
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
 
-       EventAPI eventAPI = ServiceGenerator.createService(EventAPI.class);
-        Call<List<Event>> call = eventAPI.getEvent();
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
 
-        call.enqueue(new Callback<List<Event>>() {
-            @Override
-            public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
-                System.out.println("response raw: " + response.raw());
-                System.out.println("response header:  " + response.headers());
-
-                if(response.isSuccessful()){
-                    eventsList = response.body();
-                    updateDisplay();
-
-                } else {
-                    try {
-                        System.out.println("Error :"+ response.errorBody().string());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                loadingDisplay.setVisibility(View.INVISIBLE);
-            }
-
-            @Override
-            public void onFailure(Call<List<Event>> call, Throwable t) {
-                System.out.println("Failure :" +t);
-
-
-                loadingDisplay.setVisibility(View.INVISIBLE);
-            }
-        });
+    @Subscribe
+    public void onHttp(Http event) {
+        eventsList = event.getO();
+        updateDisplay();
+        Log.d("Gögn frá index", "tóskt");
+        loadingDisplay.setVisibility(View.INVISIBLE);
     }
 
 
+
+    // Allt hér fyrir neðan er eftir Martin.....:
+    private void requestEvents(){
+        loadingDisplay.setVisibility(View.VISIBLE);
+        new IndexController().getIndexController();
+
+
+    }
+
    //lallsaldlas
-    protected void updateDisplay(){
+    public  void updateDisplay(){
         EventAdapter eventAdapter = new EventAdapter(this, R.layout.event_layout, eventsList);
         eventListView.setAdapter(eventAdapter);
     }
+
 
     public void getEventBtn (View v){
         System.out.println("btnGetEvent");
@@ -183,7 +180,6 @@ public class IcelandEvents extends AppCompatActivity {
             startActivity(intent);
         }
     }
-
 
 
     private void requestLogin(String username, String password){
