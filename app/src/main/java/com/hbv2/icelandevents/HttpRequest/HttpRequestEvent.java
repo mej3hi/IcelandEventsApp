@@ -49,28 +49,6 @@ public class HttpRequestEvent {
         });
     }
 
-    public void myEventGet(){
-        Log.d("indexController","það tókst");
-
-        EventAPI eventAPI = ServiceGenerator.createService(EventAPI.class);
-        Call<List<Event>> call = eventAPI.getEvent();
-
-        call.enqueue(new Callback<List<Event>>() {
-            @Override
-            public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
-                System.out.println("response raw: " + response.raw());
-                System.out.println("response header:  " + response.headers());
-                //EventBus.getDefault().post(new HttpEvent(response.body(),response.code()));
-            }
-
-            @Override
-            public void onFailure(Call<List<Event>> call, Throwable t) {
-                System.out.println("Failure :" +t);
-                System.out.println("Failure call :" +call);
-
-            }
-        });
-    }
 
 
     public void createEventPost(){
@@ -95,6 +73,30 @@ public class HttpRequestEvent {
             }
         });
     }
+
+    public void myEventGet(){
+        Log.d("indexController","það tókst");
+
+        EventAPI eventAPI = ServiceGenerator.createService(EventAPI.class);
+        Call<List<Event>> call = eventAPI.getEvent();
+
+        call.enqueue(new Callback<List<Event>>() {
+            @Override
+            public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
+                System.out.println("response raw: " + response.raw());
+                System.out.println("response header:  " + response.headers());
+                //EventBus.getDefault().post(new HttpEvent(response.body(),response.code()));
+            }
+
+            @Override
+            public void onFailure(Call<List<Event>> call, Throwable t) {
+                System.out.println("Failure :" +t);
+                System.out.println("Failure call :" +call);
+
+            }
+        });
+    }
+
 
     public void removeEventGet(){
         Log.d("indexController","það tókst");
