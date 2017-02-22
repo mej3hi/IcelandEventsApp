@@ -1,4 +1,4 @@
-package com.hbv2.icelandevents;
+package com.hbv2.icelandevents.Activity;
 
 
 import android.os.Bundle;
@@ -6,14 +6,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 
-import com.hbv2.icelandevents.Entities.User;
 import com.hbv2.icelandevents.HttpRequest.HttpRequestLogin;
 import com.hbv2.icelandevents.HttpResponse.HttpLogin;
-
+import com.hbv2.icelandevents.R;
+import com.hbv2.icelandevents.StoreUser;
 
 
 import org.greenrobot.eventbus.EventBus;
@@ -24,10 +25,13 @@ import org.greenrobot.eventbus.Subscribe;
 
 public class LoginActivity extends AppCompatActivity {
 
-    User user = new User();
+
     private EditText username;
     private EditText password;
     private TextView signInMsg;
+    private Button skipBtn;
+    private Button backBtn;
+
 
 
     @Override
@@ -40,8 +44,11 @@ public class LoginActivity extends AppCompatActivity {
         username = (EditText) findViewById(R.id.usernameEditText);
         password = (EditText) findViewById(R.id.passwordEditText);
         signInMsg = (TextView) findViewById(R.id.signInMsgTextView);
-
+        skipBtn = (Button) findViewById(R.id.skipBtnId);
+        backBtn = (Button) findViewById(R.id.backSignInBtnId);
+        skipBtnVisibility();
     }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -68,13 +75,23 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    public void skipBtnVisibility(){
+        if(getIntent().getBooleanExtra("SKIP_VISIBLE",false)){
+            skipBtn.setVisibility(View.VISIBLE);
+            backBtn.setVisibility(View.INVISIBLE);
+        }
+    }
+
     public void signInOnClick(View v){
         new HttpRequestLogin().loginGet(username.getText().toString(),password.getText().toString());
     }
 
     public void skipOnClick(View v){
-        StoreUser.skipUserInfo();
+        StoreUser.skipUserInfo(this);
         finish();
     }
 
+    public void backSignInBtnId(View v){
+        finish();
+    }
 }

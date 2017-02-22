@@ -27,6 +27,32 @@ public class HttpRequestLogin {
                 System.out.println("response raw: " + response.raw());
                 System.out.println("response header:  " + response.headers());
                 EventBus.getDefault().post(new HttpLogin(response.code()));
+
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                System.out.println("Failuress :" +t);
+
+            }
+        });
+    }
+
+
+
+    public void autoLoginGet(String username, String password){
+
+        UserAPI userAPI = ServiceGenerator.createService(UserAPI.class,username,password);
+        Call<Void> call = userAPI.login();
+
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                System.out.println("response raw: " + response.raw());
+                System.out.println("response header:  " + response.headers());
+
+                // Þurfum gera eitthvað hérna ef það tekst ekki að loga inn user inn
+
             }
 
             @Override

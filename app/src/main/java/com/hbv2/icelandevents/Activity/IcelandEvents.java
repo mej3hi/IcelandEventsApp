@@ -1,4 +1,4 @@
-package com.hbv2.icelandevents;
+package com.hbv2.icelandevents.Activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,7 +17,8 @@ import android.widget.Toast;
 import com.hbv2.icelandevents.Adapter.EventAdapter;
 import com.hbv2.icelandevents.Entities.Event;
 import com.hbv2.icelandevents.HttpResponse.HttpEvent;
-import com.hbv2.icelandevents.HttpRequest.HttpRequestIndex;
+import com.hbv2.icelandevents.HttpRequest.HttpRequestEvent;
+import com.hbv2.icelandevents.R;
 import com.hbv2.icelandevents.Service.AutoLogin;
 import com.hbv2.icelandevents.Service.NetworkChecker;
 
@@ -51,7 +52,7 @@ public class IcelandEvents extends AppCompatActivity {
         cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
 
-        checkUserInfo();
+        //checkUserInfo();
     }
 
     @Override
@@ -91,18 +92,18 @@ public class IcelandEvents extends AppCompatActivity {
 
     @Subscribe
     public void onHttp(HttpEvent event) {
+        loadingDisplay.setVisibility(View.INVISIBLE);
         if(event.getCode() == 200){
         eventsList = event.getListEvent();
         updateDisplay();
         }
         Log.d("Gögn frá index", "tóskt");
-        loadingDisplay.setVisibility(View.INVISIBLE);
     }
 
 
     private void requestEvents(){
         loadingDisplay.setVisibility(View.VISIBLE);
-        new HttpRequestIndex().getIndex();
+        new HttpRequestEvent().indexGet();
     }
 
     public  void updateDisplay(){
@@ -121,16 +122,23 @@ public class IcelandEvents extends AppCompatActivity {
 
     }
 
-    public void signInOnClick (View v){
+    public void signInBtnActOnClick (View v){
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
-
     }
+
+    public void signUpBtnActOnClick (View v){
+        Intent intent = new Intent(this, SignUpActivity.class);
+        startActivity(intent);
+    }
+
+
 
     private void checkUserInfo(){
         Log.d("checkUserInfo ","form inn í");
         if(!AutoLogin.checkUserInfo(this)){
             Intent intent = new Intent(this, LoginActivity.class);
+            intent.putExtra("SKIP_VISIBLE", true);
             startActivity(intent);
         }
     }

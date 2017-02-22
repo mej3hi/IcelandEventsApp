@@ -10,7 +10,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.hbv2.icelandevents.LoginActivity"
+    tools:context="com.hbv2.icelandevents.Activity.LoginActivity"
     tools:showIn="@layout/activity_login">
 
     <TextView
@@ -27,7 +27,7 @@
         android:text="@string/sign_in"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/signInBtnId"
+        android:id="@+id/signInBtnActId"
         android:textSize="18sp"
         android:onClick="signInOnClick"
         android:layout_below="@+id/passwordEditText"
@@ -38,10 +38,11 @@
         android:text="@string/skip_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/SkipBtn"
+        android:id="@+id/skipBtnId"
         android:onClick="skipOnClick"
-        android:layout_below="@+id/signInBtnId"
-        android:layout_alignStart="@+id/signInBtnId" />
+        android:layout_below="@+id/signInBtnActId"
+        android:layout_alignStart="@+id/signInBtnActId"
+        android:visibility="invisible" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -92,6 +93,16 @@
         android:id="@+id/passwordEditText"
         android:layout_below="@+id/textView3"
         android:layout_centerHorizontal="true" />
+
+    <Button
+        android:text="@string/back_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/skipBtnId"
+        android:layout_alignEnd="@+id/skipBtnId"
+        android:id="@+id/backSignInBtnId"
+        android:textSize="18sp"
+        android:onClick="backSignInBtnId" />
 
 
 </RelativeLayout>

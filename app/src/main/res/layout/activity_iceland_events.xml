@@ -5,29 +5,45 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.hbv2.icelandevents.IcelandEvents">
+    tools:context="com.hbv2.icelandevents.Activity.IcelandEvents">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
 
-        <Button
-            android:text="@string/get_event_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/EventBtn"
-            android:layout_weight="1"
-            android:onClick="getEventBtn" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
 
-        <Button
-            android:text="@string/sign_in"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/signInBtnId"
-            android:layout_weight="1"
-            android:textAlignment="viewStart"
-            android:onClick="signInOnClick" />
+            <Button
+                android:text="@string/get_event_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/EventBtn"
+                android:layout_weight="1"
+                android:onClick="getEventBtn"
+                tools:text="get Event" />
+
+            <Button
+                android:text="@string/sign_in"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/signInBtnActId"
+                android:layout_weight="1"
+                android:textAlignment="viewStart"
+                android:onClick="signInBtnActOnClick" />
+
+            <Button
+                android:text="Sign Up"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/signUpBtnActId"
+                android:layout_weight="1"
+                android:onClick="signUpBtnActOnClick" />
+        </LinearLayout>
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"

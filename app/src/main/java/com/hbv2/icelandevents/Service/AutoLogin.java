@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.hbv2.icelandevents.Entities.User;
+import com.hbv2.icelandevents.Entities.UserInfo;
 import com.hbv2.icelandevents.HttpRequest.HttpRequestLogin;
 
 
@@ -18,15 +18,13 @@ import java.io.FileNotFoundException;
 public class AutoLogin  {
 
     private static Context mBase;
-
+    private static UserInfo user;
     public static boolean checkUserInfo(Context base){
         boolean userInfo = false;
         mBase = base;
-        User user;
         Gson gson = new Gson();
-        String filename = "userInfo";
         try {
-            FileInputStream fin = openFileInput(filename);
+            FileInputStream fin = openFileInput("userInfo");
             int c;
             String temp = "";
             while ((c = fin.read()) != -1) {
@@ -34,21 +32,19 @@ public class AutoLogin  {
             }
             if(temp != ""){
                 userInfo = true;
-                Log.d("Temp ","Temp er ekki tómur");
-                user = gson.fromJson(temp,User.class);
-
+                Log.d("Autologin","userInfo er til");
+                user = gson.fromJson(temp,UserInfo.class);
                 if(user.getUsername() != "" && user.getPassword() != ""){
-                    Log.d("Temp","Þá loga okku inn User = "+user.getUsername()+" Pass = "+user.getPassword());
-                    new HttpRequestLogin().loginGet(user.getUsername(),user.getPassword());
+                    Log.d("Autologin","Þá loga okku inn UserInfo = "+user.getUsername()+" Pass = "+user.getPassword());
+                    new HttpRequestLogin().autoLoginGet(user.getUsername(),user.getPassword());
                 }
             }
             fin.close();
         }
         catch (Exception e){
-            Log.d("tempErro","temp er ekki til");
+            Log.d("AutoLogin","userInfo er ekki til");
             userInfo = false;
         }
-
         return userInfo;
     }
 
