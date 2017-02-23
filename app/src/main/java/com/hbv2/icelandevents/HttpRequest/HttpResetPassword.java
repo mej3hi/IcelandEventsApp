@@ -23,7 +23,7 @@ public class HttpResetPassword {
     public void resetPasswordPost(String token,String password,String passwordConfirm){
 
         UserAPI userAPI = ServiceGenerator.createService(UserAPI.class);
-        Call<Void> call = userAPI.login();
+        Call<Void> call = userAPI.getSignIn();
 
         call.enqueue(new Callback<Void>() {
             @Override

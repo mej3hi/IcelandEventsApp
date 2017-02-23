@@ -24,7 +24,7 @@ public class HttpRequestSignIn {
    public void signInGet(String username, String password){
 
         UserAPI userAPI = ServiceGenerator.createService(UserAPI.class,username,password);
-        Call<Void> call = userAPI.login();
+        Call<Void> call = userAPI.getSignIn();
 
         call.enqueue(new Callback<Void>() {
             @Override
@@ -53,7 +53,7 @@ public class HttpRequestSignIn {
     public void autoSignInGet(String username, String password){
 
         UserAPI userAPI = ServiceGenerator.createService(UserAPI.class,username,password);
-        Call<Void> call = userAPI.login();
+        Call<Void> call = userAPI.getSignIn();
 
         call.enqueue(new Callback<Void>() {
             @Override

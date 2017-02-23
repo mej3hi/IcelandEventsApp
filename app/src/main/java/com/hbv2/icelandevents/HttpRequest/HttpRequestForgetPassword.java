@@ -20,7 +20,7 @@ public class HttpRequestForgetPassword {
     public void forgetPasswordPost(String email){
 
         UserAPI userAPI = ServiceGenerator.createService(UserAPI.class);
-        Call<Void> call = userAPI.login();
+        Call<Void> call = userAPI.getSignIn();
 
         call.enqueue(new Callback<Void>() {
             @Override
