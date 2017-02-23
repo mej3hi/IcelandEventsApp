@@ -11,7 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 
-import com.hbv2.icelandevents.HttpRequest.HttpRequestLogin;
+import com.hbv2.icelandevents.HttpRequest.HttpRequestSignIn;
 import com.hbv2.icelandevents.HttpResponse.HttpLogin;
 import com.hbv2.icelandevents.R;
 import com.hbv2.icelandevents.StoreUser;
@@ -83,7 +83,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void signInOnClick(View v){
-        new HttpRequestLogin().loginGet(username.getText().toString(),password.getText().toString());
+        new HttpRequestSignIn().signInGet(username.getText().toString(),password.getText().toString());
     }
 
     public void skipOnClick(View v){

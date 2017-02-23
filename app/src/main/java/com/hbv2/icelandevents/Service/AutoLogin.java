@@ -5,7 +5,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.hbv2.icelandevents.Entities.UserInfo;
-import com.hbv2.icelandevents.HttpRequest.HttpRequestLogin;
+import com.hbv2.icelandevents.HttpRequest.HttpRequestSignIn;
 
 
 import java.io.FileInputStream;
@@ -36,7 +36,7 @@ public class AutoLogin  {
                 user = gson.fromJson(temp,UserInfo.class);
                 if(user.getUsername() != "" && user.getPassword() != ""){
                     Log.d("Autologin","Þá loga okku inn UserInfo = "+user.getUsername()+" Pass = "+user.getPassword());
-                    new HttpRequestLogin().autoLoginGet(user.getUsername(),user.getPassword());
+                    new HttpRequestSignIn().autoSignInGet(user.getUsername(),user.getPassword());
                 }
             }
             fin.close();

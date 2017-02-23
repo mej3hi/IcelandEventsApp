@@ -14,9 +14,14 @@ import retrofit2.Response;
  * Created by Martin on 21.2.2017.
  */
 
-public class HttpRequestLogin {
-
-   public void loginGet(String username, String password){
+public class HttpRequestSignIn {
+    /**
+     * Send Get method url ("/m/signIn").
+     * It Sign In the user
+     * @param username Is the username from the form
+     * @param password Is the password form the form
+     */
+   public void signInGet(String username, String password){
 
         UserAPI userAPI = ServiceGenerator.createService(UserAPI.class,username,password);
         Call<Void> call = userAPI.login();
@@ -39,8 +44,13 @@ public class HttpRequestLogin {
     }
 
 
-
-    public void autoLoginGet(String username, String password){
+    /**
+     * Send Get method url ("/m/signIn").
+     * It auto Sign In the user
+     * @param username Is the username from rhe UserInfo.
+     * @param password Is the password form the UserInfo.
+     */
+    public void autoSignInGet(String username, String password){
 
         UserAPI userAPI = ServiceGenerator.createService(UserAPI.class,username,password);
         Call<Void> call = userAPI.login();
