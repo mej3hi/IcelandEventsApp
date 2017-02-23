@@ -37,7 +37,7 @@
                 android:onClick="signInBtnActOnClick" />
 
             <Button
-                android:text="Sign Up"
+                android:text="@string/sign_up"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/signUpBtnActId"
