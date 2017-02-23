@@ -49,7 +49,7 @@ public class AutoLogin  {
             fin.close();
         }
         catch (Exception e){
-            Log.d("AutoLogin","userInfo er ekki til");
+            Log.d("AutoLogin","userInfo er ekki til ");
             userInfo = false;
         }
         return userInfo;
