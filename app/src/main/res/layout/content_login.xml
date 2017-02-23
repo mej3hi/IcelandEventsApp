@@ -24,17 +24,6 @@
         android:layout_alignParentStart="true" />
 
     <Button
-        android:text="@string/sign_in"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/signInBtnActId"
-        android:textSize="18sp"
-        android:onClick="signInOnClick"
-        android:layout_below="@+id/passwordEditText"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="79dp" />
-
-    <Button
         android:text="@string/skip_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -95,14 +84,35 @@
         android:layout_centerHorizontal="true" />
 
     <Button
+        android:text="@string/sign_in"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/signInBtnActId"
+        android:textSize="18sp"
+        android:onClick="signInOnClick"
+        android:layout_marginTop="45dp"
+        android:layout_below="@+id/passwordEditText"
+        android:layout_centerHorizontal="true" />
+
+    <Button
         android:text="@string/back_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/skipBtnId"
-        android:layout_alignEnd="@+id/skipBtnId"
         android:id="@+id/backSignInBtnId"
         android:textSize="18sp"
-        android:onClick="backSignInBtnId" />
+        android:onClick="backSignInBtnId"
+        android:layout_below="@+id/signInBtnActId"
+        android:layout_alignStart="@+id/skipBtnId"
+        android:layout_marginTop="27dp" />
+
+    <Button
+        android:text="@string/forgot_password_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="13dp"
+        android:id="@+id/forgotPasswBtnId"
+        android:layout_below="@+id/backSignInBtnId"
+        android:layout_centerHorizontal="true" />
 
 
 </RelativeLayout>
