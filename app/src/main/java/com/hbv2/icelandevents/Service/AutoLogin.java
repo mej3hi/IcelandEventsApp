@@ -18,10 +18,17 @@ import java.io.FileNotFoundException;
 public class AutoLogin  {
 
     private static Context mBase;
-    private static UserInfo user;
+
+    /**
+     * It will check whether user has create userInfo,
+     * and if it
+     * @param base
+     * @return
+     */
     public static boolean checkUserInfo(Context base){
         boolean userInfo = false;
         mBase = base;
+        UserInfo user;
         Gson gson = new Gson();
         try {
             FileInputStream fin = openFileInput("userInfo");

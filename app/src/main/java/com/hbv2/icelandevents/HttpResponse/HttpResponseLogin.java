@@ -4,11 +4,11 @@ package com.hbv2.icelandevents.HttpResponse;
  * Created by Martin on 21.2.2017.
  */
 
-public class HttpLogin {
+public class HttpResponseLogin {
 
     private int code;
 
-    public HttpLogin(int code) {
+    public HttpResponseLogin(int code) {
         this.code = code;
     }
 

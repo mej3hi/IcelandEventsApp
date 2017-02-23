@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 
 import com.hbv2.icelandevents.HttpRequest.HttpRequestSignIn;
-import com.hbv2.icelandevents.HttpResponse.HttpLogin;
+import com.hbv2.icelandevents.HttpResponse.HttpResponseLogin;
 import com.hbv2.icelandevents.R;
 import com.hbv2.icelandevents.StoreUser;
 
@@ -62,7 +62,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     @Subscribe
-    public void onHttpLogin(HttpLogin event) {
+    public void onHttpLogin(HttpResponseLogin event) {
         if(event.getCode() == 200){
             Log.d("Login :","rétt passwor og username");
             signInMsg.setText("Tókast að loga inn");

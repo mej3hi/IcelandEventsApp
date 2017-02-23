@@ -6,14 +6,14 @@ import java.util.List;
  * Created by Martin on 21.2.2017.
  */
 
-public class httpErro {
+public class httpResponseError {
 
     private List o;
     private String erro;
     private String failure;
     private int code;
 
-    public httpErro(List o, String erro, String failure, int code) {
+    public httpResponseError(List o, String erro, String failure, int code) {
         this.o = o;
         this.erro = erro;
         this.failure = failure;

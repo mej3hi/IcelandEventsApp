@@ -8,12 +8,12 @@ import java.util.List;
  * Created by Martin on 10.2.2017.
  */
 
-public class HttpEvent {
+public class HttpResponseEvent {
 
     private List<Event> listEvent;
     private int code;
 
-    public HttpEvent(List<Event> listEvent, int code) {
+    public HttpResponseEvent(List<Event> listEvent, int code) {
         this.listEvent = listEvent;
         this.code = code;
     }

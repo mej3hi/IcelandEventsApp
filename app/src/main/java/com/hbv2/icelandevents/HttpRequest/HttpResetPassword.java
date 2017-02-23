@@ -30,7 +30,7 @@ public class HttpResetPassword {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 System.out.println("response raw: " + response.raw());
                 System.out.println("response header:  " + response.headers());
-                // EventBus.getDefault().post(new HttpLogin(response.code()));
+                // EventBus.getDefault().post(new HttpResponseLogin(response.code()));
 
             }
 

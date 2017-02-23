@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 import com.hbv2.icelandevents.Adapter.EventAdapter;
 import com.hbv2.icelandevents.Entities.Event;
-import com.hbv2.icelandevents.HttpResponse.HttpEvent;
+import com.hbv2.icelandevents.HttpResponse.HttpResponseEvent;
 import com.hbv2.icelandevents.HttpRequest.HttpRequestEvent;
 import com.hbv2.icelandevents.R;
 import com.hbv2.icelandevents.Service.AutoLogin;
@@ -91,7 +91,7 @@ public class IcelandEvents extends AppCompatActivity {
     }
 
     @Subscribe
-    public void onHttp(HttpEvent event) {
+    public void onHttp(HttpResponseEvent event) {
         loadingDisplay.setVisibility(View.INVISIBLE);
         if(event.getCode() == 200){
         eventsList = event.getListEvent();
@@ -123,6 +123,7 @@ public class IcelandEvents extends AppCompatActivity {
     }
 
     public void signInBtnActOnClick (View v){
+        //Intent intent = new Intent(this,prufaActivity.class);
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
     }

@@ -5,12 +5,11 @@ import android.util.Log;
 
 import com.hbv2.icelandevents.API.EventAPI;
 import com.hbv2.icelandevents.Entities.Event;
-import com.hbv2.icelandevents.HttpResponse.HttpEvent;
+import com.hbv2.icelandevents.HttpResponse.HttpResponseEvent;
 import com.hbv2.icelandevents.Service.ServiceGenerator;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.io.File;
 import java.util.List;
 
 import retrofit2.Call;
@@ -41,7 +40,7 @@ public class HttpRequestEvent {
                 System.out.println("response raw: " + response.raw());
                 System.out.println("response header:  " + response.headers());
 
-                EventBus.getDefault().post(new HttpEvent(response.body(),response.code()));
+                EventBus.getDefault().post(new HttpResponseEvent(response.body(),response.code()));
             }
 
             @Override
@@ -69,7 +68,7 @@ public class HttpRequestEvent {
                 System.out.println("response raw: " + response.raw());
                 System.out.println("response header:  " + response.headers());
 
-                //EventBus.getDefault().post(new HttpEvent(response.body(),response.code()));
+                //EventBus.getDefault().post(new HttpResponseEvent(response.body(),response.code()));
             }
 
             @Override
@@ -99,7 +98,7 @@ public class HttpRequestEvent {
             public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
                 System.out.println("response raw: " + response.raw());
                 System.out.println("response header:  " + response.headers());
-                //EventBus.getDefault().post(new HttpEvent(response.body(),response.code()));
+                //EventBus.getDefault().post(new HttpResponseEvent(response.body(),response.code()));
             }
 
             @Override
@@ -126,7 +125,7 @@ public class HttpRequestEvent {
             public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
                 System.out.println("response raw: " + response.raw());
                 System.out.println("response header:  " + response.headers());
-                //EventBus.getDefault().post(new HttpEvent(response.body(),response.code()));
+                //EventBus.getDefault().post(new HttpResponseEvent(response.body(),response.code()));
             }
 
             @Override
@@ -154,7 +153,7 @@ public class HttpRequestEvent {
             public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
                 System.out.println("response raw: " + response.raw());
                 System.out.println("response header:  " + response.headers());
-                //EventBus.getDefault().post(new HttpEvent(response.body(),response.code()));
+                //EventBus.getDefault().post(new HttpResponseEvent(response.body(),response.code()));
             }
 
             @Override
@@ -183,7 +182,7 @@ public class HttpRequestEvent {
             public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
                 System.out.println("response raw: " + response.raw());
                 System.out.println("response header:  " + response.headers());
-                //EventBus.getDefault().post(new HttpEvent(response.body(),response.code()));
+                //EventBus.getDefault().post(new HttpResponseEvent(response.body(),response.code()));
             }
 
             @Override
