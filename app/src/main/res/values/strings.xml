@@ -11,7 +11,7 @@
     <string name="enter_email_editText">Enter your email</string>
     <string name="resetPasswordBtn">Reset password</string>
     <string name="text_view">TextView!!!</string>
-    <string name="title_activity_sign_up">SignUpActivity</string>
+    <string name="title_activity_sign_up">Sign Up</string>
     <string name="your_name">Your name</string>
     <string name="your_email">Your Email</string>
     <string name="sign_up">Sign Up</string>
@@ -27,4 +27,8 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="title_activity_prufa2">prufa2Activity</string>
     <string name="section_format">Hello World from section: %1$d</string>
+    <string name="sign_up_enter_name_textEdit">Enter your name</string>
+    <string name="sign_up_choose_username_textEdit">Choose username</string>
+    <string name="sign_up_choose_password_textEdit">Choose password</string>
+    <string name="sign_up_confirm_password_textEdit">Confirm password</string>
 </resources>

@@ -1,10 +1,12 @@
 package com.hbv2.icelandevents.Activity;
 
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 
 import com.hbv2.icelandevents.R;
@@ -19,10 +21,17 @@ public class SignUpActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
+
     }
+    public void signUpBtnOnClick (View v){
+        Log.d("Signup :","button" );
+    }
+
 
     public void backSignUpBtnOnClick (View v){
         finish();
     }
+
+
 
 }

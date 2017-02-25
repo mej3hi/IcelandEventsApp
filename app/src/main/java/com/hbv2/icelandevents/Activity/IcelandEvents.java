@@ -94,8 +94,8 @@ public class IcelandEvents extends AppCompatActivity {
     public void onHttp(HttpResponseEvent event) {
         loadingDisplay.setVisibility(View.INVISIBLE);
         if(event.getCode() == 200){
-        eventsList = event.getListEvent();
-        updateDisplay();
+            eventsList = event.getListEvent();
+            updateDisplay();
         }
         Log.d("Gögn frá index", "tóskt");
     }
