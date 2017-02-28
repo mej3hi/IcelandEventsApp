@@ -16,3 +16,9 @@
   * http://abhiandroid.com/ui/custom-arrayadapter-tutorial-example.html
 
 ####Við erum að nota Picasso til að load up myndinar (Heimasíðan http://square.github.io/picasso/)
+
+####Við erum að nota EventBus til að kalla á fall í activity class-an úr HttpRequest mappan ( Heimasíðan http://greenrobot.org/eventbus/)
+  * http://greenrobot.org/eventbus/documentation/how-to-get-started/
+  * http://en.proft.me/2017/02/9/eventbus-tutorial-examples/
+  * http://guides.codepath.com/android/communicating-with-an-event-bus
+  
