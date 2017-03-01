@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hbv2.icelandevents.Entities.Event;
+import com.hbv2.icelandevents.HttpRequest.HttpRequestEvent;
 import com.hbv2.icelandevents.R;
 import com.mobsandgeeks.saripaar.Rule;
 import com.mobsandgeeks.saripaar.Validator;
@@ -90,7 +91,7 @@ public class CreateEventActivity extends AppCompatActivity implements Validator.
         if (requestCode == 1 && resultCode == RESULT_OK) {
             Uri selectedImage = imageReturnedIntent.getData();
             String path = selectedImage.getPath();
-            Log.d("myndin: ", path);
+
             event.setImageurl(path);
             imageUrl.setText(path.substring(path.lastIndexOf("/")+1));
         }
@@ -114,7 +115,7 @@ public class CreateEventActivity extends AppCompatActivity implements Validator.
         String date = eventDate.getText().toString();
         event.setDate(date);
 
-        //new HttpRequestEvent().createEventPost(event, event.getImageurl());
+        new HttpRequestEvent().createEventPost(event, event.getImageurl());
 
 
     }
