@@ -7,12 +7,13 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hbv2.icelandevents.Entities.Event;
-import com.hbv2.icelandevents.HttpRequest.HttpRequestEvent;
 import com.hbv2.icelandevents.R;
 import com.mobsandgeeks.saripaar.Rule;
 import com.mobsandgeeks.saripaar.Validator;
@@ -42,6 +43,9 @@ public class CreateEventActivity extends AppCompatActivity implements Validator.
     @Required(order = 10)
     EditText eventDate;
 
+    @Required(order = 11)
+    TextView imageUrl;
+
     Validator validator;
 
     @Override
@@ -65,9 +69,13 @@ public class CreateEventActivity extends AppCompatActivity implements Validator.
         eventDescription = (EditText) findViewById(R.id.descriptionText);
         eventTime = (EditText) findViewById(R.id.timeText);
         eventDate = (EditText) findViewById(R.id.dateText);
+        imageUrl = (TextView) findViewById(R.id.imageUrlText);
+
 
         validator = new Validator(this);
         validator.setValidationListener(this);
+
+        event = new Event();
 
     }
 
@@ -81,15 +89,16 @@ public class CreateEventActivity extends AppCompatActivity implements Validator.
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
         if (requestCode == 1 && resultCode == RESULT_OK) {
             Uri selectedImage = imageReturnedIntent.getData();
-            event.setImageurl(selectedImage.getPath());
+            String path = selectedImage.getPath();
+            Log.d("myndin: ", path);
+            event.setImageurl(path);
+            imageUrl.setText(path.substring(path.lastIndexOf("/")+1));
         }
     }
 
 
     @Override
     public void onValidationSucceeded() {
-        event = new Event();
-
         String name = eventName.getText().toString();
         event.setName(name);
 
@@ -105,7 +114,7 @@ public class CreateEventActivity extends AppCompatActivity implements Validator.
         String date = eventDate.getText().toString();
         event.setDate(date);
 
-        new HttpRequestEvent().createEventPost(event, event.getImageurl());
+        //new HttpRequestEvent().createEventPost(event, event.getImageurl());
 
 
     }
