@@ -31,7 +31,8 @@ public interface EventAPI {
     @POST("/m/createEvent")
     Call<Void> postCreateEvent(@Body Event event, @Part MultipartBody.Part image, @Part("name") RequestBody name);
 
-    @GET("/m/myevents")
+    //@GET("/m/myevents")
+    @GET("/mej3hi/tonlistv2/master/tonlist.json")
     Call<List<Event>> getMyEvents();
 
     @GET("/m/removeEvent")

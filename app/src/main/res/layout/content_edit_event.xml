@@ -13,4 +13,12 @@
     tools:context="com.hbv2.icelandevents.Activity.EditEventActivity"
     tools:showIn="@layout/activity_edit_event">
 
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="44dp"
+        android:id="@+id/editEventName" />
 </RelativeLayout>
