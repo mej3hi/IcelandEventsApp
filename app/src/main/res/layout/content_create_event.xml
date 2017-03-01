@@ -13,4 +13,84 @@
     tools:context="com.hbv2.icelandevents.Activity.CreateEventActivity"
     tools:showIn="@layout/activity_create_event">
 
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:hint="Location"
+        android:ems="10"
+        android:id="@+id/locationText"
+        android:textAlignment="center"
+        android:layout_marginTop="14dp"
+        android:layout_below="@+id/eventNameText"
+        android:layout_alignStart="@+id/eventNameText" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:hint="Name of the Event"
+        android:ems="10"
+        android:id="@+id/eventNameText"
+        android:textAlignment="center"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/timeText" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Date"
+        android:ems="10"
+        android:id="@+id/dateText"
+        android:textAlignment="center"
+        android:layout_below="@+id/timeText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:inputType="date" />
+
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:hint="Time"
+        android:ems="10"
+        android:id="@+id/timeText"
+        android:textAlignment="center"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/descriptionText"
+        android:layout_alignStart="@+id/dateText" />
+
+    <Button
+        android:hint="Create"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/createBtn"
+        android:onClick="createBtnOnClick"
+        android:layout_below="@+id/upImageBtn"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="37dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:hint="Description"
+        android:ems="10"
+        android:id="@+id/descriptionText"
+        android:textAlignment="center"
+        android:layout_marginTop="19dp"
+        android:layout_below="@+id/locationText"
+        android:layout_alignStart="@+id/locationText" />
+
+    <Button
+        android:text="Upload Image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/upImageBtn"
+        android:onClick="upImageBtnOnclick"
+        android:layout_marginTop="29dp"
+        android:layout_below="@+id/dateText"
+        android:layout_centerHorizontal="true" />
+
 </RelativeLayout>
