@@ -13,4 +13,11 @@
     tools:context="com.hbv2.icelandevents.Activity.MyEventActivity"
     tools:showIn="@layout/activity_my_event">
 
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/eventListViewMe"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
 </RelativeLayout>

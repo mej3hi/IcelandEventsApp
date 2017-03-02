@@ -5,7 +5,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.hbv2.icelandevents.R;
 
@@ -26,6 +28,14 @@ public class EditEventActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        String name = getIntent().getStringExtra("EVENT_NAME");
+        Log.d("EventName: ", name);
+        TextView tv = (TextView) findViewById(R.id.editEventName);
+
+        tv.setText(name);
+
+
     }
 
 }
