@@ -92,7 +92,7 @@ public class MyEventActivity extends AppCompatActivity {
             updateDisplay();
         }
         Log.d("Gögn frá index", "tóskt");
-    }
+}
 
     public  void updateDisplay(){
         EventAdapter eventAdapter = new EventAdapter(this, R.layout.event_layout, eventsList);
