@@ -23,4 +23,7 @@ public interface UserAPI {
 
     @GET("/m/forgetPassword")
     Call<Void> forgetPassword(@Query("email") String email);
+
+    @GET("/m/resetPassword")
+    Call<Void> resetPassword(@Query("token") String token, @Query("password") String password);
 }
