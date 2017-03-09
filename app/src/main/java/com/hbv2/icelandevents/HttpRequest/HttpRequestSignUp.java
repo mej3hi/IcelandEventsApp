@@ -22,7 +22,7 @@ public class HttpRequestSignUp {
 
 
         UserAPI userAPI = ServiceGenerator.createService(UserAPI.class);
-        Call<Void> call = userAPI.getSignIn();
+        Call<Void> call = userAPI.postSignUp(user);
 
         call.enqueue(new Callback<Void>() {
             @Override

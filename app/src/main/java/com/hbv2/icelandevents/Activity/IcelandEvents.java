@@ -125,8 +125,7 @@ public class IcelandEvents extends AppCompatActivity {
     }
 
     public void signInBtnActOnClick (View v){
-        //Intent intent = new Intent(this,prufaActivity.class);
-        Intent intent = new Intent(this, ForgotPasswordActivity.class);
+        Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
     }
 

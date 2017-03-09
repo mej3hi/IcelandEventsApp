@@ -19,7 +19,7 @@ public interface UserAPI {
     Call<Void> getSignIn();
 
     @POST("/m/signUp")
-    Call<Void> postSignUp(@Body User user);
+    Call<Void> postSignUp(@Body User userForm);
 
     @GET("/m/forgetPassword")
     Call<Void> forgetPassword(@Query("email") String email);

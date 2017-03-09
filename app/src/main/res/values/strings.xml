@@ -12,10 +12,10 @@
     <string name="resetPasswordBtn">Reset password</string>
     <string name="text_view">TextView!!!</string>
     <string name="title_activity_sign_up">SignUpActivity</string>
-    <string name="your_name">Your name</string>
+    <string name="your_name">Your Name</string>
     <string name="your_email">Your Email</string>
     <string name="sign_up">Sign Up</string>
-    <string name="confirm_your_password">Confirm your Password</string>
+    <string name="confirm_your_password">Confirm Password</string>
     <string name="back_btn">Back</string>
     <string name="title_activity_forgot_password">ForgotPasswordActivity</string>
     <string name="title_activity_create_event">CreateEventActivity</string>
@@ -28,4 +28,6 @@
     <string name="title_activity_prufa2">prufa2Activity</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_reset_password">ResetPasswordActivity</string>
+
+
 </resources>
