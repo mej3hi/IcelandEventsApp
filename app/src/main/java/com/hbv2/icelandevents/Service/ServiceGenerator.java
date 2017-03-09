@@ -20,8 +20,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ServiceGenerator {
 
     //private static final String BASE_URL = "https://raw.githubusercontent.com";
-   // private static final String BASE_URL = "http://10.0.2.2:8080";
-    private static final String BASE_URL = "http://192.168.1.104:8080";
+    //private static final String BASE_URL = "http://10.0.2.2:8080";
+    private static final String BASE_URL = "http://10.42.0.1:8080";
 
     private static  OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 

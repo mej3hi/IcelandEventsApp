@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -130,7 +131,7 @@ public class IcelandEvents extends AppCompatActivity {
     }
 
     public void signUpBtnActOnClick (View v){
-        Intent intent = new Intent(this, SignUpActivity.class);
+        Intent intent = new Intent(this, CreateEventActivity.class);
         startActivity(intent);
     }
 
@@ -140,7 +141,10 @@ public class IcelandEvents extends AppCompatActivity {
         Log.d("checkUserInfo ","form inn í");
         if(!AutoLogin.checkUserInfo(this)){
             Intent intent = new Intent(this, LoginActivity.class);
-            intent.putExtra("SKIP_VISIBLE", true);
+            Event event = new Event();
+
+            //intent.putExtra("nnns", (Parcelable) event);
+            //intent.putExtra("SKIP_VISIBLE", true);
             startActivity(intent);
         }
     }

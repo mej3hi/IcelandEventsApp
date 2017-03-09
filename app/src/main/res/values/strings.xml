@@ -28,6 +28,7 @@
     <string name="title_activity_prufa2">prufa2Activity</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_reset_password">ResetPasswordActivity</string>
+    <string name="title_activity_image">image</string>
 
 
 </resources>

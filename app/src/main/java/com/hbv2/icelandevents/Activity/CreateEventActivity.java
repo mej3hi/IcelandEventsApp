@@ -1,8 +1,10 @@
 package com.hbv2.icelandevents.Activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -81,19 +83,29 @@ public class CreateEventActivity extends AppCompatActivity implements Validator.
     }
 
     public void upImageBtnOnclick(View view) {
-        Intent pickPhoto = new Intent(Intent.ACTION_PICK,
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(pickPhoto , 1);
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Image"), 100);
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
-        if (requestCode == 1 && resultCode == RESULT_OK) {
-            Uri selectedImage = imageReturnedIntent.getData();
-            String path = selectedImage.getPath();
+        if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
+            android.net.Uri selectedImage = imageReturnedIntent.getData();
+            String[] filePathColumn = {MediaStore.Images.Media.DATA};
+            android.database.Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+            if (cursor == null)
+                return;
 
-            event.setImageurl(path);
-            imageUrl.setText(path.substring(path.lastIndexOf("/")+1));
+            cursor.moveToFirst();
+
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String filePath = cursor.getString(columnIndex);
+            cursor.close();
+
+            event.setImageurl(filePath);
+            imageUrl.setText(filePath);
         }
     }
 
