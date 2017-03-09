@@ -38,8 +38,6 @@ public class IcelandEvents extends AppCompatActivity {
     private ConnectivityManager cm;
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
