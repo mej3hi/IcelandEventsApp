@@ -1,7 +1,10 @@
 package com.hbv2.icelandevents.HttpRequest;
 
 import com.hbv2.icelandevents.API.UserAPI;
+import com.hbv2.icelandevents.HttpResponse.HttpResponseForgotPassword;
 import com.hbv2.icelandevents.Service.ServiceGenerator;
+
+import org.greenrobot.eventbus.EventBus;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -20,14 +23,14 @@ public class HttpRequestForgetPassword {
     public void forgetPasswordPost(String email){
 
         UserAPI userAPI = ServiceGenerator.createService(UserAPI.class);
-        Call<Void> call = userAPI.getSignIn();
+        Call<Void> call = userAPI.forgetPassword(email);
 
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 System.out.println("response raw: " + response.raw());
                 System.out.println("response header:  " + response.headers());
-               // EventBus.getDefault().post(new HttpResponseSignIn(response.code()));
+                EventBus.getDefault().post(new HttpResponseForgotPassword(response.code()));
 
             }
 

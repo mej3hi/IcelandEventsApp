@@ -46,6 +46,8 @@ public class IcelandEvents extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        Intent intent = getIntent();
+
         eventListView = (ListView) findViewById(R.id.eventListView);
         loadingDisplay = (ProgressBar) findViewById(R.id.LoadingDisplayPB);
         loadingDisplay.setVisibility(View.INVISIBLE);
@@ -123,7 +125,6 @@ public class IcelandEvents extends AppCompatActivity {
     }
 
     public void signInBtnActOnClick (View v){
-        //Intent intent = new Intent(this,prufaActivity.class);
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
     }

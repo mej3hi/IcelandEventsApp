@@ -22,3 +22,4 @@
   * http://en.proft.me/2017/02/9/eventbus-tutorial-examples/
   * http://guides.codepath.com/android/communicating-with-an-event-bus
   
+#### Við erum að nota Saripaar til að validate gögnin sem við sendum yfir til bakendan ( Heimasíðan https://github.com/ragunathjawahar/android-saripaar)

@@ -13,84 +13,87 @@
     tools:context="com.hbv2.icelandevents.Activity.SignUpActivity"
     tools:showIn="@layout/activity_sign_up">
 
+    <TextView
+        android:text="@string/sign_up"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/textView4"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        android:layout_marginBottom="20dp" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:hint="@string/sign_up_enter_name_textEdit"
-        android:textAlignment="center"
         android:ems="10"
-        android:id="@+id/signUpName_editText"
-        android:layout_marginTop="12dp"
-        android:layout_centerHorizontal="true" />
+        android:layout_below="@+id/textView4"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/nameEditTextId"
+        android:hint="@string/your_name"
+        android:textAlignment="center"
+        android:layout_marginBottom="10dp" />
 
-    <Button
-        android:text="@string/back_btn"
+    <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/backSignUpBtnId"
-        android:textAllCaps="false"
-        android:textSize="18sp"
-        android:onClick="backSignUpBtnOnClick"
-        android:layout_alignParentBottom="true"
-        android:layout_alignStart="@+id/signUpBtnId"
-        android:layout_alignEnd="@+id/signUpConfirmPassword_editText" />
+        android:inputType="textEmailAddress"
+        android:ems="10"
+        android:layout_below="@+id/nameEditTextId"
+        android:layout_alignEnd="@+id/nameEditTextId"
+        android:id="@+id/emailEditTextId"
+        android:hint="@string/your_email"
+        android:textAlignment="center"
+        android:layout_marginBottom="10dp" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:hint="@string/enter_email_editText"
-        android:textAlignment="center"
         android:ems="10"
-        android:id="@+id/signUpEmail_editText"
-        android:layout_below="@+id/signUpName_editText"
-        android:layout_alignStart="@+id/signUpName_editText" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:hint="@string/sign_up_choose_username_textEdit"
+        android:layout_below="@+id/emailEditTextId"
+        android:layout_alignEnd="@+id/emailEditTextId"
+        android:id="@+id/usernameEditTextId"
+        android:hint="@string/username"
         android:textAlignment="center"
-        android:ems="10"
-        android:id="@+id/signUpUsername_editText"
-        android:layout_below="@+id/signUpEmail_editText"
-        android:layout_alignStart="@+id/signUpEmail_editText" />
+        android:layout_marginBottom="10dp" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
-        android:hint="@string/sign_up_choose_password_textEdit"
-        android:textAlignment="center"
         android:ems="10"
-        android:id="@+id/signUpPassword_editText"
-        android:layout_below="@+id/signUpUsername_editText"
-        android:layout_alignStart="@+id/signUpUsername_editText" />
+        android:layout_below="@+id/usernameEditTextId"
+        android:layout_alignEnd="@+id/usernameEditTextId"
+        android:id="@+id/passwordEditTextId"
+        android:hint="@string/password"
+        android:textAlignment="center"
+        android:layout_marginBottom="10dp" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
-        android:hint="@string/sign_up_confirm_password_textEdit"
-        android:textAlignment="center"
         android:ems="10"
-        android:id="@+id/signUpConfirmPassword_editText"
-        android:layout_below="@+id/signUpPassword_editText"
-        android:layout_alignStart="@+id/signUpPassword_editText" />
+        android:layout_below="@+id/passwordEditTextId"
+        android:layout_alignStart="@+id/passwordEditTextId"
+        android:id="@+id/passwordConfEditTextId"
+        android:hint="@string/confirm_your_password"
+        android:textAlignment="center"
+        android:layout_marginBottom="20dp" />
 
     <Button
         android:text="@string/sign_up"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/signUpBtnId"
+        android:id="@+id/SignUpBtnId"
         android:onClick="signUpBtnOnClick"
         android:textSize="24sp"
         android:textAllCaps="false"
-        android:layout_above="@+id/backSignUpBtnId"
-        android:layout_alignStart="@+id/signUpConfirmPassword_editText"
-        android:layout_alignEnd="@+id/signUpConfirmPassword_editText" />
+        android:layout_below="@+id/passwordConfEditTextId"
+        android:layout_alignStart="@+id/passwordConfEditTextId"
+        android:layout_alignEnd="@+id/passwordConfEditTextId" />
 
 </RelativeLayout>

@@ -36,7 +36,7 @@ public class HttpRequestEvent {
         Log.d("indexController","það tókst");
 
         EventAPI eventAPI = ServiceGenerator.createService(EventAPI.class);
-        Call<List<Event>> call = eventAPI.getEvent();
+        Call<List<Event>> call = eventAPI.getIndex();
 
         call.enqueue(new Callback<List<Event>>() {
             @Override
