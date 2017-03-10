@@ -9,6 +9,7 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
@@ -28,8 +29,15 @@ public interface EventAPI {
     @GET("/m/calander")
     Call<List<Event>> getCalander(@Path("day") String day);
 
+    @Multipart
     @POST("/m/createEvent")
-    Call<Void> postCreateEvent(@Body Event event, @Part MultipartBody.Part image, @Part("name") RequestBody name);
+    Call<Void> postCreateEvent(@Part MultipartBody.Part file,
+                               @Part("name") RequestBody name,
+                               @Part("location") RequestBody location,
+                               @Part("description") RequestBody description,
+                               @Part("time") RequestBody time,
+                               @Part("date") RequestBody date,
+                               @Part("musicgenres") RequestBody musicgenres);
 
     //@GET("/m/myevents")
     @GET("/mej3hi/tonlistv2/master/tonlist.json")

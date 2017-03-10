@@ -3,6 +3,7 @@ package com.hbv2.icelandevents.HttpRequest;
 
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.hbv2.icelandevents.API.EventAPI;
 import com.hbv2.icelandevents.Entities.Event;
 import com.hbv2.icelandevents.HttpResponse.HttpResponseEvent;
@@ -98,13 +99,21 @@ public class HttpRequestEvent {
         // á veit ekki hvort þetta virka það þarf að testa það
         // veit ekki hvort það þarf name
         // https://medium.com/@adinugroho/upload-image-from-android-app-using-retrofit-2-ae6f922b184c#.zeh2vdo1i
+
+        Log.d("slóð myndin",imageUri );
         File file = new File(imageUri);
         RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
-        MultipartBody.Part body = MultipartBody.Part.createFormData("upload", file.getName(), reqFile);
-        RequestBody name = RequestBody.create(MediaType.parse("text/plain"), "upload_test");
+        MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), reqFile);
+
+        RequestBody name = RequestBody.create(MediaType.parse("text/plain"), event.getName());
+        RequestBody location = RequestBody.create(MediaType.parse("text/plain"), event.getLocation());
+        RequestBody description = RequestBody.create(MediaType.parse("text/plain"), event.getDescription());
+        RequestBody time = RequestBody.create(MediaType.parse("text/plain"), event.getTime());
+        RequestBody date = RequestBody.create(MediaType.parse("text/plain"), event.getDate());
+        RequestBody musicgenres = RequestBody.create(MediaType.parse("text/plain"), event.getMusicgenres());
 
         EventAPI eventAPI = ServiceGenerator.createService(EventAPI.class);
-        Call<Void> call = eventAPI.postCreateEvent(event,body,name);
+        Call<Void> call = eventAPI.postCreateEvent(body,name,location,description,time,date,musicgenres);
 
         call.enqueue(new Callback<Void>() {
             @Override
