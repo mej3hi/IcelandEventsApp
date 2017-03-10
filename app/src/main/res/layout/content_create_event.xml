@@ -62,7 +62,8 @@
         android:textAlignment="center"
         android:layout_marginTop="20dp"
         android:layout_below="@+id/descriptionText"
-        android:layout_alignStart="@+id/dateText" />
+        android:layout_alignStart="@+id/dateText"
+        android:focusable="false" />
 
     <Button
         android:hint="Create"
