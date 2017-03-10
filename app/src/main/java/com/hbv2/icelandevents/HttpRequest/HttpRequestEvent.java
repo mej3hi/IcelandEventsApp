@@ -103,13 +103,17 @@ public class HttpRequestEvent {
         Log.d("slóð myndin",imageUri );
         File file = new File(imageUri);
         RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
-        MultipartBody.Part body = MultipartBody.Part.createFormData("upload", file.getName(), reqFile);
-        Gson gson = new Gson();
-        String e = gson.toJson(event);
-        RequestBody name = RequestBody.create(MediaType.parse("application/json"), e);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), reqFile);
+
+        RequestBody name = RequestBody.create(MediaType.parse("text/plain"), event.getName());
+        RequestBody location = RequestBody.create(MediaType.parse("text/plain"), event.getLocation());
+        RequestBody description = RequestBody.create(MediaType.parse("text/plain"), event.getDescription());
+        RequestBody time = RequestBody.create(MediaType.parse("text/plain"), event.getTime());
+        RequestBody date = RequestBody.create(MediaType.parse("text/plain"), event.getDate());
+        RequestBody musicgenres = RequestBody.create(MediaType.parse("text/plain"), event.getMusicgenres());
 
         EventAPI eventAPI = ServiceGenerator.createService(EventAPI.class);
-        Call<Void> call = eventAPI.postCreateEvent(body,name);
+        Call<Void> call = eventAPI.postCreateEvent(body,name,location,description,time,date,musicgenres);
 
         call.enqueue(new Callback<Void>() {
             @Override

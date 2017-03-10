@@ -122,10 +122,12 @@ public class CreateEventActivity extends AppCompatActivity implements Validator.
         event.setDescription(description);
 
         String time = eventTime.getText().toString();
-        event.setName(time);
+        event.setTime(time);
 
         String date = eventDate.getText().toString();
         event.setDate(date);
+
+        event.setMusicgenres("other");
 
         new HttpRequestEvent().createEventPost(event, event.getImageurl());
 

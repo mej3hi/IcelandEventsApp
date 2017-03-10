@@ -31,7 +31,13 @@ public interface EventAPI {
 
     @Multipart
     @POST("/m/createEvent")
-    Call<Void> postCreateEvent(@Part MultipartBody.Part image, @Part("name") RequestBody name);
+    Call<Void> postCreateEvent(@Part MultipartBody.Part file,
+                               @Part("name") RequestBody name,
+                               @Part("location") RequestBody location,
+                               @Part("description") RequestBody description,
+                               @Part("time") RequestBody time,
+                               @Part("date") RequestBody date,
+                               @Part("musicgenres") RequestBody musicgenres);
 
     //@GET("/m/myevents")
     @GET("/mej3hi/tonlistv2/master/tonlist.json")
