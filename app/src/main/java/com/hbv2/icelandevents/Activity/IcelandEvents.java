@@ -84,7 +84,7 @@ public class IcelandEvents extends AppCompatActivity {
         }
 
         if (id == R.id.menu_sign_up){
-            signUpBtnActOnClick();
+           // signUpBtnActOnClick();
             return true;
         }
 
@@ -147,7 +147,7 @@ public class IcelandEvents extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void signUpBtnActOnClick (){
+    public void signUpBtnActOnClick (View v){
         Intent intent = new Intent(this, CreateEventActivity.class);
         startActivity(intent);
     }
