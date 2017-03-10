@@ -36,16 +36,17 @@ public class IcelandEvents extends AppCompatActivity {
     private ListView eventListView;
     private ProgressBar loadingDisplay;
     private ConnectivityManager cm;
+    private boolean signedIn = false;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        checkUserInfo();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_iceland_events);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Intent intent = getIntent();
 
         eventListView = (ListView) findViewById(R.id.eventListView);
         loadingDisplay = (ProgressBar) findViewById(R.id.LoadingDisplayPB);
@@ -53,14 +54,20 @@ public class IcelandEvents extends AppCompatActivity {
         cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
 
-        //checkUserInfo();
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_iceland_events, menu);
-        return true;
+        if(signedIn){
+            getMenuInflater().inflate(R.menu.menu_when_signed_in, menu);
+            return true;
+        }
+        else {
+            getMenuInflater().inflate(R.menu.menu_iceland_events, menu);
+            return true;
+        }
     }
 
     @Override
@@ -71,9 +78,21 @@ public class IcelandEvents extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.menu_sign_in) {
+            signInBtnActOnClick();
             return true;
         }
+
+        if (id == R.id.menu_sign_up){
+            signUpBtnActOnClick();
+            return true;
+        }
+
+        if (id == R.id.menu_my_events){
+            myEventsMenuBtn();
+            return true;
+        }
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -123,13 +142,18 @@ public class IcelandEvents extends AppCompatActivity {
 
     }
 
-    public void signInBtnActOnClick (View v){
+    public void signInBtnActOnClick (){
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
     }
 
-    public void signUpBtnActOnClick (View v){
+    public void signUpBtnActOnClick (){
         Intent intent = new Intent(this, CreateEventActivity.class);
+        startActivity(intent);
+    }
+
+    public void myEventsMenuBtn (){
+        Intent intent = new Intent(this, MyEventActivity.class);
         startActivity(intent);
     }
 
@@ -142,9 +166,13 @@ public class IcelandEvents extends AppCompatActivity {
             Event event = new Event();
 
             //intent.putExtra("nnns", (Parcelable) event);
-            //intent.putExtra("SKIP_VISIBLE", true);
+            intent.putExtra("SKIP_VISIBLE", true);
             startActivity(intent);
         }
+        else{
+            signedIn = true;
+        }
+
     }
 
 
