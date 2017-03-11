@@ -60,8 +60,6 @@ public class ResetPasswordActivity extends AppCompatActivity implements Validato
         validator = new Validator(this);
         validator.setValidationListener(this);
 
-        Intent intent = getIntent();
-
         cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
 

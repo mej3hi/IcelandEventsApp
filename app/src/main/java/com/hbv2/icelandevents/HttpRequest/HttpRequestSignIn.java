@@ -1,6 +1,7 @@
 package com.hbv2.icelandevents.HttpRequest;
 
 import com.hbv2.icelandevents.API.UserAPI;
+import com.hbv2.icelandevents.HttpResponse.HttpResponseMsg;
 import com.hbv2.icelandevents.HttpResponse.HttpResponseSignIn;
 import com.hbv2.icelandevents.Service.ServiceGenerator;
 
@@ -32,6 +33,9 @@ public class HttpRequestSignIn {
                 System.out.println("response raw: " + response.raw());
                 System.out.println("response header:  " + response.headers());
                 EventBus.getDefault().post(new HttpResponseSignIn(response.code()));
+                if(response.code()==200){
+                    EventBus.getDefault().post(new HttpResponseMsg(response.message(), response.code()));
+                }
 
             }
 
@@ -62,6 +66,10 @@ public class HttpRequestSignIn {
                 System.out.println("response header:  " + response.headers());
 
                 // Þurfum gera eitthvað hérna ef það tekst ekki að loga inn user inn
+                //Ég að prufa að gera EventBus
+                //EventBus.getDefault().post(new HttpResponseSignIn(response.code()));
+                EventBus.getDefault().post(new HttpResponseMsg(response.message(), response.code()));
+
 
             }
 

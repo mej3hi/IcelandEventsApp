@@ -17,8 +17,10 @@ import android.widget.Toast;
 
 import com.hbv2.icelandevents.Adapter.EventAdapter;
 import com.hbv2.icelandevents.Entities.Event;
+import com.hbv2.icelandevents.HttpRequest.HttpRequestSignIn;
 import com.hbv2.icelandevents.HttpResponse.HttpResponseEvent;
 import com.hbv2.icelandevents.HttpRequest.HttpRequestEvent;
+import com.hbv2.icelandevents.HttpResponse.HttpResponseMsg;
 import com.hbv2.icelandevents.R;
 import com.hbv2.icelandevents.Service.AutoLogin;
 import com.hbv2.icelandevents.Service.NetworkChecker;
@@ -36,12 +38,13 @@ public class IcelandEvents extends AppCompatActivity {
     private ListView eventListView;
     private ProgressBar loadingDisplay;
     private ConnectivityManager cm;
-    private boolean signedIn = false;
+    private Menu menu;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         checkUserInfo();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_iceland_events);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -59,15 +62,9 @@ public class IcelandEvents extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        if(signedIn){
-            getMenuInflater().inflate(R.menu.menu_when_signed_in, menu);
-            return true;
-        }
-        else {
-            getMenuInflater().inflate(R.menu.menu_iceland_events, menu);
-            return true;
-        }
+        this.menu = menu;
+        getMenuInflater().inflate(R.menu.menu_iceland_events, menu);
+        return true;
     }
 
     @Override
@@ -169,10 +166,19 @@ public class IcelandEvents extends AppCompatActivity {
             intent.putExtra("SKIP_VISIBLE", true);
             startActivity(intent);
         }
-        else{
-            signedIn = true;
-        }
 
+
+    }
+
+
+
+    //Prufa EventBus-fall
+    @Subscribe
+    public void onHttpTest (HttpResponseMsg response){
+        menu.clear();
+        getMenuInflater().inflate(R.menu.menu_when_signed_in, menu);
+
+        Log.d("YoYo Þetta er að virka", ": ");
     }
 
 
