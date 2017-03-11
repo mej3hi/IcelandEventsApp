@@ -2,7 +2,8 @@ package com.hbv2.icelandevents.Activity;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.content.Intent;;
+import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.hbv2.icelandevents.Entities.Event;
@@ -27,6 +29,7 @@ import com.mobsandgeeks.saripaar.annotation.TextRule;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
+
 
 public class CreateEventActivity extends AppCompatActivity implements Validator.ValidationListener{
     Event event;
@@ -54,7 +57,8 @@ public class CreateEventActivity extends AppCompatActivity implements Validator.
     TextView imageUrl;
 
     Validator validator;
-    Calendar today = Calendar.getInstance();
+    Calendar calendar = Calendar.getInstance();
+    //int[] timer = {12,0};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,20 +83,18 @@ public class CreateEventActivity extends AppCompatActivity implements Validator.
         eventDate = (EditText) findViewById(R.id.dateText);
         imageUrl = (TextView) findViewById(R.id.imageUrlText);
 
-
         validator = new Validator(this);
         validator.setValidationListener(this);
 
         event = new Event();
 
-
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener(){
 
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                today.set(Calendar.YEAR,year);
-                today.set(Calendar.MONTH,month);
-                today.set(Calendar.DAY_OF_MONTH,day);
+                calendar.set(Calendar.YEAR,year);
+                calendar.set(Calendar.MONTH,month);
+                calendar.set(Calendar.DAY_OF_MONTH,day);
                 updateLabel();
             }
         };
@@ -100,18 +102,38 @@ public class CreateEventActivity extends AppCompatActivity implements Validator.
         eventDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new DatePickerDialog(CreateEventActivity.this,date,today.get(Calendar.YEAR),today.get(Calendar.MONTH),
-                        today.get(Calendar.DAY_OF_MONTH)).show();
+                new DatePickerDialog(CreateEventActivity.this,date, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
 
+        final TimePickerDialog.OnTimeSetListener time =  new TimePickerDialog.OnTimeSetListener(){
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                calendar.set(Calendar.MINUTE, minute);
+                updateFieldTime();
+            }
+        };
 
+        eventTime.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                new TimePickerDialog(CreateEventActivity.this,time, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE),true).show();
+            }
+        });
+    }
+
+    private void updateFieldTime(){
+        String timeFormat = "HH:mm";
+        SimpleDateFormat sdf = new SimpleDateFormat(timeFormat, Locale.US);
+        eventTime.setText(sdf.format(calendar.getTime()));
     }
 
     private void updateLabel(){
         String myFormat = "MM/dd/yy";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-        eventDate.setText(sdf.format(today.getTime()));
+        eventDate.setText(sdf.format(calendar.getTime()));
     }
 
     public void upImageBtnOnclick(View view) {
@@ -180,8 +202,5 @@ public class CreateEventActivity extends AppCompatActivity implements Validator.
     public void createBtnOnClick(View view) {
         validator.validate();
     }
-
-
-
 
 }
