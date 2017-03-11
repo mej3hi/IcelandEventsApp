@@ -11,23 +11,23 @@
     <string name="enter_email_editText">Enter your email</string>
     <string name="resetPasswordBtn">Reset password</string>
     <string name="text_view">TextView!!!</string>
-    <string name="title_activity_sign_up">SignUpActivity</string>
+    <string name="title_activity_sign_up">Sign Up</string>
     <string name="your_name">Your Name</string>
     <string name="your_email">Your Email</string>
     <string name="sign_up">Sign Up</string>
     <string name="confirm_your_password">Confirm Password</string>
     <string name="back_btn">Back</string>
-    <string name="title_activity_forgot_password">ForgotPasswordActivity</string>
-    <string name="title_activity_create_event">CreateEventActivity</string>
-    <string name="title_activity_my_event">MyEventActivity</string>
-    <string name="title_activity_edit_event">EditEventActivity</string>
+    <string name="title_activity_forgot_password">Forgot Password</string>
+    <string name="title_activity_create_event">Create Event</string>
+    <string name="title_activity_my_event">My Events</string>
+    <string name="title_activity_edit_event">Edit Event</string>
     <string name="title_activity_prufa">prufaActivity</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="title_activity_prufa2">prufa2Activity</string>
     <string name="section_format">Hello World from section: %1$d</string>
-    <string name="title_activity_reset_password">ResetPasswordActivity</string>
+    <string name="title_activity_reset_password">Reset Password</string>
     <string name="title_activity_image">image</string>
 
 
