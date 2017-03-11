@@ -23,7 +23,6 @@ public class HttpRequestSignIn {
      * @param password Is the password form the form
      */
    public void signInGet(String username, String password){
-
         UserAPI userAPI = ServiceGenerator.createService(UserAPI.class,username,password);
         Call<Void> call = userAPI.getSignIn();
 

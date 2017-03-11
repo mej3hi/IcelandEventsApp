@@ -4,27 +4,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.hbv2.icelandevents.Adapter.EventAdapter;
 import com.hbv2.icelandevents.Entities.Event;
-import com.hbv2.icelandevents.HttpRequest.HttpRequestSignIn;
-import com.hbv2.icelandevents.HttpResponse.HttpResponseEvent;
 import com.hbv2.icelandevents.HttpRequest.HttpRequestEvent;
+import com.hbv2.icelandevents.HttpResponse.HttpResponseEvent;
 import com.hbv2.icelandevents.HttpResponse.HttpResponseMsg;
 import com.hbv2.icelandevents.R;
 import com.hbv2.icelandevents.Service.AutoLogin;
 import com.hbv2.icelandevents.Service.NetworkChecker;
-
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -43,9 +40,8 @@ public class IcelandEvents extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        checkUserInfo();
-
         super.onCreate(savedInstanceState);
+        checkUserInfo();
         setContentView(R.layout.activity_iceland_events);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -55,10 +51,21 @@ public class IcelandEvents extends AppCompatActivity {
         loadingDisplay = (ProgressBar) findViewById(R.id.LoadingDisplayPB);
         loadingDisplay.setVisibility(View.INVISIBLE);
         cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-
+        EventBus.getDefault().register(this);
 
 
     }
+
+    //Prufa EventBus-fall
+    @Subscribe
+    public void onHttpTest (HttpResponseMsg response){
+
+        menu.clear();
+        getMenuInflater().inflate(R.menu.menu_when_signed_in, menu);
+
+        Log.d("YoYo Þetta er að virka", ": "+response.getCode());
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -76,7 +83,7 @@ public class IcelandEvents extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.menu_sign_in) {
-            signInBtnActOnClick();
+            signInBtnActOnClick(eventListView);
             return true;
         }
 
@@ -95,16 +102,16 @@ public class IcelandEvents extends AppCompatActivity {
     }
 
     // Allt hér fyrir neðan er eftir Martin.....:
-    @Override
+/*    @Override
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
-    }
+    }*/
 
     @Override
-    public void onStop() {
+    public void onDestroy() {
         EventBus.getDefault().unregister(this);
-        super.onStop();
+        super.onDestroy();
     }
 
     @Subscribe
@@ -139,7 +146,7 @@ public class IcelandEvents extends AppCompatActivity {
 
     }
 
-    public void signInBtnActOnClick (){
+    public void signInBtnActOnClick (View v){
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
     }
@@ -172,14 +179,7 @@ public class IcelandEvents extends AppCompatActivity {
 
 
 
-    //Prufa EventBus-fall
-    @Subscribe
-    public void onHttpTest (HttpResponseMsg response){
-        menu.clear();
-        getMenuInflater().inflate(R.menu.menu_when_signed_in, menu);
 
-        Log.d("YoYo Þetta er að virka", ": ");
-    }
 
 
 
