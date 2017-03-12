@@ -6,13 +6,12 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -58,7 +57,6 @@ public class CreateEventActivity extends AppCompatActivity implements Validator.
 
     Validator validator;
     Calendar calendar = Calendar.getInstance();
-    //int[] timer = {12,0};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -176,7 +174,6 @@ public class CreateEventActivity extends AppCompatActivity implements Validator.
 
         new HttpRequestEvent().createEventPost(event, event.getImageurl());
 
-
     }
 
     public void onValidationFailed(View view, Rule<?> rule) {
@@ -192,6 +189,29 @@ public class CreateEventActivity extends AppCompatActivity implements Validator.
 
     public void createBtnOnClick(View view) {
         validator.validate();
+    }
+
+    public void onRadioButtonClicked(View view) {
+        boolean checked = ((RadioButton) view).isChecked();
+
+        switch(view.getId()) {
+            case R.id.radioBtnOther:
+                if (checked)
+                    event.setMusicgenres("Other");
+                    break;
+            case R.id.radioBtnRock:
+                if (checked)
+                    event.setMusicgenres("Rock");
+                    break;
+            case R.id.radioBtnPop:
+                if (checked)
+                    event.setMusicgenres("Pop");
+                    break;
+            case R.id.radioBtnJazz:
+                if (checked)
+                    event.setMusicgenres("Jazz");
+                    break;
+        }
     }
 
 }

@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.hbv2.icelandevents.Adapter.EventAdapter;
 import com.hbv2.icelandevents.Entities.Event;
 import com.hbv2.icelandevents.HttpRequest.HttpRequestEvent;
@@ -40,6 +41,15 @@ public class MyEventActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+
         eventListView = (ListView) findViewById(R.id.eventListViewMe);
         loadingDisplay = (ProgressBar) findViewById(R.id.LoadingDisplayME);
         loadingDisplay.setVisibility(View.INVISIBLE);
@@ -50,7 +60,9 @@ public class MyEventActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(MyEventActivity.this, EditEventActivity.class);
                 Event event = eventsList.get(position);
-                intent.putExtra("EVENT_NAME",event.getName());
+                Gson gson = new Gson();
+                String parsed = gson.toJson(event);
+                intent.putExtra("EVENT_NAME",parsed);
 
                 startActivity(intent);
             }
@@ -83,7 +95,7 @@ public class MyEventActivity extends AppCompatActivity {
             updateDisplay();
         }
         Log.d("Gögn frá index", "tóskt");
-}
+    }
 
     public  void updateDisplay(){
         EventAdapter eventAdapter = new EventAdapter(this, R.layout.event_layout, eventsList);

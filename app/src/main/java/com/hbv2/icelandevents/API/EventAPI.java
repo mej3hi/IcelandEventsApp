@@ -7,8 +7,6 @@ import java.util.List;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
-import retrofit2.http.Body;
-import retrofit2.http.Field;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -47,8 +45,13 @@ public interface EventAPI {
     @GET("/m/removeEvent")
     Call<Void> getRemoveEvent(@Path("id") Long id);
 
+    @Multipart
     @GET("/m/editEvent")
-    Call<Void> getEditEvent(@Body Event event, @Part MultipartBody.Part image, @Part("name") RequestBody name);
-
-
+    Call<Void> postEditEvent(@Part MultipartBody.Part file,
+                             @Part("name") RequestBody name,
+                             @Part("location") RequestBody location,
+                             @Part("description") RequestBody description,
+                             @Part("time") RequestBody time,
+                             @Part("date") RequestBody date,
+                             @Part("musicgenres") RequestBody musicgenres);
 }
