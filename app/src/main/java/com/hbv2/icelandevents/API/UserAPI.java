@@ -13,13 +13,13 @@ import retrofit2.http.Query;
  * Created by Martin on 6.2.2017.
  */
 
-public interface UserAPI {
+public interface UserAPI  {
 
     @GET("/m/signIn")
-    Call<Void> getSignIn();
+    Call<String> getSignIn();
 
     @POST("/m/signUp")
-    Call<Void> postSignUp(@Body User userForm);
+    Call<String> postSignUp(@Body User userForm);
 
     @GET("/m/forgetPassword")
     Call<Void> forgetPassword(@Query("email") String email);

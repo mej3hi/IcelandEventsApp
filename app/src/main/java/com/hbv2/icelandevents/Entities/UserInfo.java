@@ -6,8 +6,11 @@ package com.hbv2.icelandevents.Entities;
 
 public class UserInfo {
 
+
     private String username;
     private String password;
+    public static boolean login;
+    private static String loginUsername;
 
     public String getUsername() {
         return username;
@@ -25,6 +28,19 @@ public class UserInfo {
         this.password = password;
     }
 
+    public static boolean isLogin() {
+        return login;
+    }
 
+    public static void setLogin(boolean login) {
+        UserInfo.login = login;
+    }
 
+    public static String getLoginUsername() {
+        return loginUsername;
+    }
+
+    public static void setLoginUsername(String loginUsername) {
+        UserInfo.loginUsername = loginUsername;
+    }
 }

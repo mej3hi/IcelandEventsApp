@@ -1,18 +1,24 @@
 package com.hbv2.icelandevents.Activity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.hbv2.icelandevents.Entities.User;
+import com.hbv2.icelandevents.HttpRequest.HttpRequestSignIn;
 import com.hbv2.icelandevents.HttpRequest.HttpRequestSignUp;
+import com.hbv2.icelandevents.HttpResponse.HttpResponseMsg;
 import com.hbv2.icelandevents.R;
 import com.hbv2.icelandevents.Service.NetworkChecker;
+import com.hbv2.icelandevents.StoreUser;
 import com.mobsandgeeks.saripaar.Rule;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.ConfirmPassword;
@@ -21,6 +27,7 @@ import com.mobsandgeeks.saripaar.annotation.Required;
 import com.mobsandgeeks.saripaar.annotation.TextRule;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 
 public class SignUpActivity extends AppCompatActivity implements Validator.ValidationListener {
@@ -50,8 +57,6 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
     @ConfirmPassword(order = 11)
     EditText passwordConf;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,22 +65,18 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
         setSupportActionBar(toolbar);
 
         cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-
         name = (EditText) findViewById(R.id.nameEditTextId);
         email = (EditText) findViewById(R.id.emailEditTextId);
         username = (EditText) findViewById(R.id.usernameEditTextId);
         password = (EditText) findViewById(R.id.passwordEditTextId);
         passwordConf = (EditText) findViewById(R.id.passwordConfEditTextId);
 
-
         validator = new Validator(this);
         validator.setValidationListener(this);
-
         user = new User();
-
     }
 
-    /*@Override
+   @Override
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
@@ -85,7 +86,37 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
     public void onStop() {
         EventBus.getDefault().unregister(this);
         super.onStop();
-    }*/
+    }
+
+    @Subscribe
+    public void onSignUp(HttpResponseMsg msg){
+        if(msg.getCode() == 200 && msg.getMsg().equals("ok")){
+            Toast toast = Toast.makeText(this,"Sign Up Success", Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
+            StoreUser.storeUserInfo(username.getText().toString(),password.getText().toString(),this);
+            finish();
+        }
+        else if(msg.getCode() == 200 && msg.getMsg().equals("username_exists")) {
+            EditText failed = username;
+            failed.requestFocus();
+            failed.setError("Username already exists");
+        }
+        else{
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            alertDialogBuilder.setTitle("Something went wrong");
+            alertDialogBuilder
+                .setMessage("Something went wrong with the Sign up, please try again")
+                .setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+        }
+    }
 
 
     @Override
@@ -115,7 +146,9 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
         if(NetworkChecker.isOnline(cm)){
             validator.validate();
         }else{
-            Toast.makeText(this, "Network isn't avilable",Toast.LENGTH_LONG).show();
+            Toast toast = Toast.makeText(this, "Network isn't available",Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
         }
     }
 

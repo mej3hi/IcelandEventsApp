@@ -44,7 +44,6 @@ public class HttpRequestEvent {
             public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
                 System.out.println("response raw: " + response.raw());
                 System.out.println("response header:  " + response.headers());
-
                 EventBus.getDefault().post(new HttpResponseEvent(response.body(),response.code()));
             }
 

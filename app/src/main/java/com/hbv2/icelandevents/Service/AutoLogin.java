@@ -17,7 +17,7 @@ import java.io.FileNotFoundException;
 
 public class AutoLogin  {
 
-    private static Context mBase;
+
 
     /**
      * It will check whether user has create userInfo,
@@ -27,11 +27,11 @@ public class AutoLogin  {
      */
     public static boolean checkUserInfo(Context base){
         boolean userInfo = false;
-        mBase = base;
         UserInfo user;
         Gson gson = new Gson();
         try {
-            FileInputStream fin = openFileInput("userInfo");
+            //FileInputStream fin = openFileInput("userInfo",base);
+            FileInputStream fin = base.openFileInput("userInfo");
             int c;
             String temp = "";
             while ((c = fin.read()) != -1) {
@@ -41,6 +41,8 @@ public class AutoLogin  {
                 userInfo = true;
                 Log.d("Autologin","userInfo er til");
                 user = gson.fromJson(temp,UserInfo.class);
+                UserInfo.setLogin(false);
+                UserInfo.setLoginUsername(user.getUsername());
                 if(user.getUsername() != "" && user.getPassword() != ""){
                     Log.d("Autologin","Þá loga okku inn UserInfo = "+user.getUsername()+" Pass = "+user.getPassword());
                     new HttpRequestSignIn().autoSignInGet(user.getUsername(),user.getPassword());
@@ -55,8 +57,8 @@ public class AutoLogin  {
         return userInfo;
     }
 
-    public static FileInputStream openFileInput(String name)throws FileNotFoundException {
+   /* private static FileInputStream openFileInput(String name, Context mBase)throws FileNotFoundException {
         return mBase.openFileInput(name);
-    }
+    }*/
 
 }
