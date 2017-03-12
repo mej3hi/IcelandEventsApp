@@ -6,8 +6,6 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -58,7 +56,6 @@ public class CreateEventActivity extends AppCompatActivity implements Validator.
 
     Validator validator;
     Calendar calendar = Calendar.getInstance();
-    //int[] timer = {12,0};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -175,7 +172,6 @@ public class CreateEventActivity extends AppCompatActivity implements Validator.
         event.setMusicgenres("other");
 
         new HttpRequestEvent().createEventPost(event, event.getImageurl());
-
 
     }
 
