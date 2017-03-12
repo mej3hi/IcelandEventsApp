@@ -212,13 +212,12 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
 
     public void removeBtnOnClick(View view) {
         new AlertDialog.Builder(this)
-                .setTitle("Title")
-                .setMessage("Do you really want to whatever?")
+                .setTitle("Confirmation")
+                .setMessage("Do you really want remove this event?")
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-
-                        Toast.makeText(EditEventActivity.this, "Yaay", Toast.LENGTH_SHORT).show();
+                        removeEvent();
                     }})
                 .setNegativeButton(android.R.string.no, null).show();
     }
