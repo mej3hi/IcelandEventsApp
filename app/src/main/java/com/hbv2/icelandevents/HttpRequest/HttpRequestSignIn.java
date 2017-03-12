@@ -23,25 +23,21 @@ public class HttpRequestSignIn {
      * @param password Is the password form the form
      */
    public void signInGet(String username, String password){
-        UserAPI userAPI = ServiceGenerator.createService(UserAPI.class,username,password);
-        Call<Void> call = userAPI.getSignIn();
+        UserAPI userAPI = ServiceGenerator.createService(UserAPI.class, username, password);
+        Call<String> call = userAPI.getSignIn();
 
-        call.enqueue(new Callback<Void>() {
+        call.enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
+            public void onResponse(Call<String> call, Response<String> response) {
                 System.out.println("response raw: " + response.raw());
                 System.out.println("response header:  " + response.headers());
-                EventBus.getDefault().post(new HttpResponseSignIn(response.code()));
-                if(response.code()==200){
-                    EventBus.getDefault().post(new HttpResponseMsg(response.message(), response.code()));
-                }
-
+                EventBus.getDefault().post(new HttpResponseMsg(response.body(), response.code()));
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+            public void onFailure(Call<String> call, Throwable t) {
                 System.out.println("Failuress :" +t);
-
+                EventBus.getDefault().post(new HttpResponseMsg("", 500));
             }
         });
     }
@@ -56,24 +52,18 @@ public class HttpRequestSignIn {
     public void autoSignInGet(String username, String password){
 
         UserAPI userAPI = ServiceGenerator.createService(UserAPI.class,username,password);
-        Call<Void> call = userAPI.getSignIn();
+        Call<String> call = userAPI.getSignIn();
 
-        call.enqueue(new Callback<Void>() {
+        call.enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
+            public void onResponse(Call<String> call, Response<String> response) {
                 System.out.println("response raw: " + response.raw());
                 System.out.println("response header:  " + response.headers());
-
-                // Þurfum gera eitthvað hérna ef það tekst ekki að loga inn user inn
-                //Ég að prufa að gera EventBus
-                //EventBus.getDefault().post(new HttpResponseSignIn(response.code()));
-                EventBus.getDefault().post(new HttpResponseMsg(response.message(), response.code()));
-
-
+                EventBus.getDefault().post(new HttpResponseMsg(response.body(), response.code()));
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+            public void onFailure(Call<String> call, Throwable t) {
                 System.out.println("Failuress :" +t);
 
             }

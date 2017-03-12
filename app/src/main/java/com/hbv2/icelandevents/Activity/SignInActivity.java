@@ -1,21 +1,30 @@
 package com.hbv2.icelandevents.Activity;
 
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.hbv2.icelandevents.HttpRequest.HttpRequestSignIn;
+import com.hbv2.icelandevents.HttpResponse.HttpResponseMsg;
 import com.hbv2.icelandevents.HttpResponse.HttpResponseSignIn;
 import com.hbv2.icelandevents.R;
+import com.hbv2.icelandevents.Service.NetworkChecker;
 import com.hbv2.icelandevents.StoreUser;
+import com.mobsandgeeks.saripaar.Validator;
 
 
 import org.greenrobot.eventbus.EventBus;
@@ -24,14 +33,15 @@ import org.greenrobot.eventbus.Subscribe;
 
 
 
-public class LoginActivity extends AppCompatActivity {
+public class SignInActivity extends AppCompatActivity {
 
 
     private EditText username;
     private EditText password;
-    private TextView signInMsg;
+    private TextView errorMsg;
     private Button skipBtn;
     private Button backBtn;
+    private ConnectivityManager cm;
 
 
 
@@ -42,12 +52,13 @@ public class LoginActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         username = (EditText) findViewById(R.id.usernameEditText);
         password = (EditText) findViewById(R.id.passwordEditText);
-        signInMsg = (TextView) findViewById(R.id.signInMsgTextView);
+        errorMsg = (TextView) findViewById(R.id.errorMsgTextViewId);
         skipBtn = (Button) findViewById(R.id.skipBtnId);
-        backBtn = (Button) findViewById(R.id.backSignInBtnId);
         skipBtnVisibility();
+
     }
 
     @Override
@@ -63,16 +74,30 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     @Subscribe
-    public void onHttpLogin(HttpResponseSignIn event) {
-        if(event.getCode() == 200){
-            Log.d("Login :","rétt passwor og username");
-            signInMsg.setText("Tókast að loga inn");
+    public void onSignIn(HttpResponseMsg msg){
+        if(msg.getCode() == 200){
+            Toast toast = Toast.makeText(this,"Sign In Success", Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
             StoreUser.storeUserInfo(username.getText().toString(),password.getText().toString(),this);
             finish();
         }
-        else if (event.getCode() == 401) {
-            Log.d("Login :", "Ekki rétt passwor eða username");
-            signInMsg.setText("Tókast ekki að loga inn");
+        else if(msg.getCode() == 401 ){
+            errorMsg.setText("Username or Password are wrong");
+        }
+        else{
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            alertDialogBuilder.setTitle("Something went wrong");
+            alertDialogBuilder
+                    .setMessage("Something went wrong with the Sign in, please try again")
+                    .setCancelable(false)
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
         }
     }
 
@@ -84,15 +109,18 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void signInOnClick(View v){
-        new HttpRequestSignIn().signInGet(username.getText().toString(),password.getText().toString());
+        errorMsg.setText("");
+        if(NetworkChecker.isOnline(cm)){
+            new HttpRequestSignIn().signInGet(username.getText().toString(),password.getText().toString());
+        }else{
+            Toast toast = Toast.makeText(this,"Network isn't available",Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
+        }
     }
 
     public void skipOnClick(View v){
         StoreUser.skipUserInfo(this);
-        finish();
-    }
-
-    public void backSignInBtnId(View v){
         finish();
     }
 
