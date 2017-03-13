@@ -46,7 +46,7 @@ public class IcelandEvents extends AppCompatActivity {
     private EditText calendarDate;
     private Calendar calendar;
     private DatePickerDialog.OnDateSetListener date;
-
+    private TextView mainTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,16 +55,18 @@ public class IcelandEvents extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        mainTitle = (TextView) toolbar.getChildAt(0);
         eventListView = (ListView) findViewById(R.id.eventListView);
         loadingDisplay = (ProgressBar) findViewById(R.id.LoadingDisplayPB);
         loadingDisplay.setVisibility(View.INVISIBLE);
         signInAs = (TextView) findViewById(R.id.signInAsIdTextView);
         calendarDate = (EditText) findViewById(R.id.calendarEditTextId);
         signInAs.setText("Signed In As : ");
+
         setDateTimeField();
-        requestEvents();
-        checkUserInfo();
+
     }
+
 
 
 
@@ -118,6 +120,8 @@ public class IcelandEvents extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
+        requestEvents();
+        checkUserInfo();
         userSignedInMenu();
     }
 
@@ -153,7 +157,7 @@ public class IcelandEvents extends AppCompatActivity {
                         day).show();
             }
         });
-        //calendarDate.setText(day+"/"+month+"/"+year);
+
     }
 
 
@@ -178,7 +182,6 @@ public class IcelandEvents extends AppCompatActivity {
     }
 
     public void userSignOutMenu(){
-        Log.d("listinn: ",""+eventsList.size());
         if(!UserInfo.isLogin()){
             menu.clear();
             getMenuInflater().inflate(R.menu.menu_iceland_events, menu);
@@ -189,7 +192,6 @@ public class IcelandEvents extends AppCompatActivity {
 
     @Subscribe
     public void onEvent(HttpResponseEvent event) {
-        Log.d("Iceland Events: ", "Er i iceland events");
         loadingDisplay.setVisibility(View.INVISIBLE);
         if(event.getCode() == 200){
         eventsList = event.getListEvent();
@@ -230,8 +232,6 @@ public class IcelandEvents extends AppCompatActivity {
 
 
     private void checkUserInfo(){
-        Log.d("checkUserInfo ","form inn í");
-
         if(!NetworkChecker.isOnline(this)) {
             toastMsg("Cannot autoLogin network isn't available");
         }
@@ -247,6 +247,16 @@ public class IcelandEvents extends AppCompatActivity {
         Toast toast = Toast.makeText(this, msg, Toast.LENGTH_LONG);
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
+    }
+
+    private void setListener(){
+        mainTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                requestEvents();
+            }
+        });
+
     }
 
 }

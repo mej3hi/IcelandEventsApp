@@ -35,32 +35,32 @@ import java.util.Locale;
 
 
 public class CreateEventActivity extends AppCompatActivity implements Validator.ValidationListener{
-    Event event;
+    private Event event;
 
     @Required(order = 1)
     @TextRule(order = 2, minLength = 3, maxLength = 32, message = "Please use between 3 and 32 characters.")
-    EditText eventName;
+    private EditText eventName;
 
     @Required(order = 3)
     @TextRule(order = 4, minLength = 3, maxLength = 32, message = "Please use between 3 and 32 characters.")
-    EditText eventLocation;
+    private EditText eventLocation;
 
     @Required(order = 6)
     @TextRule(order = 7, minLength = 3, maxLength = 250, message = "Please use between 3 and 250 characters.")
-    EditText eventDescription;
+    private EditText eventDescription;
 
     @Required(order = 8)
     @Regex( order = 9, pattern = "([01]?[0-9]|2[0-3]):[0-5][0-9]", message = "Please use hh:mm with 24 format.")
-    EditText eventTime;
+    private EditText eventTime;
 
     @Required(order = 10)
-    EditText eventDate;
+    private EditText eventDate;
 
     @Required(order = 11)
-    TextView imageUrl;
+    private TextView imageUrl;
 
-    Validator validator;
-    Calendar calendar = Calendar.getInstance();
+    private Validator validator;
+    private Calendar calendar = Calendar.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

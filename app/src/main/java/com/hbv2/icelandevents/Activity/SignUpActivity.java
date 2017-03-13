@@ -35,7 +35,6 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
 
     private Validator validator;
     private User user;
-    private ConnectivityManager cm;
 
     @Required(order = 1)
     @TextRule(order = 2, minLength = 6, maxLength = 32, message = "Please use between 6 and 32 characters.")
@@ -67,7 +66,7 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
         name = (EditText) findViewById(R.id.nameEditTextId);
         email = (EditText) findViewById(R.id.emailEditTextId);
         username = (EditText) findViewById(R.id.usernameEditTextId);

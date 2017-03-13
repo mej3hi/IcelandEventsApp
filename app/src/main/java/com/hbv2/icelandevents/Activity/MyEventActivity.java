@@ -32,7 +32,7 @@ public class MyEventActivity extends AppCompatActivity {
     private List<Event> eventsList;
     private ListView eventListView;
     private ProgressBar loadingDisplay;
-    private ConnectivityManager cm;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +44,6 @@ public class MyEventActivity extends AppCompatActivity {
         eventListView = (ListView) findViewById(R.id.eventListViewMe);
         loadingDisplay = (ProgressBar) findViewById(R.id.LoadingDisplayME);
         loadingDisplay.setVisibility(View.INVISIBLE);
-        cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
         eventListView.setOnItemClickListener(itemClickListener);
     }
