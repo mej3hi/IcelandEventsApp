@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.hbv2.icelandevents.Activity.MyEventActivity" >
+    <item
+        android:id="@+id/create_event"
+        android:orderInCategory="100"
+        android:title="Create Event"
+        app:showAsAction="always" />
+</menu>
