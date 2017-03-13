@@ -1,6 +1,8 @@
 package com.hbv2.icelandevents.HttpRequest;
 
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import com.hbv2.icelandevents.API.EventAPI;
@@ -11,8 +13,11 @@ import com.hbv2.icelandevents.Service.ServiceGenerator;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -20,7 +25,6 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
 
 /**
  * Created by Martin on 29.1.2017.
@@ -93,40 +97,36 @@ public class HttpRequestEvent {
 
 
     public void createEventPost(Event event, String imageUri){
-        Log.d("indexController","það tókst");
-
-        // á veit ekki hvort þetta virka það þarf að testa það
-        // veit ekki hvort það þarf name
-        // https://medium.com/@adinugroho/upload-image-from-android-app-using-retrofit-2-ae6f922b184c#.zeh2vdo1i
-
-        Log.d("slóð myndin",imageUri );
         File file = new File(imageUri);
-        RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
+
+        ByteArrayOutputStream outStream = scaleImg(file);
+        RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), outStream.toByteArray());
         MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), reqFile);
 
-        RequestBody name = RequestBody.create(MediaType.parse("text/plain"), event.getName());
-        RequestBody location = RequestBody.create(MediaType.parse("text/plain"), event.getLocation());
-        RequestBody description = RequestBody.create(MediaType.parse("text/plain"), event.getDescription());
-        RequestBody time = RequestBody.create(MediaType.parse("text/plain"), event.getTime());
-        RequestBody date = RequestBody.create(MediaType.parse("text/plain"), event.getDate());
-        RequestBody musicgenres = RequestBody.create(MediaType.parse("text/plain"), event.getMusicgenres());
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("name", toRequestBody(event.getName()));
+        map.put("location", toRequestBody(event.getLocation()));
+        map.put("description", toRequestBody(event.getDescription()));
+        map.put("time", toRequestBody(event.getTime()));
+        map.put("date", toRequestBody(event.getDate()));
+        map.put("musicgenres", toRequestBody(event.getMusicgenres()));
 
         EventAPI eventAPI = ServiceGenerator.createService(EventAPI.class);
-        Call<Void> call = eventAPI.postCreateEvent(body,name,location,description,time,date,musicgenres);
+        Call<String> call = eventAPI.postCreateEvent(body,map);
 
-        call.enqueue(new Callback<Void>() {
+        call.enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
+            public void onResponse(Call<String> call, Response<String> response) {
                 System.out.println("response raw: " + response.raw());
                 System.out.println("response header:  " + response.headers());
-                //EventBus.getDefault().post(new HttpResponseEvent(response.body(),response.code()));
+                EventBus.getDefault().post(new HttpResponseMsg(response.body(),response.code()));
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+            public void onFailure(Call<String> call, Throwable t) {
                 System.out.println("Failure :" +t);
                 System.out.println("Failure call :" +call);
-
+                EventBus.getDefault().post(new HttpResponseMsg("",500));
             }
         });
     }
@@ -194,15 +194,15 @@ public class HttpRequestEvent {
      * @param imageUri The path where the image is store
      */
     public void editEventPost(Event event,String imageUri){
-        RequestBody id = RequestBody.create(MediaType.parse("text/plain"), ""+event.getId());
-        RequestBody name = RequestBody.create(MediaType.parse("text/plain"), event.getName());
-        RequestBody location = RequestBody.create(MediaType.parse("text/plain"), event.getLocation());
-        RequestBody description = RequestBody.create(MediaType.parse("text/plain"), event.getDescription());
-        RequestBody time = RequestBody.create(MediaType.parse("text/plain"), event.getTime());
-        RequestBody date = RequestBody.create(MediaType.parse("text/plain"), event.getDate());
-        RequestBody musicgenres = RequestBody.create(MediaType.parse("text/plain"), event.getMusicgenres());
-        RequestBody imageurl = RequestBody.create(MediaType.parse("text/plain"), event.getImageurl());
-        Log.d("dagurinn: ", event.getDate());
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("id",toRequestBody(""+event.getId()));
+        map.put("name", toRequestBody(event.getName()));
+        map.put("location", toRequestBody(event.getLocation()));
+        map.put("description", toRequestBody(event.getDescription()));
+        map.put("time", toRequestBody(event.getTime()));
+        map.put("date", toRequestBody(event.getDate()));
+        map.put("musicgenres", toRequestBody(event.getMusicgenres()));
+        map.put("imageurl", toRequestBody(event.getImageurl()));
 
 
         File file = new File(imageUri);
@@ -210,13 +210,15 @@ public class HttpRequestEvent {
 
         if(imageUri.matches("http.*"))
             reqFile = RequestBody.create(MediaType.parse("image/*"), "");
-        else
-            reqFile = RequestBody.create(MediaType.parse("image/*"), file);
+        else{
+            ByteArrayOutputStream outStream = scaleImg(file);
+            reqFile = RequestBody.create(MediaType.parse("image/*"), outStream.toByteArray());
+        }
 
         MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), reqFile);
 
         EventAPI eventAPI = ServiceGenerator.createService(EventAPI.class);
-        Call<String> call = eventAPI.postEditEvent(body, id, name, location, description, time, date, musicgenres, imageurl);
+        Call<String> call = eventAPI.postEditEvent(body, map);
 
         call.enqueue(new Callback<String>() {
             @Override
@@ -239,6 +241,26 @@ public class HttpRequestEvent {
 
 
 
+    private RequestBody toRequestBody (String value) {
+        RequestBody body = RequestBody.create(MediaType.parse("text/plain"), value);
+        return body ;
+    }
+
+    private ByteArrayOutputStream scaleImg(File file){
+        Bitmap b = BitmapFactory.decodeFile(file.getAbsolutePath());
+        int destWidth = 1080;
+        int origWidth = b.getWidth();
+        int origHeight = b.getHeight();
+        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+        int destHeight = origHeight / (origWidth / destWidth);
+        // we create an scaled bitmap so it reduces the image, not just trim it
+        Bitmap b2 = Bitmap.createScaledBitmap(b, destWidth, destHeight, false);
+        // compress to the format you want, JPEG, PNG...
+        // 70 is the 0-100 quality percentage
+        b2.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
+
+        return outStream;
+    }
 
 
 }

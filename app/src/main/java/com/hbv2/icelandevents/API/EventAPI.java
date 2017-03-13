@@ -3,6 +3,7 @@ package com.hbv2.icelandevents.API;
 import com.hbv2.icelandevents.Entities.Event;
 
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -11,6 +12,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.PartMap;
 import retrofit2.http.Query;
 
 /**
@@ -30,13 +32,7 @@ public interface EventAPI {
 
     @Multipart
     @POST("/m/createEvent")
-    Call<Void> postCreateEvent(@Part MultipartBody.Part file,
-                               @Part("name") RequestBody name,
-                               @Part("location") RequestBody location,
-                               @Part("description") RequestBody description,
-                               @Part("time") RequestBody time,
-                               @Part("date") RequestBody date,
-                               @Part("musicgenres") RequestBody musicgenres);
+    Call<String> postCreateEvent(@Part MultipartBody.Part file, @PartMap Map<String, RequestBody> map);
 
     @GET("/m/myevents")
     Call<List<Event>> getMyEvents();
@@ -46,14 +42,6 @@ public interface EventAPI {
 
     @Multipart
     @POST("/m/editEvent")
-    Call<String> postEditEvent(@Part MultipartBody.Part file,
-                             @Part("id") RequestBody id,
-                             @Part("name") RequestBody name,
-                             @Part("location") RequestBody location,
-                             @Part("description") RequestBody description,
-                             @Part("time") RequestBody time,
-                             @Part("date") RequestBody date,
-                             @Part("musicgenres") RequestBody musicgenres,
-                             @Part("imageurl") RequestBody imageurl);
+    Call<String> postEditEvent(@Part MultipartBody.Part file, @PartMap Map<String, RequestBody> map);
 
 }

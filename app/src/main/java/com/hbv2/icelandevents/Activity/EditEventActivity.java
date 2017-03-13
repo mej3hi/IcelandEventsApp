@@ -86,7 +86,6 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
         setFields();
 
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener(){
-
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 calendar.set(Calendar.YEAR,year);
@@ -218,7 +217,7 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
     public void removeBtnOnClick(View view) {
         new AlertDialog.Builder(this)
                 .setTitle("Confirmation")
-                .setMessage("Do you really want remove this event?")
+                .setMessage("Do you really want to remove this event?")
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         removeEvent();
@@ -291,7 +290,7 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
 
     @Subscribe
     public void onEditEvent(HttpResponseMsg response){
-        if((response.getMsg()+"").matches("(?i).*successfully.*")){
+        if(response.getCode() == 200){
             Toast.makeText(getApplicationContext(), response.getMsg(), Toast.LENGTH_LONG).show();
             goBack();
         }

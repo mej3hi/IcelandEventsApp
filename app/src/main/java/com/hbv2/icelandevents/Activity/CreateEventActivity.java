@@ -19,12 +19,15 @@ import android.widget.Toast;
 
 import com.hbv2.icelandevents.Entities.Event;
 import com.hbv2.icelandevents.HttpRequest.HttpRequestEvent;
+import com.hbv2.icelandevents.HttpResponse.HttpResponseMsg;
 import com.hbv2.icelandevents.R;
 import com.mobsandgeeks.saripaar.Rule;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.Regex;
 import com.mobsandgeeks.saripaar.annotation.Required;
 import com.mobsandgeeks.saripaar.annotation.TextRule;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -221,4 +224,18 @@ public class CreateEventActivity extends AppCompatActivity implements Validator.
         return selected.getText().toString();
     }
 
+    @Subscribe
+    public void onEditEvent(HttpResponseMsg response){
+        if(response.getCode() == 200){
+            Toast.makeText(getApplicationContext(), response.getMsg(), Toast.LENGTH_LONG).show();
+            goBack();
+        }
+    }
+
+    private void goBack(){
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("result",true);
+        setResult(RESULT_OK,returnIntent);
+        finish();
+    }
 }

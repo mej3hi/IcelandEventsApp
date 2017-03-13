@@ -46,19 +46,22 @@ public class MyEventActivity extends AppCompatActivity {
         loadingDisplay.setVisibility(View.INVISIBLE);
         cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        eventListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(MyEventActivity.this, EditEventActivity.class);
-                Event event = eventsList.get(position);
-                Gson gson = new Gson();
-                String parsed = gson.toJson(event);
-                intent.putExtra("EVENT_NAME",parsed);
-
-                startActivityForResult(intent,1728);
-            }
-        });
+        eventListView.setOnItemClickListener(itemClickListener);
     }
+
+
+    AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            Intent intent = new Intent(MyEventActivity.this, EditEventActivity.class);
+            Event event = eventsList.get(position);
+            Gson gson = new Gson();
+            String parsed = gson.toJson(event);
+            intent.putExtra("EVENT_NAME",parsed);
+
+            startActivityForResult(intent,1728);
+        }
+    };
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -138,7 +141,7 @@ public class MyEventActivity extends AppCompatActivity {
         if(requestCode == 1728){
             if(resultCode == RESULT_OK){
                 if(data.getBooleanExtra("result",false))
-                    getEvents();
+                    Log.d("onactivity: ","");
             }
         }
     }
