@@ -4,11 +4,13 @@ import android.content.Context;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.hbv2.icelandevents.Entities.UserInfo;
 
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.lang.reflect.Modifier;
 
 /**
  * Created by Martin on 21.2.2017.
@@ -26,28 +28,20 @@ public class StoreUser {
     }
 
     private static void storeUser(String username, String password, boolean login, Context base){
-        Gson gson = new Gson();
-        UserInfo user = new UserInfo();
-        user.setPassword(username);
-        user.setUsername(password);
+        Gson gson = new GsonBuilder().excludeFieldsWithModifiers().create();
+        UserInfo.setPassword(username);
+        UserInfo.setUsername(password);
         UserInfo.setLogin(login);
-        UserInfo.setLoginUsername(username);
-
-        String u = gson.toJson(user);
-        Log.d("user",u);
-        Log.d("user Is login",""+ user.isLogin());
-       FileOutputStream outputStream;
+        String userInfo = gson.toJson(new UserInfo());
+        FileOutputStream outputStream;
         try {
+            Log.d("User info StoreUser",userInfo);
             outputStream = base.openFileOutput("userInfo", Context.MODE_PRIVATE);
-            outputStream.write(u.getBytes());
+            outputStream.write(userInfo.getBytes());
             outputStream.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
-    /*private static FileOutputStream openFileOutput(String name, int mode, Context mBase) throws FileNotFoundException {
-        return mBase.openFileOutput(name, mode);
-    }*/
 
 }

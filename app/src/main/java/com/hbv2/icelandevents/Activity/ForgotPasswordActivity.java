@@ -73,7 +73,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements Validat
 
     @Override
     public void onValidationSucceeded() {
-        if(NetworkChecker.isOnline(cm)){
+        if(NetworkChecker.isOnline(this)){
             sendMail();
         }else{
             Toast.makeText(this, "Network isn't avilable",Toast.LENGTH_LONG).show();

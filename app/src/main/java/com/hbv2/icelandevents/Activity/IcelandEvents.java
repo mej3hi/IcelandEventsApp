@@ -1,5 +1,6 @@
 package com.hbv2.icelandevents.Activity;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -11,6 +12,8 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -29,7 +32,10 @@ import com.hbv2.icelandevents.Service.NetworkChecker;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 
 public class IcelandEvents extends AppCompatActivity {
@@ -37,9 +43,11 @@ public class IcelandEvents extends AppCompatActivity {
     private List<Event> eventsList;
     private ListView eventListView;
     private ProgressBar loadingDisplay;
-    private ConnectivityManager cm;
     private Menu menu;
     private TextView signInAs;
+    private EditText calendarDate;
+    private Calendar calendar;
+    private DatePickerDialog.OnDateSetListener date;
 
 
     @Override
@@ -52,15 +60,16 @@ public class IcelandEvents extends AppCompatActivity {
         eventListView = (ListView) findViewById(R.id.eventListView);
         loadingDisplay = (ProgressBar) findViewById(R.id.LoadingDisplayPB);
         loadingDisplay.setVisibility(View.INVISIBLE);
-        cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         signInAs = (TextView) findViewById(R.id.signInAsIdTextView);
-        //signInAs.setText("Signed In As : ");
-
+        calendarDate = (EditText) findViewById(R.id.calendarEditTextId);
+        signInAs.setText("Sign In As : ");
+        setDateTimeField();
         requestEvents();
         checkUserInfo();
-
-
     }
+
+
+
 
 
     @Override
@@ -117,6 +126,35 @@ public class IcelandEvents extends AppCompatActivity {
         super.onStop();
     }
 
+    private void setDateTimeField(){
+        calendar = Calendar.getInstance();
+        final int day = calendar.get(Calendar.DAY_OF_MONTH);
+        final int month = calendar.get(Calendar.MONTH);
+        final int year = calendar.get(Calendar.YEAR);
+
+        date = new DatePickerDialog.OnDateSetListener(){
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                calendar.set(Calendar.YEAR,year);
+                calendar.set(Calendar.MONTH,month);
+                calendar.set(Calendar.DAY_OF_MONTH,day);
+                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+                calendarDate.setText(sdf.format(calendar.getTime()));
+                requestEventsByDate(calendarDate.getText().toString());
+            }
+        };
+
+        calendarDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new DatePickerDialog(IcelandEvents.this,date, year, month,
+                        day).show();
+            }
+        });
+        //calendarDate.setText(day+"/"+month+"/"+year);
+    }
+
+
 
     @Subscribe
     public void onAutoLogin(HttpResponseMsg response){
@@ -125,7 +163,6 @@ public class IcelandEvents extends AppCompatActivity {
             userSignedInMenu();
         }
         else{
-            UserInfo.setLogin(false);
             toastMsg("Could not auto login");
         }
     }
@@ -134,21 +171,22 @@ public class IcelandEvents extends AppCompatActivity {
         if(UserInfo.isLogin()){
             menu.clear();
             getMenuInflater().inflate(R.menu.menu_when_signed_in, menu);
-            signInAs.setText("Signed in as : "+UserInfo.getLoginUsername());
+            signInAs.setText("Sign In As : "+UserInfo.getUsername());
         }
     }
 
     public void userSignOutMenu(){
+        Log.d("listinn: ",""+eventsList.size());
         if(!UserInfo.isLogin()){
             menu.clear();
             getMenuInflater().inflate(R.menu.menu_iceland_events, menu);
-            signInAs.setText("");
+            signInAs.setText("Sign In As : ");
         }
     }
 
 
     @Subscribe
-    public void onIndexEvent(HttpResponseEvent event) {
+    public void onEvent(HttpResponseEvent event) {
         loadingDisplay.setVisibility(View.INVISIBLE);
         if(event.getCode() == 200){
         eventsList = event.getListEvent();
@@ -160,7 +198,7 @@ public class IcelandEvents extends AppCompatActivity {
     }
 
     private void requestEvents(){
-        if(NetworkChecker.isOnline(cm)) {
+        if(NetworkChecker.isOnline(this)) {
             loadingDisplay.setVisibility(View.VISIBLE);
             new HttpRequestEvent().indexGet();
         }else{
@@ -168,9 +206,23 @@ public class IcelandEvents extends AppCompatActivity {
         }
     }
 
+    private void requestEventsByDate(String day){
+        if(NetworkChecker.isOnline(this)) {
+            loadingDisplay.setVisibility(View.VISIBLE);
+            new HttpRequestEvent().calanderGet(day);
+        }else{
+            toastMsg("Cannot get choose day no network isn't available");
+        }
+    }
+
     public  void updateDisplay(){
-        EventAdapter eventAdapter = new EventAdapter(this, R.layout.event_layout, eventsList);
-        eventListView.setAdapter(eventAdapter);
+        if(eventsList.isEmpty()){
+            toastMsg("No event were found");
+            calendarDate.setText("");
+        }else {
+            EventAdapter eventAdapter = new EventAdapter(this, R.layout.event_layout, eventsList);
+            eventListView.setAdapter(eventAdapter);
+        }
     }
 
     public void signInBtnMenuBtn (){
@@ -179,7 +231,7 @@ public class IcelandEvents extends AppCompatActivity {
     }
 
     public void signUpBtnMenuBtn (){
-        Intent intent = new Intent(this, SignUpActivity.class);
+        Intent intent = new Intent(this, MyEventActivity.class);
         startActivity(intent);
     }
 
@@ -191,7 +243,7 @@ public class IcelandEvents extends AppCompatActivity {
     private void checkUserInfo(){
         Log.d("checkUserInfo ","form inn í");
 
-        if(!NetworkChecker.isOnline(cm)) {
+        if(!NetworkChecker.isOnline(this)) {
             toastMsg("Cannot autoLogin network isn't available");
         }
 

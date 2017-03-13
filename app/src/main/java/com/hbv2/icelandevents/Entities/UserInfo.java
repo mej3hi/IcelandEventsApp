@@ -7,25 +7,25 @@ package com.hbv2.icelandevents.Entities;
 public class UserInfo {
 
 
-    private String username;
-    private String password;
-    public static boolean login;
-    private static String loginUsername;
+    private static String username;
+    private static String password;
+    private static boolean login;
 
-    public String getUsername() {
+
+    public static String getUsername() {
         return username;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public static void setUsername(String username) {
+        UserInfo.username = username;
     }
 
-    public String getPassword() {
+    public static String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public static void setPassword(String password) {
+        UserInfo.password = password;
     }
 
     public static boolean isLogin() {
@@ -34,13 +34,5 @@ public class UserInfo {
 
     public static void setLogin(boolean login) {
         UserInfo.login = login;
-    }
-
-    public static String getLoginUsername() {
-        return loginUsername;
-    }
-
-    public static void setLoginUsername(String loginUsername) {
-        UserInfo.loginUsername = loginUsername;
     }
 }

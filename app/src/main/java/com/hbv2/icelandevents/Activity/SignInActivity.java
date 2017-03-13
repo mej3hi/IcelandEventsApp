@@ -16,11 +16,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import com.hbv2.icelandevents.HttpRequest.HttpRequestSignIn;
 import com.hbv2.icelandevents.HttpResponse.HttpResponseMsg;
 import com.hbv2.icelandevents.R;
 import com.hbv2.icelandevents.Service.NetworkChecker;
 import com.hbv2.icelandevents.StoreUser;
+
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -35,7 +37,7 @@ public class SignInActivity extends AppCompatActivity {
     private EditText password;
     private TextView errorMsg;
     private Button skipBtn;
-    private ConnectivityManager cm;
+
 
 
 
@@ -46,7 +48,7 @@ public class SignInActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
         username = (EditText) findViewById(R.id.usernameEditText);
         password = (EditText) findViewById(R.id.passwordEditText);
         errorMsg = (TextView) findViewById(R.id.errorMsgTextViewId);
@@ -104,7 +106,7 @@ public class SignInActivity extends AppCompatActivity {
 
     public void signInOnClick(View v){
         errorMsg.setText("");
-        if(NetworkChecker.isOnline(cm)){
+        if(NetworkChecker.isOnline(this)){
             new HttpRequestSignIn().signInGet(username.getText().toString(),password.getText().toString());
         }else{
             Toast toast = Toast.makeText(this,"Network isn't available",Toast.LENGTH_LONG);
