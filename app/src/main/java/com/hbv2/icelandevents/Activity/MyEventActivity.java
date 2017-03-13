@@ -4,11 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -41,10 +41,12 @@ public class MyEventActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
         eventListView = (ListView) findViewById(R.id.eventListViewMe);
         loadingDisplay = (ProgressBar) findViewById(R.id.LoadingDisplayME);
         loadingDisplay.setVisibility(View.INVISIBLE);
         cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        getEvents();
 
         eventListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -55,9 +57,31 @@ public class MyEventActivity extends AppCompatActivity {
                 String parsed = gson.toJson(event);
                 intent.putExtra("EVENT_NAME",parsed);
 
-                startActivity(intent);
+                startActivityForResult(intent,1728);
             }
         });
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_my_event, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.create_event) {
+            createEventMenuBtn();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -94,7 +118,7 @@ public class MyEventActivity extends AppCompatActivity {
     }
 
 
-    public void getEvents(View view) {
+    public void getEvents() {
         System.out.println("btnGetEvent");
         if(NetworkChecker.isOnline(cm)){
             requestEvents();
@@ -103,4 +127,18 @@ public class MyEventActivity extends AppCompatActivity {
         }
     }
 
+    private void createEventMenuBtn(){
+        Intent intent = new Intent(this, CreateEventActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == 1728){
+            if(resultCode == RESULT_OK){
+                if(data.getBooleanExtra("result",false))
+                    getEvents();
+            }
+        }
+    }
 }

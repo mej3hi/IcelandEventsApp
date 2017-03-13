@@ -12,6 +12,7 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 /**
  * Created by Martin on 29.1.2017.
@@ -42,7 +43,7 @@ public interface EventAPI {
     Call<List<Event>> getMyEvents();
 
     @GET("/m/removeEvent")
-    Call<Void> getRemoveEvent(@Path("id") Long id);
+    Call<String> getRemoveEvent(@Query("id") Long id);
 
     @Multipart
     @POST("/m/editEvent")

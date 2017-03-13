@@ -167,19 +167,19 @@ public class HttpRequestEvent {
         Log.d("indexController","það tókst");
 
         EventAPI eventAPI = ServiceGenerator.createService(EventAPI.class);
-        Call<Void> call = eventAPI.getRemoveEvent(id);
+        Call<String> call = eventAPI.getRemoveEvent(id);
 
 
-        call.enqueue(new Callback<Void>() {
+        call.enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
+            public void onResponse(Call<String> call, Response<String> response) {
                 System.out.println("response raw: " + response.raw());
                 System.out.println("response header:  " + response.headers());
-                //EventBus.getDefault().post(new HttpResponseEvent(response.body(),response.code()));
+                EventBus.getDefault().post(new HttpResponseMsg(response.body(),response.code()));
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+            public void onFailure(Call<String> call, Throwable t) {
                 System.out.println("Failure :" +t);
                 System.out.println("Failure call :" +call);
 

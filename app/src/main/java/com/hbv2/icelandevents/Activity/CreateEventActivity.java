@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -170,7 +171,7 @@ public class CreateEventActivity extends AppCompatActivity implements Validator.
         String date = eventDate.getText().toString();
         event.setDate(date);
 
-        event.setMusicgenres("other");
+        event.setMusicgenres(getRadioBtnValue());
 
         new HttpRequestEvent().createEventPost(event, event.getImageurl());
 
@@ -212,6 +213,12 @@ public class CreateEventActivity extends AppCompatActivity implements Validator.
                     event.setMusicgenres("Jazz");
                     break;
         }
+    }
+
+    private String getRadioBtnValue(){
+        RadioGroup group = (RadioGroup) findViewById(R.id.radioGroup);
+        RadioButton selected = (RadioButton)findViewById(group.getCheckedRadioButtonId());
+        return selected.getText().toString();
     }
 
 }

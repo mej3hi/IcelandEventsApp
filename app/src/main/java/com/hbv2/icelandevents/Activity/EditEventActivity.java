@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -35,6 +36,7 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 public class EditEventActivity extends AppCompatActivity implements Validator.ValidationListener{
@@ -131,8 +133,9 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
         eventLocation.setText(event.getLocation());
         eventDescription.setText(event.getDescription());
         eventTime.setText(event.getTime());
-        eventDate.setText(event.getDate());
+        eventDate.setText(toDateFormat(event.getDate()));
         imageUrl.setText(event.getImageurl().replaceAll(".+/(.*)$","$1"));
+        radioButtonSet(event.getMusicgenres());
     }
 
     private void updateFieldTime(){
@@ -191,7 +194,7 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
         String date = eventDate.getText().toString();
         event.setDate(date);
 
-        event.setMusicgenres("other");
+        event.setMusicgenres(getRadioBtnValue());
 
         new HttpRequestEvent().editEventPost(event, event.getImageurl());
     }
@@ -250,6 +253,30 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
         }
 
     }
+
+    private void radioButtonSet(String genre){
+        switch(genre) {
+            case "Other":
+                ((RadioButton) findViewById(R.id.radioBtnOther)).setChecked(true);
+                break;
+            case "Rock":
+                ((RadioButton) findViewById(R.id.radioBtnRock)).setChecked(true);
+                break;
+            case "Pop":
+                ((RadioButton) findViewById(R.id.radioBtnPop)).setChecked(true);
+                break;
+            case "Jazz":
+                ((RadioButton) findViewById(R.id.radioBtnJazz)).setChecked(true);
+                break;
+        }
+    }
+
+    private String getRadioBtnValue(){
+        RadioGroup group = (RadioGroup) findViewById(R.id.radioGroup);
+        RadioButton selected = (RadioButton)findViewById(group.getCheckedRadioButtonId());
+        return selected.getText().toString();
+    }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -265,12 +292,21 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
     @Subscribe
     public void onEditEvent(HttpResponseMsg response){
         if((response.getMsg()+"").matches("(?i).*successfully.*")){
-            Log.d("okok","okok");
-            Intent returnIntent = new Intent();
-            returnIntent.putExtra("result",true);
-            setResult(RESULT_OK,returnIntent);
-            finish();
+            Toast.makeText(getApplicationContext(), response.getMsg(), Toast.LENGTH_LONG).show();
+            goBack();
         }
+    }
 
+    private void goBack(){
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("result",true);
+        setResult(RESULT_OK,returnIntent);
+        finish();
+    }
+
+    private String toDateFormat(String milliseconds){
+        long value = Long.parseLong(milliseconds);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy",Locale.US);
+        return sdf.format(new Date(value));
     }
 }
