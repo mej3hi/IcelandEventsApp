@@ -139,11 +139,12 @@ public class IcelandEvents extends AppCompatActivity {
     }
 
     public void userSignOutMenu(){
-        if(!UserInfo.isLogin()){
-            menu.clear();
-            getMenuInflater().inflate(R.menu.menu_iceland_events, menu);
-            signInAs.setText("Sign In As : ");
-        }
+        Log.d("listinn: ",""+eventsList.size());
+//        if(!UserInfo.isLogin()){
+//            menu.clear();
+//            getMenuInflater().inflate(R.menu.menu_iceland_events, menu);
+//            signInAs.setText("Sign In As : ");
+//        }
     }
 
 
@@ -179,7 +180,7 @@ public class IcelandEvents extends AppCompatActivity {
     }
 
     public void signUpBtnMenuBtn (){
-        Intent intent = new Intent(this, SignUpActivity.class);
+        Intent intent = new Intent(this, MyEventActivity.class);
         startActivity(intent);
     }
 

@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -17,15 +16,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.hbv2.icelandevents.HttpRequest.HttpRequestSignIn;
 import com.hbv2.icelandevents.HttpResponse.HttpResponseMsg;
-import com.hbv2.icelandevents.HttpResponse.HttpResponseSignIn;
 import com.hbv2.icelandevents.R;
 import com.hbv2.icelandevents.Service.NetworkChecker;
 import com.hbv2.icelandevents.StoreUser;
-import com.mobsandgeeks.saripaar.Validator;
-
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -40,7 +35,6 @@ public class SignInActivity extends AppCompatActivity {
     private EditText password;
     private TextView errorMsg;
     private Button skipBtn;
-    private Button backBtn;
     private ConnectivityManager cm;
 
 
@@ -104,7 +98,6 @@ public class SignInActivity extends AppCompatActivity {
     public void skipBtnVisibility(){
         if(getIntent().getBooleanExtra("SKIP_VISIBLE",false)){
             skipBtn.setVisibility(View.VISIBLE);
-            backBtn.setVisibility(View.INVISIBLE);
         }
     }
 

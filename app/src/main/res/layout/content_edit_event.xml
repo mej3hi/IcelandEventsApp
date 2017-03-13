@@ -78,21 +78,12 @@
         android:layout_alignStart="@+id/locationText" />
 
     <Button
-        android:hint="Create"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/createBtn"
-        android:onClick="createBtnOnClick"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
-
-    <Button
         android:text="Upload Image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/upImageBtn"
         android:onClick="upImageBtnOnclick"
-        android:layout_above="@+id/createBtn"
+        android:layout_above="@+id/saveBtn"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="34dp" />
 
@@ -100,7 +91,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/imageUrlText"
-        android:layout_above="@+id/createBtn"
+        android:layout_above="@+id/saveBtn"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="15dp" />/>
 
@@ -146,5 +137,23 @@
             android:onClick="onRadioButtonClicked"
             />
     </RadioGroup>
+
+    <Button
+        android:text="Remove"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toEndOf="@+id/upImageBtn"
+        android:onClick="removeBtnOnClick"
+        android:id="@+id/removeBtn" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/saveBtn"
+        android:onClick="saveBtnOnClick"
+        android:layout_alignParentBottom="true"
+        android:layout_toStartOf="@+id/upImageBtn"
+        android:text="Save" />
 
 </RelativeLayout>

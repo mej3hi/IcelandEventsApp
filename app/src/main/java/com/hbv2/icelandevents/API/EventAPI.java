@@ -38,20 +38,30 @@ public interface EventAPI {
                                @Part("date") RequestBody date,
                                @Part("musicgenres") RequestBody musicgenres);
 
-    //@GET("/m/myevents")
-    @GET("/mej3hi/tonlistv2/master/tonlist.json")
+    @GET("/m/myevents")
     Call<List<Event>> getMyEvents();
 
     @GET("/m/removeEvent")
     Call<Void> getRemoveEvent(@Path("id") Long id);
 
     @Multipart
-    @GET("/m/editEvent")
-    Call<Void> postEditEvent(@Part MultipartBody.Part file,
+    @POST("/m/editEvent")
+    Call<String> postEditEvent(@Part MultipartBody.Part file,
+                             @Part("id") RequestBody id,
                              @Part("name") RequestBody name,
                              @Part("location") RequestBody location,
                              @Part("description") RequestBody description,
                              @Part("time") RequestBody time,
                              @Part("date") RequestBody date,
-                             @Part("musicgenres") RequestBody musicgenres);
+                             @Part("musicgenres") RequestBody musicgenres,
+                             @Part("imageurl") RequestBody imageurl);
+
+    @Multipart
+    @POST("/m/editEvent")
+    Call<Void> postEditEventNoImage(@Part("name") RequestBody name,
+                                    @Part("location") RequestBody location,
+                                    @Part("description") RequestBody description,
+                                    @Part("time") RequestBody time,
+                                    @Part("date") RequestBody date,
+                                    @Part("musicgenres") RequestBody musicgenres);
 }

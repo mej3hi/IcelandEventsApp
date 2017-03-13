@@ -120,7 +120,7 @@ public class CreateEventActivity extends AppCompatActivity implements Validator.
     }
 
     private void updateLabel(){
-        String myFormat = "MM/dd/yy";
+        String myFormat = "dd/MM/yyyy";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         eventDate.setText(sdf.format(calendar.getTime()));
     }

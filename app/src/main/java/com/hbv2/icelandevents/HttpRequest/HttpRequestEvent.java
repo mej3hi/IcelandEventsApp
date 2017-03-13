@@ -6,6 +6,7 @@ import android.util.Log;
 import com.hbv2.icelandevents.API.EventAPI;
 import com.hbv2.icelandevents.Entities.Event;
 import com.hbv2.icelandevents.HttpResponse.HttpResponseEvent;
+import com.hbv2.icelandevents.HttpResponse.HttpResponseMsg;
 import com.hbv2.icelandevents.Service.ServiceGenerator;
 
 import org.greenrobot.eventbus.EventBus;
@@ -193,34 +194,40 @@ public class HttpRequestEvent {
      * @param imageUri The path where the image is store
      */
     public void editEventPost(Event event,String imageUri){
-        File file;
-        if(imageUri.matches("http.*"))
-            file = new File("");
-        else
-            file = new File(imageUri);
-        RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
-        MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), reqFile);
-
+        RequestBody id = RequestBody.create(MediaType.parse("text/plain"), ""+event.getId());
         RequestBody name = RequestBody.create(MediaType.parse("text/plain"), event.getName());
         RequestBody location = RequestBody.create(MediaType.parse("text/plain"), event.getLocation());
         RequestBody description = RequestBody.create(MediaType.parse("text/plain"), event.getDescription());
         RequestBody time = RequestBody.create(MediaType.parse("text/plain"), event.getTime());
         RequestBody date = RequestBody.create(MediaType.parse("text/plain"), event.getDate());
         RequestBody musicgenres = RequestBody.create(MediaType.parse("text/plain"), event.getMusicgenres());
+        RequestBody imageurl = RequestBody.create(MediaType.parse("text/plain"), event.getImageurl());
+        Log.d("dagurinn: ", event.getDate());
+
+
+        File file = new File(imageUri);
+        RequestBody reqFile;
+
+        if(imageUri.matches("http.*"))
+            reqFile = RequestBody.create(MediaType.parse("image/*"), "");
+        else
+            reqFile = RequestBody.create(MediaType.parse("image/*"), file);
+
+        MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), reqFile);
 
         EventAPI eventAPI = ServiceGenerator.createService(EventAPI.class);
-        Call<Void> call = eventAPI.postEditEvent(body,name,location,description,time,date,musicgenres);
+        Call<String> call = eventAPI.postEditEvent(body, id, name, location, description, time, date, musicgenres, imageurl);
 
-        call.enqueue(new Callback<Void>() {
+        call.enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
+            public void onResponse(Call<String> call, Response<String> response) {
                 System.out.println("response raw: " + response.raw());
                 System.out.println("response header:  " + response.headers());
-                //EventBus.getDefault().post(new HttpResponseEvent(response.body(),response.code()));
+                EventBus.getDefault().post(new HttpResponseMsg(response.body(),response.code()));
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+            public void onFailure(Call<String> call, Throwable t) {
                 System.out.println("Failure :" +t);
                 System.out.println("Failure call :" +call);
 

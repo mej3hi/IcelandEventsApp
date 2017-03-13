@@ -22,12 +22,16 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.hbv2.icelandevents.Entities.Event;
 import com.hbv2.icelandevents.HttpRequest.HttpRequestEvent;
+import com.hbv2.icelandevents.HttpResponse.HttpResponseMsg;
 import com.hbv2.icelandevents.R;
 import com.mobsandgeeks.saripaar.Rule;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.Regex;
 import com.mobsandgeeks.saripaar.annotation.Required;
 import com.mobsandgeeks.saripaar.annotation.TextRule;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -55,7 +59,6 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
     @Required(order = 10)
     EditText eventDate;
 
-    @Required(order = 11)
     TextView imageUrl;
 
     Validator validator;
@@ -139,7 +142,7 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
     }
 
     private void updateLabel(){
-        String myFormat = "MM/dd/yy";
+        String myFormat = "dd/MM/yyyy";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         eventDate.setText(sdf.format(calendar.getTime()));
     }
@@ -171,7 +174,6 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
         }
     }
 
-
     @Override
     public void onValidationSucceeded() {
         String name = eventName.getText().toString();
@@ -192,7 +194,6 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
         event.setMusicgenres("other");
 
         new HttpRequestEvent().editEventPost(event, event.getImageurl());
-
     }
 
     public void onValidationFailed(View view, Rule<?> rule) {
@@ -206,7 +207,7 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
         }
     }
 
-    public void createBtnOnClick(View view) {
+    public void saveBtnOnClick(View view) {
         validator.validate();
     }
 
@@ -215,7 +216,6 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
         new AlertDialog.Builder(this)
                 .setTitle("Confirmation")
                 .setMessage("Do you really want remove this event?")
-                .setIcon(android.R.drawable.ic_dialog_alert)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         removeEvent();
@@ -247,6 +247,29 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
                 if (checked)
                     event.setMusicgenres("Jazz");
                 break;
+        }
+
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    @Subscribe
+    public void onEditEvent(HttpResponseMsg response){
+        if((response.getMsg()+"").matches("(?i).*successfully.*")){
+            Log.d("okok","okok");
+            Intent returnIntent = new Intent();
+            returnIntent.putExtra("result",true);
+            setResult(RESULT_OK,returnIntent);
+            finish();
         }
 
     }
