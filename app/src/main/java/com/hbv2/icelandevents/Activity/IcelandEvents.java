@@ -64,6 +64,7 @@ public class IcelandEvents extends AppCompatActivity {
         signInAs.setText("Signed In As : ");
 
         setDateTimeField();
+        setListener();
 
     }
 
@@ -253,6 +254,7 @@ public class IcelandEvents extends AppCompatActivity {
         mainTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.d("ná í event aftur","Iclendevent");
                 requestEvents();
             }
         });
