@@ -1,9 +1,7 @@
 package com.hbv2.icelandevents.Activity;
 
 import android.app.DatePickerDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -120,10 +118,11 @@ public class IcelandEvents extends AppCompatActivity {
         userSignedInMenu();
     }
 
+
     @Override
-    public void onStop() {
+    protected void onPause() {
         EventBus.getDefault().unregister(this);
-        super.onStop();
+        super.onPause();
     }
 
     private void setDateTimeField(){
@@ -187,6 +186,7 @@ public class IcelandEvents extends AppCompatActivity {
 
     @Subscribe
     public void onEvent(HttpResponseEvent event) {
+        Log.d("Iceland Events: ", "Er i iceland events");
         loadingDisplay.setVisibility(View.INVISIBLE);
         if(event.getCode() == 200){
         eventsList = event.getListEvent();

@@ -11,7 +11,6 @@ import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
@@ -57,12 +56,4 @@ public interface EventAPI {
                              @Part("musicgenres") RequestBody musicgenres,
                              @Part("imageurl") RequestBody imageurl);
 
-    @Multipart
-    @POST("/m/editEvent")
-    Call<Void> postEditEventNoImage(@Part("name") RequestBody name,
-                                    @Part("location") RequestBody location,
-                                    @Part("description") RequestBody description,
-                                    @Part("time") RequestBody time,
-                                    @Part("date") RequestBody date,
-                                    @Part("musicgenres") RequestBody musicgenres);
 }
