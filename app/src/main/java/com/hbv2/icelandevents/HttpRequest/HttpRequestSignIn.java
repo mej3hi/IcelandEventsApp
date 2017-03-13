@@ -65,6 +65,7 @@ public class HttpRequestSignIn {
             @Override
             public void onFailure(Call<String> call, Throwable t) {
                 System.out.println("Failuress :" +t);
+                EventBus.getDefault().post(new HttpResponseMsg("", 500));
 
             }
         });

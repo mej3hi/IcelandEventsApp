@@ -90,7 +90,7 @@ public class ResetPasswordActivity extends AppCompatActivity implements Validato
 
     @Override
     public void onValidationSucceeded() {
-        if(NetworkChecker.isOnline(cm)){
+        if(NetworkChecker.isOnline(this)){
             changePasswordConfirm();
         }
         else{

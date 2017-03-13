@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.hbv2.icelandevents.Entities.UserInfo;
 import com.hbv2.icelandevents.HttpRequest.HttpRequestSignIn;
 
@@ -20,17 +21,15 @@ public class AutoLogin  {
 
 
     /**
-     * It will check whether user has create userInfo,
-     * and if it
+     * It will check whether user has create userInfo
      * @param base
-     * @return
+     * @return It return TRUE if it has crate userInfo, else it return FALSE.
      */
     public static boolean checkUserInfo(Context base){
-        boolean userInfo = false;
-        UserInfo user;
-        Gson gson = new Gson();
+        boolean userInfoExists = false;
+        UserInfo userInfo;
+        Gson gson = new GsonBuilder().excludeFieldsWithModifiers().create();
         try {
-            //FileInputStream fin = openFileInput("userInfo",base);
             FileInputStream fin = base.openFileInput("userInfo");
             int c;
             String temp = "";
@@ -38,27 +37,19 @@ public class AutoLogin  {
                 temp = temp + Character.toString((char) c);
             }
             if(temp != ""){
-                userInfo = true;
-                Log.d("Autologin","userInfo er til");
-                user = gson.fromJson(temp,UserInfo.class);
+                userInfoExists = true;
+                userInfo = gson.fromJson(temp,UserInfo.class);
                 UserInfo.setLogin(false);
-                UserInfo.setLoginUsername(user.getUsername());
-                if(user.getUsername() != "" && user.getPassword() != ""){
-                    Log.d("Autologin","Þá loga okku inn UserInfo = "+user.getUsername()+" Pass = "+user.getPassword());
-                    new HttpRequestSignIn().autoSignInGet(user.getUsername(),user.getPassword());
+                if(UserInfo.getUsername() != "" && UserInfo.getPassword() != ""){
+                    new HttpRequestSignIn().autoSignInGet(UserInfo.getUsername(),UserInfo.getPassword());
                 }
             }
             fin.close();
         }
         catch (Exception e){
-            Log.d("AutoLogin","userInfo er ekki til ");
-            userInfo = false;
+            userInfoExists = false;
         }
-        return userInfo;
+        return userInfoExists;
     }
-
-   /* private static FileInputStream openFileInput(String name, Context mBase)throws FileNotFoundException {
-        return mBase.openFileInput(name);
-    }*/
 
 }

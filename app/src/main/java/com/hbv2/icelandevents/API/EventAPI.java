@@ -27,7 +27,7 @@ public interface EventAPI {
     Call<List<Event>> getIndex();
 
     @GET("/m/calander")
-    Call<List<Event>> getCalander(@Path("day") String day);
+    Call<List<Event>> getCalander(@Query("day") String day);
 
     @Multipart
     @POST("/m/createEvent")

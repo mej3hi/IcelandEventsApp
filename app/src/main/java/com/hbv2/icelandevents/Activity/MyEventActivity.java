@@ -120,7 +120,7 @@ public class MyEventActivity extends AppCompatActivity {
 
     public void getEvents() {
         System.out.println("btnGetEvent");
-        if(NetworkChecker.isOnline(cm)){
+        if(NetworkChecker.isOnline(this)){
             requestEvents();
         }else{
             Toast.makeText(this, "Network isn't avilable",Toast.LENGTH_LONG).show();

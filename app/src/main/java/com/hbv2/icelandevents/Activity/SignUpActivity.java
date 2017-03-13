@@ -23,6 +23,7 @@ import com.mobsandgeeks.saripaar.Rule;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.ConfirmPassword;
 import com.mobsandgeeks.saripaar.annotation.Password;
+import com.mobsandgeeks.saripaar.annotation.Regex;
 import com.mobsandgeeks.saripaar.annotation.Required;
 import com.mobsandgeeks.saripaar.annotation.TextRule;
 
@@ -41,20 +42,22 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
     EditText name;
 
     @Required(order = 3)
-    @TextRule(order = 4, minLength = 6, maxLength = 32, message = "Please use between 6 and 32 characters.")
+    @Regex(order = 4, pattern = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$",
+                      message = "Please use format email@exmple.com.")
+    @TextRule(order = 5, minLength = 6, maxLength = 32, message = "Please use between 6 and 32 characters.")
     EditText email;
 
-    @Required(order = 5)
-    @TextRule(order = 6, minLength = 6, maxLength = 32, message = "Please use between 6 and 32 characters.")
+    @Required(order = 6)
+    @TextRule(order = 7, minLength = 6, maxLength = 32, message = "Please use between 6 and 32 characters.")
     EditText username;
 
-    @Required(order = 7)
-    @Password(order = 8)
-    @TextRule(order = 9, minLength = 8, maxLength = 32, message = "Please use between 6 and 32 characters.")
+    @Required(order = 8)
+    @Password(order = 9)
+    @TextRule(order = 10, minLength = 8, maxLength = 32, message = "Please use between 6 and 32 characters.")
     EditText password;
 
-    @Required(order = 10)
-    @ConfirmPassword(order = 11)
+    @Required(order = 11)
+    @ConfirmPassword(order = 12)
     EditText passwordConf;
 
     @Override
@@ -73,7 +76,7 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
 
         validator = new Validator(this);
         validator.setValidationListener(this);
-        user = new User();
+
     }
 
    @Override
@@ -121,6 +124,7 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
 
     @Override
     public void onValidationSucceeded() {
+        user = new User();
         user.setName(name.getText().toString());
         user.setEmail(email.getText().toString());
         user.setUsername(username.getText().toString());
@@ -143,7 +147,7 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
 
 
     public void signUpBtnOnClick (View v){
-        if(NetworkChecker.isOnline(cm)){
+        if(NetworkChecker.isOnline(this)){
             validator.validate();
         }else{
             Toast toast = Toast.makeText(this, "Network isn't available",Toast.LENGTH_LONG);
