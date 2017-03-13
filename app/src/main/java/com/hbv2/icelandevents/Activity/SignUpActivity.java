@@ -34,7 +34,6 @@ import org.greenrobot.eventbus.Subscribe;
 public class SignUpActivity extends AppCompatActivity implements Validator.ValidationListener {
 
     private Validator validator;
-    private User user;
 
     @Required(order = 1)
     @TextRule(order = 2, minLength = 6, maxLength = 32, message = "Please use between 6 and 32 characters.")
@@ -123,7 +122,7 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
 
     @Override
     public void onValidationSucceeded() {
-        user = new User();
+        User user = new User();
         user.setName(name.getText().toString());
         user.setEmail(email.getText().toString());
         user.setUsername(username.getText().toString());
