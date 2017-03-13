@@ -1,8 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true">
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -17,140 +13,163 @@
         tools:context="com.hbv2.icelandevents.Activity.CreateEventActivity"
         tools:showIn="@layout/activity_create_event">
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:hint="Name of the Event"
-            android:ems="10"
-            android:id="@+id/eventNameText"
-            android:textAlignment="center"
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_alignParentTop="true"
-            android:layout_alignStart="@+id/timeText" />
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:hint="Location"
-            android:ems="10"
-            android:id="@+id/locationText"
-            android:textAlignment="center"
-            android:layout_marginTop="14dp"
-            android:layout_below="@+id/eventNameText"
-            android:layout_alignStart="@+id/eventNameText" />
-
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="Date"
-            android:ems="10"
-            android:id="@+id/dateText"
-            android:textAlignment="center"
-            android:layout_below="@+id/timeText"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="16dp"
-            android:inputType="date"
-            android:focusable="false"
-            />
+            android:layout_marginTop="10dp">
 
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:hint="Time"
-            android:ems="10"
-            android:id="@+id/timeText"
-            android:textAlignment="center"
-            android:layout_marginTop="20dp"
-            android:layout_below="@+id/descriptionText"
-            android:layout_alignStart="@+id/dateText"
-            android:focusable="false" />
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:hint="Description"
-            android:ems="10"
-            android:id="@+id/descriptionText"
-            android:textAlignment="center"
-            android:layout_marginTop="19dp"
-            android:layout_below="@+id/locationText"
-            android:layout_alignStart="@+id/locationText" />
-
-        <Button
-            android:hint="Create"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/saveBtn"
-            android:onClick="createBtnOnClick"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true" />
-
-        <Button
-            android:text="Upload Image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/upImageBtn"
-            android:onClick="upImageBtnOnclick"
-            android:layout_above="@+id/saveBtn"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="34dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageUrlText"
-            android:layout_above="@+id/saveBtn"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="15dp" />/>
-
-        <RadioGroup
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="15dp"
-            android:layout_marginStart="40dp"
-            android:layout_below="@+id/dateText"
-            android:layout_alignParentStart="true"
-            android:id="@+id/radioGroup">
-
-            <RadioButton
-                android:text="Other"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/radioBtnOther"
-                android:checked="true"
-                android:onClick="onRadioButtonClicked"
-                />
+                android:orientation="vertical" >
 
-            <RadioButton
-                android:text="Rock"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/radioBtnRock"
-                android:onClick="onRadioButtonClicked"
-                />
+                <EditText
 
-            <RadioButton
-                android:text="Pop"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/radioBtnPop"
-                android:onClick="onRadioButtonClicked"
-                />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:hint="Name of the Event"
+                    android:ems="10"
+                    android:id="@+id/eventNameText"
+                    android:textAlignment="center"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignStart="@+id/timeText" />
 
-            <RadioButton
-                android:text="Jazz"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/radioBtnJazz"
-                android:onClick="onRadioButtonClicked"
-                />
-        </RadioGroup>
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:hint="Location"
+                    android:ems="10"
+                    android:id="@+id/locationText"
+                    android:textAlignment="center"
+                    android:layout_marginTop="14dp"
+                    android:layout_below="@+id/eventNameText"
+                    android:layout_alignStart="@+id/eventNameText" />
+
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="Date"
+                    android:ems="10"
+                    android:id="@+id/dateText"
+                    android:textAlignment="center"
+                    android:layout_below="@+id/timeText"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="16dp"
+                    android:inputType="date"
+                    android:focusable="false"
+                    />
+
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:hint="Time"
+                    android:ems="10"
+                    android:id="@+id/timeText"
+                    android:textAlignment="center"
+                    android:layout_marginTop="20dp"
+                    android:layout_below="@+id/descriptionText"
+                    android:layout_alignStart="@+id/dateText"
+                    android:focusable="false" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:hint="Description"
+                    android:ems="10"
+                    android:id="@+id/descriptionText"
+                    android:textAlignment="center"
+                    android:layout_marginTop="19dp"
+                    android:layout_below="@+id/locationText"
+                    android:layout_alignStart="@+id/locationText" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imageUrlText"
+                    android:layout_below="@+id/upImageBtn"
+                    android:layout_marginBottom="15dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentStart="true"
+                    android:text="gggggg" />
+
+                <RadioGroup
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginStart="40dp"
+                    android:layout_below="@+id/dateText"
+                    android:layout_alignParentStart="true"
+                    android:id="@+id/radioGroup">
+
+                    <RadioButton
+                        android:text="Other"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/radioBtnOther"
+                        android:checked="true"
+                        android:onClick="onRadioButtonClicked"
+                        />
+
+                    <RadioButton
+                        android:text="Rock"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/radioBtnRock"
+                        android:onClick="onRadioButtonClicked"
+                        />
+
+                    <RadioButton
+                        android:text="Pop"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/radioBtnPop"
+                        android:onClick="onRadioButtonClicked"
+                        />
+
+                    <RadioButton
+                        android:text="Jazz"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/radioBtnJazz"
+                        android:onClick="onRadioButtonClicked"
+                        />
+                </RadioGroup>
+
+                <Button
+                    android:text="Upload Image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/upImageBtn"
+                    android:onClick="upImageBtnOnclick"
+                    android:layout_below="@+id/radioGroup"
+                    android:layout_centerHorizontal="true" />
+
+                <Button
+                    android:text="Create"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/saveBtn"
+                    android:onClick="createBtnOnClick"
+
+                    android:layout_below="@+id/imageUrlText"
+
+
+                    android:layout_centerHorizontal="true" />
+
+
+            </RelativeLayout>
+
+        </ScrollView>
 
     </RelativeLayout>
-</ScrollView>
+

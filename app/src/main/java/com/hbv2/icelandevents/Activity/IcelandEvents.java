@@ -61,16 +61,11 @@ public class IcelandEvents extends AppCompatActivity {
         loadingDisplay.setVisibility(View.INVISIBLE);
         signInAs = (TextView) findViewById(R.id.signInAsIdTextView);
         calendarDate = (EditText) findViewById(R.id.calendarEditTextId);
-        signInAs.setText("Signed In As : ");
-
+        //signInAs.setText("Signed In As : ");
         setDateTimeField();
         setListener();
 
     }
-
-
-
-
 
 
     @Override

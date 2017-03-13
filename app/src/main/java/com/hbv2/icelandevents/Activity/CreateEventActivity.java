@@ -18,6 +18,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.hbv2.icelandevents.Entities.Event;
+import com.hbv2.icelandevents.Entities.UserInfo;
 import com.hbv2.icelandevents.HttpRequest.HttpRequestEvent;
 import com.hbv2.icelandevents.HttpResponse.HttpResponseMsg;
 import com.hbv2.icelandevents.R;
@@ -36,6 +37,7 @@ import java.util.Locale;
 
 public class CreateEventActivity extends AppCompatActivity implements Validator.ValidationListener{
     private Event event;
+    private TextView signInAs;
 
     @Required(order = 1)
     @TextRule(order = 2, minLength = 3, maxLength = 32, message = "Please use between 3 and 32 characters.")
@@ -78,6 +80,9 @@ public class CreateEventActivity extends AppCompatActivity implements Validator.
 
         validator = new Validator(this);
         validator.setValidationListener(this);
+
+        signInAs = (TextView) findViewById(R.id.signInAsIdTextView);
+        signInAs.setText("Signed in as : "+ UserInfo.getUsername());
 
         event = new Event();
 

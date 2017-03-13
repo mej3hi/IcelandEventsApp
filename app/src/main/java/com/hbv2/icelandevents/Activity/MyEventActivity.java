@@ -13,11 +13,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.hbv2.icelandevents.Adapter.EventAdapter;
 import com.hbv2.icelandevents.Entities.Event;
+import com.hbv2.icelandevents.Entities.UserInfo;
 import com.hbv2.icelandevents.HttpRequest.HttpRequestEvent;
 import com.hbv2.icelandevents.HttpResponse.HttpResponseEvent;
 import com.hbv2.icelandevents.R;
@@ -32,7 +34,7 @@ public class MyEventActivity extends AppCompatActivity {
     private List<Event> eventsList;
     private ListView eventListView;
     private ProgressBar loadingDisplay;
-
+    private TextView signInAs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,9 @@ public class MyEventActivity extends AppCompatActivity {
         eventListView = (ListView) findViewById(R.id.eventListViewMe);
         loadingDisplay = (ProgressBar) findViewById(R.id.LoadingDisplayME);
         loadingDisplay.setVisibility(View.INVISIBLE);
+
+        signInAs = (TextView) findViewById(R.id.signInAsIdTextView);
+        signInAs.setText("Signed in as : "+UserInfo.getUsername());
 
         eventListView.setOnItemClickListener(itemClickListener);
     }

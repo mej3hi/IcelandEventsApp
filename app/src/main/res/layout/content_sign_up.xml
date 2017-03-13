@@ -18,18 +18,8 @@
         tools:context="com.hbv2.icelandevents.Activity.SignUpActivity"
         tools:showIn="@layout/activity_sign_up">
 
-        <TextView
-            android:text="@string/sign_up"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:id="@+id/textView4"
-            android:textAlignment="center"
-            android:textSize="30sp"
-            android:layout_marginBottom="20dp" />
-
         <EditText
+            android:layout_marginTop="50dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
