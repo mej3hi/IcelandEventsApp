@@ -80,6 +80,7 @@ public class SignInActivity extends AppCompatActivity {
             errorMsg.setText("Username or Password are wrong");
         }
         else{
+            System.out.println("MSG "+msg.getCode());
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setTitle("Something went wrong");
             alertDialogBuilder

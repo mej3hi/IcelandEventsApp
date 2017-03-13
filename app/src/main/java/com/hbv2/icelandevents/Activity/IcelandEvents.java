@@ -54,7 +54,7 @@ public class IcelandEvents extends AppCompatActivity {
         loadingDisplay.setVisibility(View.INVISIBLE);
         cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         signInAs = (TextView) findViewById(R.id.signInAsIdTextView);
-        signInAs.setText("Sign In As : ");
+        //signInAs.setText("Signed In As : ");
 
         requestEvents();
         checkUserInfo();
@@ -134,17 +134,16 @@ public class IcelandEvents extends AppCompatActivity {
         if(UserInfo.isLogin()){
             menu.clear();
             getMenuInflater().inflate(R.menu.menu_when_signed_in, menu);
-            signInAs.setText("Sign In As : "+UserInfo.getLoginUsername());
+            signInAs.setText("Signed in as : "+UserInfo.getLoginUsername());
         }
     }
 
     public void userSignOutMenu(){
-        Log.d("listinn: ",""+eventsList.size());
-//        if(!UserInfo.isLogin()){
-//            menu.clear();
-//            getMenuInflater().inflate(R.menu.menu_iceland_events, menu);
-//            signInAs.setText("Sign In As : ");
-//        }
+        if(!UserInfo.isLogin()){
+            menu.clear();
+            getMenuInflater().inflate(R.menu.menu_iceland_events, menu);
+            signInAs.setText("");
+        }
     }
 
 
@@ -180,7 +179,7 @@ public class IcelandEvents extends AppCompatActivity {
     }
 
     public void signUpBtnMenuBtn (){
-        Intent intent = new Intent(this, MyEventActivity.class);
+        Intent intent = new Intent(this, SignUpActivity.class);
         startActivity(intent);
     }
 
