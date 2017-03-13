@@ -60,7 +60,7 @@ public class IcelandEvents extends AppCompatActivity {
         loadingDisplay.setVisibility(View.INVISIBLE);
         signInAs = (TextView) findViewById(R.id.signInAsIdTextView);
         calendarDate = (EditText) findViewById(R.id.calendarEditTextId);
-        signInAs.setText("Sign In As : ");
+        signInAs.setText("Signed In As : ");
         setDateTimeField();
         requestEvents();
         checkUserInfo();
@@ -86,17 +86,20 @@ public class IcelandEvents extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.menu_sign_in) {
-            signInBtnMenuBtn();
+            Intent intent = new Intent(this, SignInActivity.class);
+            startActivity(intent);
             return true;
         }
 
         if (id == R.id.menu_sign_up){
-            signUpBtnMenuBtn();
+            Intent intent = new Intent(this, SignUpActivity.class);
+            startActivity(intent);
             return true;
         }
 
         if (id == R.id.menu_my_events){
-            myEventsMenuBtn();
+            Intent intent = new Intent(this, MyEventActivity.class);
+            startActivity(intent);
             return true;
         }
 
@@ -170,7 +173,7 @@ public class IcelandEvents extends AppCompatActivity {
         if(UserInfo.isLogin()){
             menu.clear();
             getMenuInflater().inflate(R.menu.menu_when_signed_in, menu);
-            signInAs.setText("Sign In As : "+UserInfo.getUsername());
+            signInAs.setText("Signed in as : "+UserInfo.getUsername());
         }
     }
 
@@ -179,7 +182,7 @@ public class IcelandEvents extends AppCompatActivity {
         if(!UserInfo.isLogin()){
             menu.clear();
             getMenuInflater().inflate(R.menu.menu_iceland_events, menu);
-            signInAs.setText("Sign In As : ");
+            signInAs.setText("");
         }
     }
 
@@ -217,7 +220,7 @@ public class IcelandEvents extends AppCompatActivity {
 
     public  void updateDisplay(){
         if(eventsList.isEmpty()){
-            toastMsg("No event were found");
+            toastMsg("No events were found");
             calendarDate.setText("");
         }else {
             EventAdapter eventAdapter = new EventAdapter(this, R.layout.event_layout, eventsList);
@@ -225,20 +228,6 @@ public class IcelandEvents extends AppCompatActivity {
         }
     }
 
-    public void signInBtnMenuBtn (){
-        Intent intent = new Intent(this, SignInActivity.class);
-        startActivity(intent);
-    }
-
-    public void signUpBtnMenuBtn (){
-        Intent intent = new Intent(this, MyEventActivity.class);
-        startActivity(intent);
-    }
-
-    public void myEventsMenuBtn (){
-        Intent intent = new Intent(this, MyEventActivity.class);
-        startActivity(intent);
-    }
 
     private void checkUserInfo(){
         Log.d("checkUserInfo ","form inn í");

@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hbv2.icelandevents.Entities.Event;
+import com.hbv2.icelandevents.ExtraUtilities.ConverterTools;
 import com.hbv2.icelandevents.R;
 import com.squareup.picasso.Picasso;
 
@@ -48,7 +49,7 @@ public class EventAdapter extends ArrayAdapter<Event> {
         ImageView eventImg = (ImageView) view.findViewById(R.id.eventImageView);
 
         name.setText(event.getName());
-        date.setText(event.getDate());
+        date.setText(ConverterTools.toDateFormat(event.getDate()));
         time.setText(event.getTime());
         Picasso.with(context).load(event.getImageurl()).into(eventImg);
 
