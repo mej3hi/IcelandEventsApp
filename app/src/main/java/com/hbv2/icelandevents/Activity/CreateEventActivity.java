@@ -149,7 +149,7 @@ public class CreateEventActivity extends AppCompatActivity implements Validator.
             cursor.close();
 
             event.setImageurl(filePath);
-            textImageUrl.setText(filePath);
+            textImageUrl.setText(filePath.replaceAll(".+/(.*)$","$1"));
         }
     }
 
