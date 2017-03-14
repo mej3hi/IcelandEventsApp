@@ -97,8 +97,7 @@
                 android:id="@+id/imageUrlText"
                 android:layout_below="@+id/upImageBtn"
 
-                android:layout_centerHorizontal="true"
-                android:text="aaaaaaaaa" />
+                android:layout_centerHorizontal="true" />
 
             <RadioGroup
                 android:layout_width="fill_parent"
