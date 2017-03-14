@@ -1,15 +1,13 @@
 package com.hbv2.icelandevents.Activity;
 
-import android.content.DialogInterface;
+
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.hbv2.icelandevents.ExtraUtilities.PopUpMsg;
 import com.hbv2.icelandevents.HttpRequest.HttpRequestForgetPassword;
@@ -68,7 +66,6 @@ public class ForgotPasswordActivity extends AppCompatActivity implements Validat
         }
     }
 
-
     @Override
     public void onValidationSucceeded() {
             sendMail();
@@ -92,7 +89,9 @@ public class ForgotPasswordActivity extends AppCompatActivity implements Validat
             startActivity(intent);
         }
         else if(response.getCode() == 200 && response.getMsg().equals("invalid_email")){
-            PopUpMsg.toastMsg("Invalid email",this);
+            EditText failed = emailText;
+            failed.requestFocus();
+            failed.setError("Invalid email");
         }
         else{
             String title ="Something went wrong";

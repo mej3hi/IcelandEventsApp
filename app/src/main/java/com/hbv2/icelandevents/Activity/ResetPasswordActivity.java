@@ -1,15 +1,11 @@
 package com.hbv2.icelandevents.Activity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.hbv2.icelandevents.ExtraUtilities.PopUpMsg;
 import com.hbv2.icelandevents.HttpRequest.HttpRequestResetPassword;
@@ -43,7 +39,6 @@ public class ResetPasswordActivity extends AppCompatActivity implements Validato
 
     private Validator validator;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +51,6 @@ public class ResetPasswordActivity extends AppCompatActivity implements Validato
 
         validator = new Validator(this);
         validator.setValidationListener(this);
-
     }
 
     @Override
@@ -107,17 +101,22 @@ public class ResetPasswordActivity extends AppCompatActivity implements Validato
     @Subscribe
     public void onResetPassword(HttpResponseMsg response) {
         if(response.getCode() == 200 && response.getMsg().equals("ok")){
-            Intent intent = new Intent(ResetPasswordActivity.this,SignInActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
-
+            redirectToSignIn();
         }else if(response.getCode() == 200 && response.getMsg().equals("token_expires")){
-            PopUpMsg.toastMsg("The request has already been expires.",this);
+            EditText failed = confirmCode;
+            failed.requestFocus();
+            failed.setError("The token has already been expires. Request a new one");
         }else{
             String title ="Something went wrong";
             String msg = "Something went wrong with the Reset password, please try again";
             PopUpMsg.dialogMsg(title,msg,this);
         }
+    }
+
+    public void redirectToSignIn(){
+        Intent intent = new Intent(ResetPasswordActivity.this,SignInActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
     }
 
 }

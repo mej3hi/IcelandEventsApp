@@ -60,7 +60,6 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
         name = (EditText) findViewById(R.id.nameEditTextId);
         email = (EditText) findViewById(R.id.emailEditTextId);
         username = (EditText) findViewById(R.id.usernameEditTextId);
@@ -69,7 +68,6 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
 
         validator = new Validator(this);
         validator.setValidationListener(this);
-
     }
 
    @Override
@@ -134,10 +132,8 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
         }
     }
 
-
     public void signUpBtnOnClick (View v){
             validator.validate();
     }
-
 
 }

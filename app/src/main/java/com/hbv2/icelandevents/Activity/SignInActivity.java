@@ -1,19 +1,13 @@
 package com.hbv2.icelandevents.Activity;
 
-
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
-
 
 import com.hbv2.icelandevents.ExtraUtilities.PopUpMsg;
 import com.hbv2.icelandevents.HttpRequest.HttpRequestSignIn;
@@ -22,23 +16,15 @@ import com.hbv2.icelandevents.R;
 import com.hbv2.icelandevents.Service.NetworkChecker;
 import com.hbv2.icelandevents.StoreUser;
 
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-
-
-
 public class SignInActivity extends AppCompatActivity {
-
 
     private EditText username;
     private EditText password;
     private TextView errorMsg;
     private Button skipBtn;
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,13 +33,11 @@ public class SignInActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
         username = (EditText) findViewById(R.id.usernameEditText);
         password = (EditText) findViewById(R.id.passwordEditText);
         errorMsg = (TextView) findViewById(R.id.errorMsgTextViewId);
         skipBtn = (Button) findViewById(R.id.skipBtnId);
         skipBtnVisibility();
-
     }
 
     @Override

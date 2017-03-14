@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +18,7 @@ import android.widget.TextView;
 import com.hbv2.icelandevents.Adapter.EventAdapter;
 import com.hbv2.icelandevents.Entities.Event;
 import com.hbv2.icelandevents.Entities.UserInfo;
+import com.hbv2.icelandevents.ExtraUtilities.ConverterTools;
 import com.hbv2.icelandevents.ExtraUtilities.PopUpMsg;
 import com.hbv2.icelandevents.HttpRequest.HttpRequestEvent;
 import com.hbv2.icelandevents.HttpResponse.HttpResponseEvent;
@@ -31,10 +31,9 @@ import com.hbv2.icelandevents.StoreUser;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
+
 
 
 public class IcelandEvents extends AppCompatActivity {
@@ -109,10 +108,8 @@ public class IcelandEvents extends AppCompatActivity {
             return true;
         }
 
-
         return super.onOptionsItemSelected(item);
     }
-
 
     @Override
     public void onStart() {
@@ -121,9 +118,7 @@ public class IcelandEvents extends AppCompatActivity {
         requestEvents();
         userSignedInMenu();
         checkUserInfo();
-
     }
-
 
     @Override
     protected void onPause() {
@@ -133,18 +128,13 @@ public class IcelandEvents extends AppCompatActivity {
 
     private void setDateTimeField(){
         calendar = Calendar.getInstance();
-        final int day = calendar.get(Calendar.DAY_OF_MONTH);
-        final int month = calendar.get(Calendar.MONTH);
-        final int year = calendar.get(Calendar.YEAR);
-
         date = new DatePickerDialog.OnDateSetListener(){
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 calendar.set(Calendar.YEAR,year);
                 calendar.set(Calendar.MONTH,month);
                 calendar.set(Calendar.DAY_OF_MONTH,day);
-                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
-                calendarDate.setText(sdf.format(calendar.getTime()));
+                calendarDate.setText(ConverterTools.toDateFormat(calendar));
                 requestEventsByDate(calendarDate.getText().toString());
             }
         };
@@ -152,14 +142,12 @@ public class IcelandEvents extends AppCompatActivity {
         calendarDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new DatePickerDialog(IcelandEvents.this,date, year, month,
-                        day).show();
+                new DatePickerDialog(IcelandEvents.this,date, calendar.get(Calendar.YEAR),
+                        calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
-
     }
-
-
 
     @Subscribe
     public void onAutoLogin(HttpResponseMsg response){
@@ -188,7 +176,6 @@ public class IcelandEvents extends AppCompatActivity {
         }
     }
 
-
     @Subscribe
     public void onEvent(HttpResponseEvent event) {
         loadingDisplay.setVisibility(View.INVISIBLE);
@@ -212,7 +199,7 @@ public class IcelandEvents extends AppCompatActivity {
             loadingDisplay.setVisibility(View.VISIBLE);
             new HttpRequestEvent().indexGet();
         }else{
-            PopUpMsg.toastMsg("Cannot get Event no network isn't available",this);
+            PopUpMsg.toastMsg("Network isn't available",this);
         }
     }
 
@@ -221,7 +208,7 @@ public class IcelandEvents extends AppCompatActivity {
             loadingDisplay.setVisibility(View.VISIBLE);
             new HttpRequestEvent().calanderGet(day);
         }else{
-            PopUpMsg.toastMsg("Cannot get choose day no network isn't available",this);
+            PopUpMsg.toastMsg("Network isn't available",this);
         }
     }
 
@@ -229,7 +216,6 @@ public class IcelandEvents extends AppCompatActivity {
         EventAdapter eventAdapter = new EventAdapter(this, R.layout.event_layout, eventsList);
         eventListView.setAdapter(eventAdapter);
     }
-
 
     private void checkUserInfo(){
         if(!NetworkChecker.isOnline(this)) {
@@ -245,17 +231,13 @@ public class IcelandEvents extends AppCompatActivity {
         }
     }
 
-
     private void setListener(){
-
         mainTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("ná í event aftur","Iclendevent");
                 requestEvents();
             }
         });
-
     }
 
 }

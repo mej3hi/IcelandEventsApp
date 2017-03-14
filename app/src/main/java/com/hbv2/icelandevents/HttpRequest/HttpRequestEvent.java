@@ -39,8 +39,6 @@ public class HttpRequestEvent {
      * It get the main Event.
      */
      public void indexGet(){
-        Log.d("indexController","það tókst");
-
         EventAPI eventAPI = ServiceGenerator.createService(EventAPI.class);
         Call<List<Event>> call = eventAPI.getIndex();
 
@@ -55,7 +53,6 @@ public class HttpRequestEvent {
             @Override
             public void onFailure(Call<List<Event>> call, Throwable t) {
                 System.out.println("Failure :" +t);
-                System.out.println("Failure call :" +call);
                 List<Event> empty = new ArrayList<Event>();
                 EventBus.getDefault().post(new HttpResponseEvent(empty,500));
 
@@ -69,7 +66,6 @@ public class HttpRequestEvent {
      * @param day Is the day to look for.
      */
     public void calanderGet(String day){
-
         EventAPI eventAPI = ServiceGenerator.createService(EventAPI.class);
         Call<List<Event>> call = eventAPI.getCalander(day);
 
@@ -84,10 +80,8 @@ public class HttpRequestEvent {
             @Override
             public void onFailure(Call<List<Event>> call, Throwable t) {
                 System.out.println("Failure :" +t);
-                System.out.println("Failure call :" +call);
                 List<Event> empty = new ArrayList<Event>();
                 EventBus.getDefault().post(new HttpResponseEvent(empty,500));
-
             }
         });
     }
