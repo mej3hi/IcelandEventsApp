@@ -1,8 +1,6 @@
 package com.hbv2.icelandevents.Activity;
 
-import android.content.Context;
 import android.content.DialogInterface;
-import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +11,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.hbv2.icelandevents.Entities.User;
-import com.hbv2.icelandevents.HttpRequest.HttpRequestSignIn;
 import com.hbv2.icelandevents.HttpRequest.HttpRequestSignUp;
 import com.hbv2.icelandevents.HttpResponse.HttpResponseMsg;
 import com.hbv2.icelandevents.R;
@@ -37,26 +34,26 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
 
     @Required(order = 1)
     @TextRule(order = 2, minLength = 6, maxLength = 32, message = "Please use between 6 and 32 characters.")
-    EditText name;
+    private EditText name;
 
     @Required(order = 3)
     @Regex(order = 4, pattern = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$",
                       message = "Please use format email@exmple.com.")
     @TextRule(order = 5, minLength = 6, maxLength = 32, message = "Please use between 6 and 32 characters.")
-    EditText email;
+    private EditText email;
 
     @Required(order = 6)
     @TextRule(order = 7, minLength = 6, maxLength = 32, message = "Please use between 6 and 32 characters.")
-    EditText username;
+    private EditText username;
 
     @Required(order = 8)
     @Password(order = 9)
     @TextRule(order = 10, minLength = 8, maxLength = 32, message = "Please use between 6 and 32 characters.")
-    EditText password;
+    private EditText password;
 
     @Required(order = 11)
     @ConfirmPassword(order = 12)
-    EditText passwordConf;
+    private EditText passwordConf;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
