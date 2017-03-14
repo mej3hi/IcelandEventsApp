@@ -23,6 +23,7 @@ import com.google.gson.Gson;
 import com.hbv2.icelandevents.Entities.Event;
 import com.hbv2.icelandevents.Entities.UserInfo;
 import com.hbv2.icelandevents.ExtraUtilities.ConverterTools;
+import com.hbv2.icelandevents.ExtraUtilities.PopUpMsg;
 import com.hbv2.icelandevents.HttpRequest.HttpRequestEvent;
 import com.hbv2.icelandevents.HttpResponse.HttpResponseMsg;
 import com.hbv2.icelandevents.R;
@@ -286,13 +287,13 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
     @Subscribe
     public void onEditEvent(HttpResponseMsg response){
         if(response.getCode() == 200 && !response.getMsg().matches("(?i).*error.*")){
-            Toast.makeText(getApplicationContext(), response.getMsg(), Toast.LENGTH_LONG).show();
+            PopUpMsg.toastMsg(response.getMsg(),this);
             finish();
         }else if(response.getCode() == 401) {
-            Toast.makeText(getApplicationContext(), "Your session has expired, please sign in", Toast.LENGTH_LONG).show();
+            PopUpMsg.toastMsg("Your session has expired, please sign in", this);
             redirectToSignIn();
         }else
-            Toast.makeText(getApplicationContext(), "Something went wrong, pleade try again", Toast.LENGTH_LONG).show();
+            PopUpMsg.toastMsg("Something went wrong, please try again", this);
     }
 
     private void redirectToSignIn(){
