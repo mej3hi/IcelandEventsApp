@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.hbv2.icelandevents.Entities.Event;
+import com.hbv2.icelandevents.Entities.UserInfo;
 import com.hbv2.icelandevents.HttpRequest.HttpRequestEvent;
 import com.hbv2.icelandevents.HttpResponse.HttpResponseMsg;
 import com.hbv2.icelandevents.R;
@@ -40,31 +41,32 @@ import java.util.Date;
 import java.util.Locale;
 
 public class EditEventActivity extends AppCompatActivity implements Validator.ValidationListener{
-    Event event;
+    private Event event;
+    private TextView signInAs;
 
     @Required(order = 1)
     @TextRule(order = 2, minLength = 3, maxLength = 32, message = "Please use between 3 and 32 characters.")
-    EditText eventName;
+    private EditText eventName;
 
     @Required(order = 3)
     @TextRule(order = 4, minLength = 3, maxLength = 32, message = "Please use between 3 and 32 characters.")
-    EditText eventLocation;
+    private EditText eventLocation;
 
     @Required(order = 6)
     @TextRule(order = 7, minLength = 3, maxLength = 250, message = "Please use between 3 and 250 characters.")
-    EditText eventDescription;
+    private EditText eventDescription;
 
     @Required(order = 8)
     @Regex( order = 9, pattern = "([01]?[0-9]|2[0-3]):[0-5][0-9]", message = "Please use hh:mm with 24 format.")
-    EditText eventTime;
+    private EditText eventTime;
 
     @Required(order = 10)
-    EditText eventDate;
+    private EditText eventDate;
 
-    TextView imageUrl;
+    private TextView imageUrl;
 
-    Validator validator;
-    Calendar calendar = Calendar.getInstance();
+    private Validator validator;
+    private Calendar calendar = Calendar.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +83,9 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
 
         validator = new Validator(this);
         validator.setValidationListener(this);
+
+        signInAs = (TextView) findViewById(R.id.signInAsIdTextView);
+        signInAs.setText("Signed in as : "+ UserInfo.getUsername());
 
         getEvent();
         setFields();

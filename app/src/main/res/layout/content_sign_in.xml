@@ -36,6 +36,7 @@
             android:onClick="skipOnClick"
             android:layout_below="@+id/signInBtnActId"
             android:layout_alignStart="@+id/signInBtnActId"
+            android:layout_marginTop="15dp"
             android:visibility="invisible" />
 
         <EditText
@@ -78,7 +79,7 @@
             android:layout_marginTop="35dp"
             android:id="@+id/forgotPasswBtnId"
             android:onClick="forgotPasswBtn"
-            android:layout_below="@+id/signInBtnActId"
+            android:layout_below="@+id/skipBtnId"
             android:layout_centerHorizontal="true" />
 
         <TextView
