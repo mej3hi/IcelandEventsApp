@@ -15,6 +15,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,7 +56,8 @@ public class HttpRequestEvent {
             public void onFailure(Call<List<Event>> call, Throwable t) {
                 System.out.println("Failure :" +t);
                 System.out.println("Failure call :" +call);
-                EventBus.getDefault().post(new HttpResponseEvent(null,500));
+                List<Event> empty = new ArrayList<Event>();
+                EventBus.getDefault().post(new HttpResponseEvent(empty,500));
 
             }
         });
@@ -83,6 +85,8 @@ public class HttpRequestEvent {
             public void onFailure(Call<List<Event>> call, Throwable t) {
                 System.out.println("Failure :" +t);
                 System.out.println("Failure call :" +call);
+                List<Event> empty = new ArrayList<Event>();
+                EventBus.getDefault().post(new HttpResponseEvent(empty,500));
 
             }
         });

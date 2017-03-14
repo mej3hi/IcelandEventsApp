@@ -31,6 +31,7 @@ public class HttpRequestSignUp {
             public void onResponse(Call<String> call, Response<String> response) {
                 System.out.println("response raw: " + response.raw());
                 System.out.println("response header:  " + response.headers());
+                System.out.println("response.body(): " +response.body());
                 EventBus.getDefault().post(new HttpResponseMsg(response.body(),response.code()));
             }
 

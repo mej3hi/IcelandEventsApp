@@ -2,7 +2,6 @@ package com.hbv2.icelandevents.HttpRequest;
 
 import com.hbv2.icelandevents.API.UserAPI;
 import com.hbv2.icelandevents.HttpResponse.HttpResponseMsg;
-import com.hbv2.icelandevents.HttpResponse.HttpResponseSignIn;
 import com.hbv2.icelandevents.Service.ServiceGenerator;
 
 import org.greenrobot.eventbus.EventBus;

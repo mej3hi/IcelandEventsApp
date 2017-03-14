@@ -1,13 +1,9 @@
 package com.hbv2.icelandevents.Service;
 
-import android.content.BroadcastReceiver;
+
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-
-/**
- * Created by Martin on 21.2.2017.
- */
 
 public class NetworkChecker{
 

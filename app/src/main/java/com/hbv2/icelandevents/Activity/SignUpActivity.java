@@ -1,16 +1,15 @@
 package com.hbv2.icelandevents.Activity;
 
-import android.content.DialogInterface;
+
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.hbv2.icelandevents.Entities.User;
+import com.hbv2.icelandevents.ExtraUtilities.PopUpMsg;
 import com.hbv2.icelandevents.HttpRequest.HttpRequestSignUp;
 import com.hbv2.icelandevents.HttpResponse.HttpResponseMsg;
 import com.hbv2.icelandevents.R;
@@ -19,8 +18,8 @@ import com.hbv2.icelandevents.StoreUser;
 import com.mobsandgeeks.saripaar.Rule;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.ConfirmPassword;
+import com.mobsandgeeks.saripaar.annotation.Email;
 import com.mobsandgeeks.saripaar.annotation.Password;
-import com.mobsandgeeks.saripaar.annotation.Regex;
 import com.mobsandgeeks.saripaar.annotation.Required;
 import com.mobsandgeeks.saripaar.annotation.TextRule;
 
@@ -37,9 +36,8 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
     private EditText name;
 
     @Required(order = 3)
-    @Regex(order = 4, pattern = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$",
-                      message = "Please use format email@exmple.com.")
-    @TextRule(order = 5, minLength = 6, maxLength = 32, message = "Please use between 6 and 32 characters.")
+    @TextRule(order = 4, minLength = 6, maxLength = 32, message = "Please use between 6 and 32 characters.")
+    @Email(order = 5, message= "Please enter a valid email address.")
     private EditText email;
 
     @Required(order = 6)
@@ -87,45 +85,41 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
     }
 
     @Subscribe
-    public void onSignUp(HttpResponseMsg msg){
-        if(msg.getCode() == 200 && msg.getMsg().equals("ok")){
-            Toast toast = Toast.makeText(this,"Sign Up Success", Toast.LENGTH_LONG);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
+    public void onSignUp(HttpResponseMsg response){
+        if(response.getCode() == 200 && response.getMsg().equals("ok")){
+            PopUpMsg.toastMsg("Sign Up Success",this);
             StoreUser.storeUserInfo(username.getText().toString(),password.getText().toString(),this);
             finish();
         }
-        else if(msg.getCode() == 200 && msg.getMsg().equals("username_exists")) {
+        else if(response.getCode() == 200 && response.getMsg().equals("username_exists")) {
             EditText failed = username;
             failed.requestFocus();
             failed.setError("Username already exists");
         }
         else{
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-            alertDialogBuilder.setTitle("Something went wrong");
-            alertDialogBuilder
-                .setMessage("Something went wrong with the Sign up, please try again")
-                .setCancelable(false)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
+            String title ="Something went wrong";
+            String msg = "Something went wrong with the Sign up, please try again";
+            PopUpMsg.dialogMsg(title,msg,this);
         }
     }
 
+    public void sendSignUp(){
+        if(NetworkChecker.isOnline(this)){
+            User user = new User();
+            user.setName(name.getText().toString());
+            user.setEmail(email.getText().toString());
+            user.setUsername(username.getText().toString());
+            user.setPassword(password.getText().toString());
+            user.setPasswordConfirm(passwordConf.getText().toString());
+            new HttpRequestSignUp().signUpPost(user);
+        }else{
+            PopUpMsg.toastMsg("Network isn't available",this);
+        }
+    }
 
     @Override
     public void onValidationSucceeded() {
-        User user = new User();
-        user.setName(name.getText().toString());
-        user.setEmail(email.getText().toString());
-        user.setUsername(username.getText().toString());
-        user.setPassword(password.getText().toString());
-        user.setPasswordConfirm(passwordConf.getText().toString());
-        new HttpRequestSignUp().signUpPost(user);
+        sendSignUp();
     }
 
     @Override
@@ -142,18 +136,8 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
 
 
     public void signUpBtnOnClick (View v){
-        if(NetworkChecker.isOnline(this)){
             validator.validate();
-        }else{
-            Toast toast = Toast.makeText(this, "Network isn't available",Toast.LENGTH_LONG);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
-        }
     }
-
-
-
-
 
 
 }

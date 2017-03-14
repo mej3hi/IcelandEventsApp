@@ -1,21 +1,19 @@
 package com.hbv2.icelandevents.Activity;
 
-import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.ConnectivityManager;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.hbv2.icelandevents.ExtraUtilities.PopUpMsg;
 import com.hbv2.icelandevents.HttpRequest.HttpRequestForgetPassword;
-import com.hbv2.icelandevents.HttpResponse.HttpResponseEvent;
-import com.hbv2.icelandevents.HttpResponse.HttpResponseForgotPassword;
+import com.hbv2.icelandevents.HttpResponse.HttpResponseMsg;
 import com.hbv2.icelandevents.R;
 import com.hbv2.icelandevents.Service.NetworkChecker;
 import com.mobsandgeeks.saripaar.Rule;
@@ -27,12 +25,11 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 public class ForgotPasswordActivity extends AppCompatActivity implements Validator.ValidationListener{
-    private ConnectivityManager cm;
 
     @Required(order = 1)
     @Email(order = 2, message= "Please enter a valid email address.")
     private EditText emailText;
-    Validator validator;
+    private Validator validator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +38,6 @@ public class ForgotPasswordActivity extends AppCompatActivity implements Validat
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
-
-        cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         emailText = (EditText) findViewById(R.id.emailText);
         validator = new Validator(this);
         validator.setValidationListener(this);
@@ -66,18 +60,18 @@ public class ForgotPasswordActivity extends AppCompatActivity implements Validat
     }
 
     public void sendMail(){
-        String email = emailText.getText().toString();
-        new HttpRequestForgetPassword().forgetPasswordPost(email);
+        if(NetworkChecker.isOnline(this)){
+            String email = emailText.getText().toString();
+            new HttpRequestForgetPassword().forgetPasswordPost(email);
+        }else{
+            PopUpMsg.toastMsg("Network isn't avilable",this);
+        }
     }
 
 
     @Override
     public void onValidationSucceeded() {
-        if(NetworkChecker.isOnline(this)){
             sendMail();
-        }else{
-            Toast.makeText(this, "Network isn't avilable",Toast.LENGTH_LONG).show();
-        }
     }
 
     public void onValidationFailed(View view, Rule<?> rule) {
@@ -87,16 +81,24 @@ public class ForgotPasswordActivity extends AppCompatActivity implements Validat
             failed.requestFocus();
             failed.setError(failureMessage);
         } else {
-            Toast.makeText(getApplicationContext(), failureMessage, Toast.LENGTH_SHORT).show();
+            PopUpMsg.toastMsg(failureMessage,this);
         }
     }
 
     @Subscribe
-    public void onHttp(HttpResponseForgotPassword response) {
-        if(response.getCode() == 200){
+    public void onForgotPassword(HttpResponseMsg response) {
+        if(response.getCode() == 200 && response.getMsg().equals("ok")){
             Intent intent = new Intent(ForgotPasswordActivity.this, ResetPasswordActivity.class);
             startActivity(intent);
         }
-        Log.d("Gögn frá index", "tóskt: " +response.getCode());
+        else if(response.getCode() == 200 && response.getMsg().equals("invalid_email")){
+            PopUpMsg.toastMsg("Invalid email",this);
+        }
+        else{
+            String title ="Something went wrong";
+            String msg = "Something went wrong with the Forgot password, please try again";
+            PopUpMsg.dialogMsg(title,msg,this);
+        }
     }
+
 }

@@ -8,17 +8,9 @@ import com.google.gson.GsonBuilder;
 import com.hbv2.icelandevents.Entities.UserInfo;
 import com.hbv2.icelandevents.HttpRequest.HttpRequestSignIn;
 
-
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-
-/**
- * Created by Martin on 21.2.2017.
- */
 
 public class AutoLogin  {
-
-
 
     /**
      * It will check whether user has create userInfo
@@ -39,7 +31,7 @@ public class AutoLogin  {
             if(temp != ""){
                 userInfoExists = true;
                 userInfo = gson.fromJson(temp,UserInfo.class);
-                UserInfo.setLogin(false);
+                Log.d("AutoLogin",temp);
                 if(UserInfo.getUsername() != "" && UserInfo.getPassword() != ""){
                     new HttpRequestSignIn().autoSignInGet(UserInfo.getUsername(),UserInfo.getPassword());
                 }

@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,17 +14,19 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.hbv2.icelandevents.Adapter.EventAdapter;
 import com.hbv2.icelandevents.Entities.Event;
 import com.hbv2.icelandevents.Entities.UserInfo;
+import com.hbv2.icelandevents.ExtraUtilities.PopUpMsg;
 import com.hbv2.icelandevents.HttpRequest.HttpRequestEvent;
 import com.hbv2.icelandevents.HttpResponse.HttpResponseEvent;
 import com.hbv2.icelandevents.HttpResponse.HttpResponseMsg;
 import com.hbv2.icelandevents.R;
 import com.hbv2.icelandevents.Service.AutoLogin;
 import com.hbv2.icelandevents.Service.NetworkChecker;
+import com.hbv2.icelandevents.StoreUser;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -46,7 +47,7 @@ public class IcelandEvents extends AppCompatActivity {
     private EditText calendarDate;
     private Calendar calendar;
     private DatePickerDialog.OnDateSetListener date;
-
+    private TextView mainTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,19 +56,18 @@ public class IcelandEvents extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        mainTitle = (TextView) toolbar.getChildAt(0);
         eventListView = (ListView) findViewById(R.id.eventListView);
         loadingDisplay = (ProgressBar) findViewById(R.id.LoadingDisplayPB);
         loadingDisplay.setVisibility(View.INVISIBLE);
         signInAs = (TextView) findViewById(R.id.signInAsIdTextView);
         calendarDate = (EditText) findViewById(R.id.calendarEditTextId);
-        signInAs.setText("Signed In As : ");
+
+        UserInfo.setLogin(false);
         setDateTimeField();
-        requestEvents();
-        checkUserInfo();
+        setListener();
+
     }
-
-
-
 
 
     @Override
@@ -104,7 +104,7 @@ public class IcelandEvents extends AppCompatActivity {
         }
 
         if (id == R.id.menu_sign_out){
-            UserInfo.setLogin(false);
+            StoreUser.skipUserInfo(this);
             userSignOutMenu();
             return true;
         }
@@ -118,7 +118,10 @@ public class IcelandEvents extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
+        requestEvents();
         userSignedInMenu();
+        checkUserInfo();
+
     }
 
 
@@ -153,7 +156,7 @@ public class IcelandEvents extends AppCompatActivity {
                         day).show();
             }
         });
-        //calendarDate.setText(day+"/"+month+"/"+year);
+
     }
 
 
@@ -165,7 +168,7 @@ public class IcelandEvents extends AppCompatActivity {
             userSignedInMenu();
         }
         else{
-            toastMsg("Could not auto login");
+            PopUpMsg.toastMsg("Could not auto login",this);
         }
     }
 
@@ -178,7 +181,6 @@ public class IcelandEvents extends AppCompatActivity {
     }
 
     public void userSignOutMenu(){
-        Log.d("listinn: ",""+eventsList.size());
         if(!UserInfo.isLogin()){
             menu.clear();
             getMenuInflater().inflate(R.menu.menu_iceland_events, menu);
@@ -189,14 +191,19 @@ public class IcelandEvents extends AppCompatActivity {
 
     @Subscribe
     public void onEvent(HttpResponseEvent event) {
-        Log.d("Iceland Events: ", "Er i iceland events");
         loadingDisplay.setVisibility(View.INVISIBLE);
         if(event.getCode() == 200){
-        eventsList = event.getListEvent();
-        updateDisplay();
+            eventsList = event.getListEvent();
+
+            if(eventsList.isEmpty()){
+                PopUpMsg.toastMsg("No events were found",this);
+                calendarDate.setText("");
+            }else {
+                updateDisplay();
+            }
         }
         else {
-            toastMsg("Something went wrong trying get the Event");
+            PopUpMsg.toastMsg("Something went wrong trying get the Event",this);
         }
     }
 
@@ -205,7 +212,7 @@ public class IcelandEvents extends AppCompatActivity {
             loadingDisplay.setVisibility(View.VISIBLE);
             new HttpRequestEvent().indexGet();
         }else{
-            toastMsg("Cannot get Event no network isn't available");
+            PopUpMsg.toastMsg("Cannot get Event no network isn't available",this);
         }
     }
 
@@ -214,39 +221,41 @@ public class IcelandEvents extends AppCompatActivity {
             loadingDisplay.setVisibility(View.VISIBLE);
             new HttpRequestEvent().calanderGet(day);
         }else{
-            toastMsg("Cannot get choose day no network isn't available");
+            PopUpMsg.toastMsg("Cannot get choose day no network isn't available",this);
         }
     }
 
     public  void updateDisplay(){
-        if(eventsList.isEmpty()){
-            toastMsg("No events were found");
-            calendarDate.setText("");
-        }else {
-            EventAdapter eventAdapter = new EventAdapter(this, R.layout.event_layout, eventsList);
-            eventListView.setAdapter(eventAdapter);
-        }
+        EventAdapter eventAdapter = new EventAdapter(this, R.layout.event_layout, eventsList);
+        eventListView.setAdapter(eventAdapter);
     }
 
 
     private void checkUserInfo(){
-        Log.d("checkUserInfo ","form inn í");
-
         if(!NetworkChecker.isOnline(this)) {
-            toastMsg("Cannot autoLogin network isn't available");
+            PopUpMsg.toastMsg("Cannot autoLogin network isn't available",this);
         }
 
-        if(!AutoLogin.checkUserInfo(this)) {
-            Intent intent = new Intent(this, SignInActivity.class);
-            intent.putExtra("SKIP_VISIBLE", true);
-            startActivity(intent);
+        if(!UserInfo.isLogin()) {
+            if (!AutoLogin.checkUserInfo(this)) {
+                Intent intent = new Intent(this, SignInActivity.class);
+                intent.putExtra("SKIP_VISIBLE", true);
+                startActivity(intent);
+            }
         }
     }
 
-    public void toastMsg(String msg){
-        Toast toast = Toast.makeText(this, msg, Toast.LENGTH_LONG);
-        toast.setGravity(Gravity.CENTER, 0, 0);
-        toast.show();
+
+    private void setListener(){
+
+        mainTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("ná í event aftur","Iclendevent");
+                requestEvents();
+            }
+        });
+
     }
 
 }

@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.hbv2.icelandevents.ExtraUtilities.PopUpMsg;
 import com.hbv2.icelandevents.HttpRequest.HttpRequestSignIn;
 import com.hbv2.icelandevents.HttpResponse.HttpResponseMsg;
 import com.hbv2.icelandevents.R;
@@ -68,31 +69,19 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     @Subscribe
-    public void onSignIn(HttpResponseMsg msg){
-        if(msg.getCode() == 200){
-            Toast toast = Toast.makeText(this,"Sign In Success", Toast.LENGTH_LONG);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
+    public void onSignIn(HttpResponseMsg response){
+        if(response.getCode() == 200 && response.getMsg().equals("ok")){
+            PopUpMsg.toastMsg("Sign In Success",this);
             StoreUser.storeUserInfo(username.getText().toString(),password.getText().toString(),this);
             finish();
         }
-        else if(msg.getCode() == 401 ){
+        else if(response.getCode() == 401 ){
             errorMsg.setText("Username or Password are wrong");
         }
         else{
-            System.out.println("MSG "+msg.getCode());
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-            alertDialogBuilder.setTitle("Something went wrong");
-            alertDialogBuilder
-                    .setMessage("Something went wrong with the Sign in, please try again")
-                    .setCancelable(false)
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
-                        }
-                    });
-            AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
+            String title = "Something went wrong";
+            String msg = "Something went wrong with the Sign in, please try again";
+            PopUpMsg.dialogMsg(title,msg,this);
         }
     }
 
@@ -102,15 +91,17 @@ public class SignInActivity extends AppCompatActivity {
         }
     }
 
-    public void signInOnClick(View v){
+    public void sendSignIn(){
         errorMsg.setText("");
         if(NetworkChecker.isOnline(this)){
             new HttpRequestSignIn().signInGet(username.getText().toString(),password.getText().toString());
         }else{
-            Toast toast = Toast.makeText(this,"Network isn't available",Toast.LENGTH_LONG);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
+            PopUpMsg.toastMsg("Network isn't available",this);
         }
+    }
+
+    public void signInOnClick(View v){
+        sendSignIn();
     }
 
     public void skipOnClick(View v){

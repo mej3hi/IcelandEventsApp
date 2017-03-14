@@ -7,14 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.hbv2.icelandevents.Entities.UserInfo;
 
-
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.lang.reflect.Modifier;
-
-/**
- * Created by Martin on 21.2.2017.
- */
 
 public class StoreUser {
 
@@ -29,10 +22,11 @@ public class StoreUser {
 
     private static void storeUser(String username, String password, boolean login, Context base){
         Gson gson = new GsonBuilder().excludeFieldsWithModifiers().create();
-        UserInfo.setPassword(username);
-        UserInfo.setUsername(password);
-        UserInfo.setLogin(login);
+        UserInfo.setPassword(password);
+        UserInfo.setUsername(username);
+        UserInfo.setLogin(false);
         String userInfo = gson.toJson(new UserInfo());
+        UserInfo.setLogin(login);
         FileOutputStream outputStream;
         try {
             Log.d("User info StoreUser",userInfo);

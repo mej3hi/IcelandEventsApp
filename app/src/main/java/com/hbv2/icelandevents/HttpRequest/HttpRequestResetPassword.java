@@ -1,7 +1,7 @@
 package com.hbv2.icelandevents.HttpRequest;
 
 import com.hbv2.icelandevents.API.UserAPI;
-import com.hbv2.icelandevents.HttpResponse.HttpResponseResetPassword;
+import com.hbv2.icelandevents.HttpResponse.HttpResponseMsg;
 import com.hbv2.icelandevents.Service.ServiceGenerator;
 
 import org.greenrobot.eventbus.EventBus;
@@ -22,23 +22,24 @@ public class HttpRequestResetPassword {
      * @param token Is the token for that user.
      * @param password Is the password that user create.
      */
-    public void resetPasswordPost(String token,String password){
+    public void resetPasswordPost(String token,String password,String passwordConf){
 
         UserAPI userAPI = ServiceGenerator.createService(UserAPI.class);
-        Call<Void> call = userAPI.resetPassword(token, password);
+        Call<String> call = userAPI.resetPassword(token,password,passwordConf);
 
-        call.enqueue(new Callback<Void>() {
+        call.enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
+            public void onResponse(Call<String> call, Response<String> response) {
                 System.out.println("response raw: " + response.raw());
                 System.out.println("response header:  " + response.headers());
-                EventBus.getDefault().post(new HttpResponseResetPassword(response.code()));
+                EventBus.getDefault().post(new HttpResponseMsg(response.body(),response.code()));
 
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+            public void onFailure(Call<String> call, Throwable t) {
                 System.out.println("Failuress :" +t);
+                EventBus.getDefault().post(new HttpResponseMsg("",500));
 
             }
         });

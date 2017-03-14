@@ -21,9 +21,10 @@ public interface UserAPI  {
     @POST("/m/signUp")
     Call<String> postSignUp(@Body User userForm);
 
-    @GET("/m/forgetPassword")
-    Call<Void> forgetPassword(@Query("email") String email);
+    @POST("/m/forgetPassword")
+    Call<String> forgetPassword(@Query("email") String email);
 
-    @GET("/m/resetPassword")
-    Call<Void> resetPassword(@Query("token") String token, @Query("password") String password);
+    @POST("/m/resetPassword")
+    Call<String> resetPassword(@Query("token") String token, @Query("password") String password,
+                             @Query("passwordConfirm") String passwordConf);
 }
