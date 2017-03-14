@@ -1,8 +1,6 @@
 package com.hbv2.icelandevents.Activity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -34,7 +32,6 @@ public class MyEventActivity extends AppCompatActivity {
     private List<Event> eventsList;
     private ListView eventListView;
     private ProgressBar loadingDisplay;
-    private TextView signInAs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +44,7 @@ public class MyEventActivity extends AppCompatActivity {
         loadingDisplay = (ProgressBar) findViewById(R.id.LoadingDisplayME);
         loadingDisplay.setVisibility(View.INVISIBLE);
 
-        signInAs = (TextView) findViewById(R.id.signInAsIdTextView);
+        TextView signInAs = (TextView) findViewById(R.id.signInAsIdTextView);
         signInAs.setText("Signed in as : "+UserInfo.getUsername());
 
         eventListView.setOnItemClickListener(itemClickListener);
@@ -63,7 +60,7 @@ public class MyEventActivity extends AppCompatActivity {
             String parsed = gson.toJson(event);
             intent.putExtra("EVENT_NAME",parsed);
 
-            startActivityForResult(intent,1728);
+            startActivity(intent);
         }
     };
     @Override
@@ -97,13 +94,11 @@ public class MyEventActivity extends AppCompatActivity {
 
     }
 
-
     @Override
     public void onStop() {
         EventBus.getDefault().unregister(this);
         super.onStop();
     }
-
 
     private void requestEvents(){
         loadingDisplay.setVisibility(View.VISIBLE);
@@ -120,13 +115,12 @@ public class MyEventActivity extends AppCompatActivity {
         Log.d("Gögn frá index", "tóskt");
     }
 
-    public  void updateDisplay(){
+    private  void updateDisplay(){
         EventAdapter eventAdapter = new EventAdapter(this, R.layout.event_layout, eventsList);
         eventListView.setAdapter(eventAdapter);
     }
 
-
-    public void getEvents() {
+    private void getEvents() {
         System.out.println("btnGetEvent");
         if(NetworkChecker.isOnline(this)){
             requestEvents();
@@ -140,13 +134,4 @@ public class MyEventActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == 1728){
-            if(resultCode == RESULT_OK){
-                if(data.getBooleanExtra("result",false))
-                    Log.d("onactivity: ","");
-            }
-        }
-    }
 }

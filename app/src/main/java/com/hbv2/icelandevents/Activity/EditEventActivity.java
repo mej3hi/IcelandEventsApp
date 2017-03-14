@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -23,6 +22,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.hbv2.icelandevents.Entities.Event;
 import com.hbv2.icelandevents.Entities.UserInfo;
+import com.hbv2.icelandevents.ExtraUtilities.ConverterTools;
 import com.hbv2.icelandevents.HttpRequest.HttpRequestEvent;
 import com.hbv2.icelandevents.HttpResponse.HttpResponseMsg;
 import com.hbv2.icelandevents.R;
@@ -35,38 +35,35 @@ import com.mobsandgeeks.saripaar.annotation.TextRule;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 
 public class EditEventActivity extends AppCompatActivity implements Validator.ValidationListener{
     private Event event;
-    private TextView signInAs;
 
     @Required(order = 1)
     @TextRule(order = 2, minLength = 3, maxLength = 32, message = "Please use between 3 and 32 characters.")
-    private EditText eventName;
+    private EditText textName;
 
     @Required(order = 3)
     @TextRule(order = 4, minLength = 3, maxLength = 32, message = "Please use between 3 and 32 characters.")
-    private EditText eventLocation;
+    private EditText textLocation;
 
     @Required(order = 6)
     @TextRule(order = 7, minLength = 3, maxLength = 250, message = "Please use between 3 and 250 characters.")
-    private EditText eventDescription;
+    private EditText textDescription;
 
     @Required(order = 8)
     @Regex( order = 9, pattern = "([01]?[0-9]|2[0-3]):[0-5][0-9]", message = "Please use hh:mm with 24 format.")
-    private EditText eventTime;
+    private EditText textTime;
 
     @Required(order = 10)
-    private EditText eventDate;
+    private EditText textDate;
 
-    private TextView imageUrl;
+    private TextView textImageUrl;
 
     private Validator validator;
     private Calendar calendar = Calendar.getInstance();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,50 +71,68 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        eventName = (EditText) findViewById(R.id.eventNameText);
-        eventLocation = (EditText) findViewById(R.id.locationText);
-        eventDescription = (EditText) findViewById(R.id.descriptionText);
-        eventTime = (EditText) findViewById(R.id.timeText);
-        eventDate = (EditText) findViewById(R.id.dateText);
-        imageUrl = (TextView) findViewById(R.id.imageUrlText);
+        textName = (EditText) findViewById(R.id.eventNameText);
+        textLocation = (EditText) findViewById(R.id.locationText);
+        textDescription = (EditText) findViewById(R.id.descriptionText);
+        textTime = (EditText) findViewById(R.id.timeText);
+        textDate = (EditText) findViewById(R.id.dateText);
+        textImageUrl = (TextView) findViewById(R.id.imageUrlText);
 
         validator = new Validator(this);
         validator.setValidationListener(this);
 
-        signInAs = (TextView) findViewById(R.id.signInAsIdTextView);
+        TextView signInAs = (TextView) findViewById(R.id.signInAsIdTextView);
         signInAs.setText("Signed in as : "+ UserInfo.getUsername());
 
         getEvent();
         setFields();
+        setDateField();
+        setTimeField();
+    }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    private void setDateField(){
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener(){
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 calendar.set(Calendar.YEAR,year);
                 calendar.set(Calendar.MONTH,month);
                 calendar.set(Calendar.DAY_OF_MONTH,day);
-                updateLabel();
+                textDate.setText(ConverterTools.toDateFormat(calendar));
             }
         };
 
-        eventDate.setOnClickListener(new View.OnClickListener() {
+        textDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 new DatePickerDialog(EditEventActivity.this,date, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
                         calendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
+    }
 
+    private void setTimeField(){
         final TimePickerDialog.OnTimeSetListener time =  new TimePickerDialog.OnTimeSetListener(){
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                 calendar.set(Calendar.MINUTE, minute);
-                updateFieldTime();
+                textTime.setText(ConverterTools.toTimeFormat(calendar));
             }
         };
 
-        eventTime.setOnClickListener(new View.OnClickListener(){
+        textTime.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 new TimePickerDialog(EditEventActivity.this,time, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE),true).show();
@@ -129,29 +144,16 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
         String parsed = getIntent().getStringExtra("EVENT_NAME");
         Gson gson = new Gson();
         event = gson.fromJson(parsed,Event.class);
-        Log.d("EventName: ", event.getName());
     }
 
     private void setFields(){
-        eventName.setText(event.getName());
-        eventLocation.setText(event.getLocation());
-        eventDescription.setText(event.getDescription());
-        eventTime.setText(event.getTime());
-        eventDate.setText(toDateFormat(event.getDate()));
-        imageUrl.setText(event.getImageurl().replaceAll(".+/(.*)$","$1"));
+        textName.setText(event.getName());
+        textLocation.setText(event.getLocation());
+        textDescription.setText(event.getDescription());
+        textTime.setText(event.getTime());
+        textDate.setText(ConverterTools.toDateFormat(event.getDate()));
+        textImageUrl.setText(event.getImageurl().replaceAll(".+/(.*)$","$1"));
         radioButtonSet(event.getMusicgenres());
-    }
-
-    private void updateFieldTime(){
-        String timeFormat = "HH:mm";
-        SimpleDateFormat sdf = new SimpleDateFormat(timeFormat, Locale.US);
-        eventTime.setText(sdf.format(calendar.getTime()));
-    }
-
-    private void updateLabel(){
-        String myFormat = "dd/MM/yyyy";
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-        eventDate.setText(sdf.format(calendar.getTime()));
     }
 
     public void upImageBtnOnclick(View view) {
@@ -177,25 +179,25 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
             cursor.close();
 
             event.setImageurl(filePath);
-            imageUrl.setText(filePath);
+            textImageUrl.setText(filePath.replaceAll(".+/(.*)$","$1"));
         }
     }
 
     @Override
     public void onValidationSucceeded() {
-        String name = eventName.getText().toString();
+        String name = textName.getText().toString();
         event.setName(name);
 
-        String location = eventLocation.getText().toString();
+        String location = textLocation.getText().toString();
         event.setLocation(location);
 
-        String description = eventDescription.getText().toString();
+        String description = textDescription.getText().toString();
         event.setDescription(description);
 
-        String time = eventTime.getText().toString();
+        String time = textTime.getText().toString();
         event.setTime(time);
 
-        String date = eventDate.getText().toString();
+        String date = textDate.getText().toString();
         event.setDate(date);
 
         event.setMusicgenres(getRadioBtnValue());
@@ -281,36 +283,21 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
         return selected.getText().toString();
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void onStop() {
-        EventBus.getDefault().unregister(this);
-        super.onStop();
-    }
-
     @Subscribe
     public void onEditEvent(HttpResponseMsg response){
-        if(response.getCode() == 200){
+        if(response.getCode() == 200 && !response.getMsg().matches("(?i).*error.*")){
             Toast.makeText(getApplicationContext(), response.getMsg(), Toast.LENGTH_LONG).show();
-            goBack();
-        }
+            finish();
+        }else if(response.getCode() == 401) {
+            Toast.makeText(getApplicationContext(), "Your session has expired, please sign in", Toast.LENGTH_LONG).show();
+            redirectToSignIn();
+        }else
+            Toast.makeText(getApplicationContext(), "Something went wrong, pleade try again", Toast.LENGTH_LONG).show();
     }
 
-    private void goBack(){
-        Intent returnIntent = new Intent();
-        returnIntent.putExtra("result",true);
-        setResult(RESULT_OK,returnIntent);
-        finish();
+    private void redirectToSignIn(){
+        Intent intent = new Intent(this, SignInActivity.class);
+        startActivity(intent);
     }
 
-    private String toDateFormat(String milliseconds){
-        long value = Long.parseLong(milliseconds);
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy",Locale.US);
-        return sdf.format(new Date(value));
-    }
 }
