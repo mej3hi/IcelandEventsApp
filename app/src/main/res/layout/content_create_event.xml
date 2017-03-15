@@ -125,7 +125,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/radioBtnOther"
                     android:checked="true"
-                    android:onClick="onRadioButtonClicked"
+
                     />
 
                 <RadioButton
@@ -133,7 +133,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/radioBtnRock"
-                    android:onClick="onRadioButtonClicked"
+
                     />
 
                 <RadioButton
@@ -141,7 +141,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/radioBtnPop"
-                    android:onClick="onRadioButtonClicked"
+
                     />
 
                 <RadioButton
@@ -149,7 +149,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/radioBtnJazz"
-                    android:onClick="onRadioButtonClicked"
+
                     />
             </RadioGroup>
 
