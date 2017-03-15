@@ -96,9 +96,9 @@
                 android:maxLength="250"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentStart="true"
-                android:textAlignment="center" >
-                <requestFocus />
-            </EditText>
+                android:textAlignment="center" />
+
+
 
             <TextView
                 android:layout_width="wrap_content"
