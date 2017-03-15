@@ -44,11 +44,17 @@ public class EventAdapter extends ArrayAdapter<Event> {
         TextView name = (TextView) view.findViewById(R.id.nameTextView);
         TextView date = (TextView) view.findViewById(R.id.dateTextView);
         TextView time = (TextView) view.findViewById(R.id.timeTextView);
+        TextView description =(TextView) view.findViewById(R.id.descTextViewId);
+        TextView location =(TextView) view.findViewById(R.id.locaTextViewId);
+        TextView musicgenres =(TextView) view.findViewById(R.id.musicTypeTextViewId);
         ImageView eventImg = (ImageView) view.findViewById(R.id.eventImageView);
 
         name.setText(event.getName());
         date.setText(ConverterTools.toDateFormat(event.getDate()));
         time.setText(event.getTime());
+        description.setText(event.getDescription());
+        location.setText(event.getLocation());
+        musicgenres.setText("Type : "+event.getMusicgenres());
         Picasso.with(context).load(event.getImageurl()).into(eventImg);
 
         return view;
