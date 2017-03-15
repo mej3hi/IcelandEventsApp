@@ -7,11 +7,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
 
+import com.hbv2.icelandevents.API.UserAPI;
 import com.hbv2.icelandevents.ExtraUtilities.PopUpMsg;
-import com.hbv2.icelandevents.HttpRequest.HttpRequestResetPassword;
+import com.hbv2.icelandevents.HttpRequest.HttpRequestCall;
 import com.hbv2.icelandevents.HttpResponse.HttpResponseMsg;
 import com.hbv2.icelandevents.R;
 import com.hbv2.icelandevents.Service.NetworkChecker;
+import com.hbv2.icelandevents.Service.ServiceGenerator;
 import com.mobsandgeeks.saripaar.Rule;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.ConfirmPassword;
@@ -21,6 +23,8 @@ import com.mobsandgeeks.saripaar.annotation.TextRule;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+
+import retrofit2.Call;
 
 public class ResetPasswordActivity extends AppCompatActivity implements Validator.ValidationListener {
 
@@ -65,27 +69,46 @@ public class ResetPasswordActivity extends AppCompatActivity implements Validato
         super.onStop();
     }
 
+    /**
+     * Her we listen to the Change Password Button for on click and
+     * call on validation to check the Rest password from.
+     * @param view view is the GUI components
+     */
     public void changePasswOnClick(View view) {
         validator.validate();
     }
 
+    /**
+     * Here we send the Rest password from to the backend server and also check for
+     * internet connection before sending it.
+     */
     public void changePasswordConfirm(){
         if(NetworkChecker.isOnline(this)){
             String token = confirmCode.getText().toString();
             String password = newPassword.getText().toString();
             String passwordConf = confirmPassword.getText().toString();
-            new HttpRequestResetPassword().resetPasswordPost(token, password,passwordConf);
+            Call<String> call = ServiceGenerator.createService(UserAPI.class).resetPassword(token,password,passwordConf);
+            HttpRequestCall.callReponseMsg(call);
         }
         else{
             PopUpMsg.toastMsg("Network isn´t available",this);
         }
     }
 
+    /**
+     * If the validation of the Rest password from is succeeded
+     * then we call in changePasswordConfirm method.
+     */
     @Override
     public void onValidationSucceeded() {
         changePasswordConfirm();
     }
 
+    /**
+     *  If the validation find error on the Rest password from, then we show error msg.
+     * @param view View is the GUI components
+     * @param rule Rule is the error msg
+     */
     @Override
     public void onValidationFailed(View view, Rule<?> rule) {
         final String failureMessage = rule.getFailureMessage();
@@ -98,6 +121,10 @@ public class ResetPasswordActivity extends AppCompatActivity implements Validato
         }
     }
 
+    /**
+     * Here we get the Respond from the backend server.
+     * @param response Response has the Code and Msg from backend server.
+     */
     @Subscribe
     public void onResetPassword(HttpResponseMsg response) {
         if(response.getCode() == 200 && response.getMsg().equals("ok")){
@@ -113,6 +140,11 @@ public class ResetPasswordActivity extends AppCompatActivity implements Validato
         }
     }
 
+
+    /**
+     * Here we go back to the Sign in from,
+     * we call on Intent for SignInActivity.class
+     */
     public void redirectToSignIn(){
         Intent intent = new Intent(ResetPasswordActivity.this,SignInActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);

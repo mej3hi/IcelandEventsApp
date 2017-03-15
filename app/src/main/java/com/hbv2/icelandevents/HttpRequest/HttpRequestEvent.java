@@ -34,57 +34,7 @@ import retrofit2.Response;
 
 public class HttpRequestEvent {
 
-    /**
-     * Send Get method url ("/m/").
-     * It get the main Event.
-     */
-     public void indexGet(){
-        EventAPI eventAPI = ServiceGenerator.createService(EventAPI.class);
-        Call<List<Event>> call = eventAPI.getIndex();
 
-        call.enqueue(new Callback<List<Event>>() {
-            @Override
-            public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
-                System.out.println("response raw: " + response.raw());
-                System.out.println("response header:  " + response.headers());
-                EventBus.getDefault().post(new HttpResponseEvent(response.body(),response.code()));
-            }
-
-            @Override
-            public void onFailure(Call<List<Event>> call, Throwable t) {
-                System.out.println("Failure :" +t);
-                List<Event> empty = new ArrayList<Event>();
-                EventBus.getDefault().post(new HttpResponseEvent(empty,500));
-
-            }
-        });
-    }
-
-    /**
-     * Send a Get method url ("/m/calander")
-     * It finds all event to this day
-     * @param day Is the day to look for.
-     */
-    public void calanderGet(String day){
-        EventAPI eventAPI = ServiceGenerator.createService(EventAPI.class);
-        Call<List<Event>> call = eventAPI.getCalander(day);
-
-        call.enqueue(new Callback<List<Event>>() {
-            @Override
-            public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
-                System.out.println("response raw: " + response.raw());
-                System.out.println("response header:  " + response.headers());
-                EventBus.getDefault().post(new HttpResponseEvent(response.body(),response.code()));
-            }
-
-            @Override
-            public void onFailure(Call<List<Event>> call, Throwable t) {
-                System.out.println("Failure :" +t);
-                List<Event> empty = new ArrayList<Event>();
-                EventBus.getDefault().post(new HttpResponseEvent(empty,500));
-            }
-        });
-    }
 
     /**
      * Send a Post mapping url ("/m/createEvent")
@@ -246,11 +196,12 @@ public class HttpRequestEvent {
 
     private ByteArrayOutputStream scaleImg(File file){
         Bitmap b = BitmapFactory.decodeFile(file.getAbsolutePath());
-        int destWidth = 1080;
+        int destWidth = 640;
         int origWidth = b.getWidth();
         int origHeight = b.getHeight();
         ByteArrayOutputStream outStream = new ByteArrayOutputStream();
-        int destHeight = origHeight / (origWidth / destWidth);
+        double a = (double)origWidth /(double)destWidth;
+        int destHeight =(int)( origHeight / a);
         // we create an scaled bitmap so it reduces the image, not just trim it
         Bitmap b2 = Bitmap.createScaledBitmap(b, destWidth, destHeight, false);
         // compress to the format you want, JPEG, PNG...

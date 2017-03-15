@@ -8,12 +8,14 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.hbv2.icelandevents.API.UserAPI;
 import com.hbv2.icelandevents.Entities.User;
 import com.hbv2.icelandevents.ExtraUtilities.PopUpMsg;
-import com.hbv2.icelandevents.HttpRequest.HttpRequestSignUp;
+import com.hbv2.icelandevents.HttpRequest.HttpRequestCall;
 import com.hbv2.icelandevents.HttpResponse.HttpResponseMsg;
 import com.hbv2.icelandevents.R;
 import com.hbv2.icelandevents.Service.NetworkChecker;
+import com.hbv2.icelandevents.Service.ServiceGenerator;
 import com.hbv2.icelandevents.StoreUser;
 import com.mobsandgeeks.saripaar.Rule;
 import com.mobsandgeeks.saripaar.Validator;
@@ -25,6 +27,8 @@ import com.mobsandgeeks.saripaar.annotation.TextRule;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+
+import retrofit2.Call;
 
 
 public class SignUpActivity extends AppCompatActivity implements Validator.ValidationListener {
@@ -82,6 +86,10 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
         super.onStop();
     }
 
+    /**
+     * Here we get the Respond from the backend server.
+     * @param response Response has the Code and Msg from backend server.
+     */
     @Subscribe
     public void onSignUp(HttpResponseMsg response){
         if(response.getCode() == 200 && response.getMsg().equals("ok")){
@@ -101,6 +109,10 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
         }
     }
 
+    /**
+     * Here we send the Sign Up form to the backend server and also check for
+     * internet connection before sending it.
+     */
     public void sendSignUp(){
         if(NetworkChecker.isOnline(this)){
             User user = new User();
@@ -109,17 +121,28 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
             user.setUsername(username.getText().toString());
             user.setPassword(password.getText().toString());
             user.setPasswordConfirm(passwordConf.getText().toString());
-            new HttpRequestSignUp().signUpPost(user);
+
+            Call<String> call = ServiceGenerator.createService(UserAPI.class).postSignUp(user);
+            HttpRequestCall.callReponseMsg(call);
+
         }else{
             PopUpMsg.toastMsg("Network isn't available",this);
         }
     }
 
+    /**
+     * If the validation of the Sign Up form is succeeded then we call in sendSignUp method.
+     */
     @Override
     public void onValidationSucceeded() {
         sendSignUp();
     }
 
+    /**
+     *  If the validation find error on the Sign Up form then we show error msg.
+     * @param view View is the GUI components
+     * @param rule Rule is the error msg
+     */
     @Override
     public void onValidationFailed(View view, Rule<?> rule) {
         final String failureMessage = rule.getFailureMessage();
@@ -132,6 +155,11 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
         }
     }
 
+    /**
+     * Her we listen to the Sign up Button for on click and
+     * call on validation to check the sign up from.
+     * @param v v is the GUI components
+     */
     public void signUpBtnOnClick (View v){
             validator.validate();
     }

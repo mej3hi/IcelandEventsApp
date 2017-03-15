@@ -7,13 +7,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 
+import com.hbv2.icelandevents.API.UserAPI;
 import com.hbv2.icelandevents.ExtraUtilities.PopUpMsg;
-import com.hbv2.icelandevents.HttpRequest.HttpRequestForgetPassword;
+import com.hbv2.icelandevents.HttpRequest.HttpRequestCall;
 import com.hbv2.icelandevents.HttpResponse.HttpResponseMsg;
 import com.hbv2.icelandevents.R;
 import com.hbv2.icelandevents.Service.NetworkChecker;
+import com.hbv2.icelandevents.Service.ServiceGenerator;
 import com.mobsandgeeks.saripaar.Rule;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.Email;
@@ -21,6 +22,8 @@ import com.mobsandgeeks.saripaar.annotation.Required;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+
+import retrofit2.Call;
 
 public class ForgotPasswordActivity extends AppCompatActivity implements Validator.ValidationListener{
 
@@ -53,24 +56,42 @@ public class ForgotPasswordActivity extends AppCompatActivity implements Validat
         super.onStop();
     }
 
-    public void resetPasswBtnOnClick(View view) {
-        validator.validate();
-    }
-
+    /**
+     * Here we send the Email form to the backend server and also check for
+     * internet connection before sending it.
+     */
     public void sendMail(){
         if(NetworkChecker.isOnline(this)){
             String email = emailText.getText().toString();
-            new HttpRequestForgetPassword().forgetPasswordPost(email);
+            Call<String> call = ServiceGenerator.createService(UserAPI.class).forgetPassword(email);
+            HttpRequestCall.callReponseMsg(call);
         }else{
             PopUpMsg.toastMsg("Network isn't avilable",this);
         }
     }
 
+    /**
+     * Her we listen to the Rest Password Button for on click and
+     * call on validation to check the Email form.
+     * @param view view is the GUI components
+     */
+    public void resetPasswBtnOnClick(View view) {
+        validator.validate();
+    }
+
+    /**
+     * If the validation of the Email form is succeeded then we call in sendMail method.
+     */
     @Override
     public void onValidationSucceeded() {
             sendMail();
     }
 
+    /**
+     *  If the validation find error on the Email form then we show error msg.
+     * @param view View is the GUI components
+     * @param rule Rule is the error msg
+     */
     public void onValidationFailed(View view, Rule<?> rule) {
         final String failureMessage = rule.getFailureMessage();
         if (view instanceof EditText) {
@@ -81,7 +102,10 @@ public class ForgotPasswordActivity extends AppCompatActivity implements Validat
             PopUpMsg.toastMsg(failureMessage,this);
         }
     }
-
+    /**
+     * Here we get the Respond from the backend server.
+     * @param response Response has the Code and Msg from backend server.
+     */
     @Subscribe
     public void onForgotPassword(HttpResponseMsg response) {
         if(response.getCode() == 200 && response.getMsg().equals("ok")){

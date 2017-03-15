@@ -18,9 +18,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 /**
- * Created by martin on 25.1.2017.
- * Þetta sér um að load-a bara efstu viðburði (sem sjást á skjá) í stað þess að
- * load-a öllum eventum
+ * It crate ArrayAdapter for the Event to display on screen on the phone 
  */
 
 public class EventAdapter extends ArrayAdapter<Event> {
