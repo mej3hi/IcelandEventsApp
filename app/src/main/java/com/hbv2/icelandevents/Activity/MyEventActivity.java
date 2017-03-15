@@ -11,12 +11,12 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.hbv2.icelandevents.Adapter.EventAdapter;
 import com.hbv2.icelandevents.Entities.Event;
 import com.hbv2.icelandevents.Entities.UserInfo;
+import com.hbv2.icelandevents.ExtraUtilities.PopUpMsg;
 import com.hbv2.icelandevents.HttpRequest.HttpRequestEvent;
 import com.hbv2.icelandevents.HttpResponse.HttpResponseEvent;
 import com.hbv2.icelandevents.R;
@@ -40,16 +40,19 @@ public class MyEventActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         eventListView = (ListView) findViewById(R.id.eventListViewMe);
+        eventListView.setOnItemClickListener(itemClickListener);
+
         loadingDisplay = (ProgressBar) findViewById(R.id.LoadingDisplayME);
         loadingDisplay.setVisibility(View.INVISIBLE);
 
         TextView signInAs = (TextView) findViewById(R.id.signInAsIdTextView);
         signInAs.setText("Signed in as : "+UserInfo.getUsername());
-
-        eventListView.setOnItemClickListener(itemClickListener);
     }
 
 
+    /**
+     * Listener when event is clicked that directs user to EditEventActivity
+     */
     AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -89,7 +92,7 @@ public class MyEventActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
-        getEvents();
+        requestEvents();
 
     }
 
@@ -99,18 +102,21 @@ public class MyEventActivity extends AppCompatActivity {
         super.onStop();
     }
 
-    private void requestEvents(){
-        loadingDisplay.setVisibility(View.VISIBLE);
-        new HttpRequestEvent().myEventGet();
-    }
-
+    /**
+     * Receiving Respond from the backend server.
+     * @param response Response has the Code and the Msg from backend server.
+     */
     @Subscribe
-    public void onHttp(HttpResponseEvent event) {
+    public void onMyEvent(HttpResponseEvent response) {
         loadingDisplay.setVisibility(View.INVISIBLE);
-        if(event.getCode() == 200){
-            eventsList = event.getListEvent();
+        if(response.getCode() == 200){
+            eventsList = response.getListEvent();
             updateDisplay();
-        }
+        }else if(response.getCode() == 401) {
+            PopUpMsg.toastMsg("Your session has expired, please sign in", this);
+            redirectToSignIn();
+        }else
+            PopUpMsg.toastMsg("Something went wrong, please try again", this);
     }
 
     private  void updateDisplay(){
@@ -118,17 +124,25 @@ public class MyEventActivity extends AppCompatActivity {
         eventListView.setAdapter(eventAdapter);
     }
 
-    private void getEvents() {
-        System.out.println("btnGetEvent");
+    /**
+     * Sends HttpRequest that request all Events from user
+     */
+    private void requestEvents() {
         if(NetworkChecker.isOnline(this)){
-            requestEvents();
+            loadingDisplay.setVisibility(View.VISIBLE);
+            new HttpRequestEvent().myEventGet();
         }else{
-            Toast.makeText(this, "Network isn't avilable",Toast.LENGTH_LONG).show();
+            PopUpMsg.toastMsg("Network isn't available",this);
         }
     }
 
     private void createEventMenuBtn(){
         Intent intent = new Intent(this, CreateEventActivity.class);
+        startActivity(intent);
+    }
+
+    private void redirectToSignIn(){
+        Intent intent = new Intent(this, SignInActivity.class);
         startActivity(intent);
     }
 

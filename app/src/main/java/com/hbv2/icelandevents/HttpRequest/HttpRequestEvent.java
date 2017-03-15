@@ -7,15 +7,10 @@ import android.util.Log;
 
 import com.hbv2.icelandevents.API.EventAPI;
 import com.hbv2.icelandevents.Entities.Event;
-import com.hbv2.icelandevents.HttpResponse.HttpResponseEvent;
-import com.hbv2.icelandevents.HttpResponse.HttpResponseMsg;
 import com.hbv2.icelandevents.Service.ServiceGenerator;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,8 +19,6 @@ import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by Martin on 29.1.2017.
@@ -34,16 +27,12 @@ import retrofit2.Response;
 
 public class HttpRequestEvent {
 
-
-
     /**
      * Send a Post mapping url ("/m/createEvent")
      * It store event form that user has create to database.
      * @param event The value form the form
      * @param imageUri The path where the image is store
      */
-
-
     public void createEventPost(Event event, String imageUri){
         File file = new File(imageUri);
 
@@ -61,22 +50,7 @@ public class HttpRequestEvent {
 
         EventAPI eventAPI = ServiceGenerator.createService(EventAPI.class);
         Call<String> call = eventAPI.postCreateEvent(body,map);
-
-        call.enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                System.out.println("response raw: " + response.raw());
-                System.out.println("response header:  " + response.headers());
-                EventBus.getDefault().post(new HttpResponseMsg(response.body(),response.code()));
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                System.out.println("Failure :" +t);
-                System.out.println("Failure call :" +call);
-                EventBus.getDefault().post(new HttpResponseMsg("",500));
-            }
-        });
+        HttpRequestCall.callReponseMsg(call);
     }
 
     /**
@@ -84,26 +58,9 @@ public class HttpRequestEvent {
      * It finds all events that user has made.
      */
     public void myEventGet(){
-        Log.d("indexController","það tókst");
-
         EventAPI eventAPI = ServiceGenerator.createService(EventAPI.class);
         Call<List<Event>> call = eventAPI.getMyEvents();
-
-        call.enqueue(new Callback<List<Event>>() {
-            @Override
-            public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
-                System.out.println("response raw: " + response.raw());
-                System.out.println("response header:  " + response.headers());
-                EventBus.getDefault().post(new HttpResponseEvent(response.body(),response.code()));
-            }
-
-            @Override
-            public void onFailure(Call<List<Event>> call, Throwable t) {
-                System.out.println("Failure :" +t);
-                System.out.println("Failure call :" +call);
-
-            }
-        });
+        HttpRequestCall.callResponseEvent(call);
     }
 
     /**
@@ -116,23 +73,7 @@ public class HttpRequestEvent {
 
         EventAPI eventAPI = ServiceGenerator.createService(EventAPI.class);
         Call<String> call = eventAPI.getRemoveEvent(id);
-
-
-        call.enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                System.out.println("response raw: " + response.raw());
-                System.out.println("response header:  " + response.headers());
-                EventBus.getDefault().post(new HttpResponseMsg(response.body(),response.code()));
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                System.out.println("Failure :" +t);
-                System.out.println("Failure call :" +call);
-
-            }
-        });
+        HttpRequestCall.callReponseMsg(call);
     }
 
     /**
@@ -167,31 +108,11 @@ public class HttpRequestEvent {
 
         EventAPI eventAPI = ServiceGenerator.createService(EventAPI.class);
         Call<String> call = eventAPI.postEditEvent(body, map);
-
-        call.enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                System.out.println("response raw: " + response.raw());
-                System.out.println("response header:  " + response.headers());
-                EventBus.getDefault().post(new HttpResponseMsg(response.body(),response.code()));
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                System.out.println("Failure :" +t);
-                System.out.println("Failure call :" +call);
-
-            }
-        });
+        HttpRequestCall.callReponseMsg(call);
     }
 
-
-
-
-
     private RequestBody toRequestBody (String value) {
-        RequestBody body = RequestBody.create(MediaType.parse("text/plain"), value);
-        return body ;
+        return RequestBody.create(MediaType.parse("text/plain"), value);
     }
 
     private ByteArrayOutputStream scaleImg(File file){
@@ -200,8 +121,8 @@ public class HttpRequestEvent {
         int origWidth = b.getWidth();
         int origHeight = b.getHeight();
         ByteArrayOutputStream outStream = new ByteArrayOutputStream();
-        double a = (double)origWidth /(double)destWidth;
-        int destHeight =(int)( origHeight / a);
+        double rate = (double)origWidth /(double)destWidth;
+        int destHeight =(int)( origHeight / rate);
         // we create an scaled bitmap so it reduces the image, not just trim it
         Bitmap b2 = Bitmap.createScaledBitmap(b, destWidth, destHeight, false);
         // compress to the format you want, JPEG, PNG...
@@ -210,6 +131,4 @@ public class HttpRequestEvent {
 
         return outStream;
     }
-
-
 }
