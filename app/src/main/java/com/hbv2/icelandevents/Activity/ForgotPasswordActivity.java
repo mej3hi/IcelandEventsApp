@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import com.hbv2.icelandevents.API.UserAPI;
 import com.hbv2.icelandevents.ExtraUtilities.PopUpMsg;
@@ -27,6 +28,7 @@ import retrofit2.Call;
 
 public class ForgotPasswordActivity extends AppCompatActivity implements Validator.ValidationListener{
 
+    private ProgressBar loadingDisplay;
     @Required(order = 1)
     @Email(order = 2, message= "Please enter a valid email address.")
     private EditText emailText;
@@ -38,7 +40,8 @@ public class ForgotPasswordActivity extends AppCompatActivity implements Validat
         setContentView(R.layout.activity_forgot_password);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        loadingDisplay = (ProgressBar) findViewById(R.id.LoadingDisplayPB);
+        loadingDisplay.setVisibility(View.INVISIBLE);
         emailText = (EditText) findViewById(R.id.emailText);
         validator = new Validator(this);
         validator.setValidationListener(this);
@@ -62,6 +65,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements Validat
      */
     public void sendMail(){
         if(NetworkChecker.isOnline(this)){
+            loadingDisplay.setVisibility(View.VISIBLE);
             String email = emailText.getText().toString();
             Call<String> call = ServiceGenerator.createService(UserAPI.class).forgetPassword(email);
             HttpRequestCall.callReponseMsg(call);
@@ -108,6 +112,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements Validat
      */
     @Subscribe
     public void onForgotPassword(HttpResponseMsg response) {
+        loadingDisplay.setVisibility(View.INVISIBLE);
         if(response.getCode() == 200 && response.getMsg().equals("ok")){
             Intent intent = new Intent(ForgotPasswordActivity.this, ResetPasswordActivity.class);
             startActivity(intent);

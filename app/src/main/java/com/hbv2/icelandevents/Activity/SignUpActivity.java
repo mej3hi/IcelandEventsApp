@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.hbv2.icelandevents.API.UserAPI;
@@ -57,6 +58,8 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
     @ConfirmPassword(order = 12)
     private EditText passwordConf;
 
+    private ProgressBar loadingDisplay;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +67,8 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        loadingDisplay = (ProgressBar) findViewById(R.id.LoadingDisplayPB);
+        loadingDisplay.setVisibility(View.INVISIBLE);
         name = (EditText) findViewById(R.id.nameEditTextId);
         email = (EditText) findViewById(R.id.emailEditTextId);
         username = (EditText) findViewById(R.id.usernameEditTextId);
@@ -92,6 +97,7 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
      */
     @Subscribe
     public void onSignUp(HttpResponseMsg response){
+        loadingDisplay.setVisibility(View.INVISIBLE);
         if(response.getCode() == 200 && response.getMsg().equals("ok")){
             PopUpMsg.toastMsg("Sign Up Success",this);
             StoreUser.storeUserInfo(username.getText().toString(),password.getText().toString(),this);
@@ -115,6 +121,7 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
      */
     public void sendSignUp(){
         if(NetworkChecker.isOnline(this)){
+            loadingDisplay.setVisibility(View.VISIBLE);
             User user = new User();
             user.setName(name.getText().toString());
             user.setEmail(email.getText().toString());

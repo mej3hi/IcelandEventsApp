@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import com.hbv2.icelandevents.API.UserAPI;
 import com.hbv2.icelandevents.ExtraUtilities.PopUpMsg;
@@ -42,6 +43,7 @@ public class ResetPasswordActivity extends AppCompatActivity implements Validato
     private EditText confirmPassword;
 
     private Validator validator;
+    private ProgressBar loadingDisplay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +51,8 @@ public class ResetPasswordActivity extends AppCompatActivity implements Validato
         setContentView(R.layout.activity_reset_password);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        loadingDisplay = (ProgressBar) findViewById(R.id.LoadingDisplayPB);
+        loadingDisplay.setVisibility(View.INVISIBLE);
         confirmCode = (EditText) findViewById(R.id.confirmCodeText);
         newPassword = (EditText) findViewById(R.id.newPasswText);
         confirmPassword = (EditText) findViewById(R.id.confirmPasswText);
@@ -84,6 +88,7 @@ public class ResetPasswordActivity extends AppCompatActivity implements Validato
      */
     public void changePasswordConfirm(){
         if(NetworkChecker.isOnline(this)){
+            loadingDisplay.setVisibility(View.VISIBLE);
             String token = confirmCode.getText().toString();
             String password = newPassword.getText().toString();
             String passwordConf = confirmPassword.getText().toString();
@@ -127,6 +132,7 @@ public class ResetPasswordActivity extends AppCompatActivity implements Validato
      */
     @Subscribe
     public void onResetPassword(HttpResponseMsg response) {
+        loadingDisplay.setVisibility(View.INVISIBLE);
         if(response.getCode() == 200 && response.getMsg().equals("ok")){
             redirectToSignIn();
         }else if(response.getCode() == 200 && response.getMsg().equals("token_expires")){

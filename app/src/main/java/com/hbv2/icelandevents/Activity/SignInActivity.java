@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.hbv2.icelandevents.API.UserAPI;
@@ -29,6 +30,7 @@ public class SignInActivity extends AppCompatActivity {
     private EditText password;
     private TextView errorMsg;
     private Button skipBtn;
+    private ProgressBar loadingDisplay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,8 @@ public class SignInActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        loadingDisplay = (ProgressBar) findViewById(R.id.LoadingDisplayPB);
+        loadingDisplay.setVisibility(View.INVISIBLE);
         username = (EditText) findViewById(R.id.usernameEditText);
         password = (EditText) findViewById(R.id.passwordEditText);
         errorMsg = (TextView) findViewById(R.id.errorMsgTextViewId);
@@ -62,6 +66,7 @@ public class SignInActivity extends AppCompatActivity {
      */
     @Subscribe
     public void onSignIn(HttpResponseMsg response){
+        loadingDisplay.setVisibility(View.INVISIBLE);
         if(response.getCode() == 200 && response.getMsg().equals("ok")){
             PopUpMsg.toastMsg("Sign In Success",this);
             StoreUser.storeUserInfo(username.getText().toString(),password.getText().toString(),this);
@@ -93,6 +98,7 @@ public class SignInActivity extends AppCompatActivity {
     public void sendSignIn(){
         errorMsg.setText("");
         if(NetworkChecker.isOnline(this)){
+            loadingDisplay.setVisibility(View.VISIBLE);
             String u = username.getText().toString();
             String p = password.getText().toString();
             Call<String> call = ServiceGenerator.createService(UserAPI.class,u,p).getSignIn();
