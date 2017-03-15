@@ -261,10 +261,6 @@ public class IcelandEvents extends AppCompatActivity {
      * if not the we will autoLogin in the user.
      */
     private void checkUserInfo(){
-        if(!NetworkChecker.isOnline(this)) {
-            PopUpMsg.toastMsg("Cannot autoLogin network isn't available",this);
-        }
-
         if(!UserInfo.isLogin()) {
             if (!AutoLogin.checkUserInfo(this)) {
                 Intent intent = new Intent(this, SignInActivity.class);

@@ -7,16 +7,18 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.hbv2.icelandevents.API.UserAPI;
 import com.hbv2.icelandevents.Entities.UserInfo;
+import com.hbv2.icelandevents.ExtraUtilities.PopUpMsg;
 import com.hbv2.icelandevents.HttpRequest.HttpRequestCall;
 
 import java.io.FileInputStream;
+import java.util.Objects;
 
 import retrofit2.Call;
 
 public class AutoLogin  {
 
     /**
-     * It will check whether user has create userInfo and if so it will log in.
+     * It will check whether user has create userInfo and call Sign In.
      * @param base Is the Context
      * @return It return TRUE if it has crate userInfo, else it return FALSE.
      */
@@ -35,9 +37,13 @@ public class AutoLogin  {
                 userInfoExists = true;
                 userInfo = gson.fromJson(temp,UserInfo.class);
                 Log.d("AutoLogin",temp);
-                if(UserInfo.getUsername() != "" && UserInfo.getPassword() != ""){
-                    Call<String> call = ServiceGenerator.createService(UserAPI.class,UserInfo.getUsername(),UserInfo.getPassword()).getSignIn();
-                    HttpRequestCall.callReponseMsg(call);
+                if(NetworkChecker.isOnline(base)) {
+                    if(!Objects.equals(UserInfo.getUsername(), "") && !Objects.equals(UserInfo.getPassword(), "")){
+                        Call<String> call = ServiceGenerator.createService(UserAPI.class,UserInfo.getUsername(),UserInfo.getPassword()).getSignIn();
+                        HttpRequestCall.callReponseMsg(call);
+                    }
+                }else{
+                    PopUpMsg.toastMsg("Cannot autoLogin network isn't available",base);
                 }
             }
             fin.close();
