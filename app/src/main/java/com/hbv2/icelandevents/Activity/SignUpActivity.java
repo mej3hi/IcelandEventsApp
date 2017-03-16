@@ -108,6 +108,12 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
             failed.requestFocus();
             failed.setError("Username already exists");
         }
+        else if(response.getCode() == 200 && response.getMsg().equals("email_exists")) {
+            EditText failed = email;
+            failed.requestFocus();
+            failed.setError("Email already exists");
+        }
+
         else{
             String title ="Something went wrong";
             String msg = "Something went wrong with the Sign up, please try again";
