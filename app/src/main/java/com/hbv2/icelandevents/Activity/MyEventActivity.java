@@ -120,7 +120,7 @@ public class MyEventActivity extends AppCompatActivity {
     }
 
     private  void updateDisplay(){
-        EventAdapter eventAdapter = new EventAdapter(this, R.layout.event_layout, eventsList);
+        EventAdapter eventAdapter = new EventAdapter(this, eventsList);
         eventListView.setAdapter(eventAdapter);
     }
 

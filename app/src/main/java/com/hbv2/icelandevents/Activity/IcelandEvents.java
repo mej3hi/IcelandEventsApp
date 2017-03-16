@@ -251,7 +251,7 @@ public class IcelandEvents extends AppCompatActivity {
      * Here we add the Event to the EventListView(ListView) with EventAdapter.
      */
     public  void updateDisplay(){
-        EventAdapter eventAdapter = new EventAdapter(this, R.layout.event_layout, eventsList);
+        EventAdapter eventAdapter = new EventAdapter(this, eventsList);
         eventListView.setAdapter(eventAdapter);
     }
 

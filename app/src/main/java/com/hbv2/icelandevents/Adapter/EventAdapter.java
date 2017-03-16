@@ -1,7 +1,7 @@
 package com.hbv2.icelandevents.Adapter;
 
 
-import android.app.Activity;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +15,7 @@ import com.hbv2.icelandevents.ExtraUtilities.ConverterTools;
 import com.hbv2.icelandevents.R;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,40 +24,62 @@ import java.util.List;
 
 public class EventAdapter extends ArrayAdapter<Event> {
 
-    private Context context;
-    private List<Event> eventsList;
+    private static class ViewHolder {
+        TextView name;
+        TextView date ;
+        TextView time ;
+        TextView description;
+        TextView location;
+        TextView musicgenres;
+        ImageView eventImg;
+    }
 
-    public EventAdapter(Context context, int resource, List<Event> objects) {
-        super(context, resource, objects);
+
+    private Context context;
+    private  ArrayList<Event> eventsList = new ArrayList<>();
+    public EventAdapter(Context context, List<Event> event) {
+        super(context, 0, event);
         this.context = context;
-        this.eventsList = objects;
+        this.eventsList = (ArrayList<Event>) event;
     }
 
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.event_layout,parent,false);
-
         Event event = eventsList.get(position);
 
-        TextView name = (TextView) view.findViewById(R.id.nameTextView);
-        TextView date = (TextView) view.findViewById(R.id.dateTextView);
-        TextView time = (TextView) view.findViewById(R.id.timeTextView);
-        TextView description =(TextView) view.findViewById(R.id.descTextViewId);
-        TextView location =(TextView) view.findViewById(R.id.locaTextViewId);
-        TextView musicgenres =(TextView) view.findViewById(R.id.musicTypeTextViewId);
-        ImageView eventImg = (ImageView) view.findViewById(R.id.eventImageView);
+        ViewHolder viewHolder;
 
-        name.setText(event.getName());
-        date.setText(ConverterTools.toDateFormat(event.getDate()));
-        time.setText(event.getTime());
-        description.setText(event.getDescription());
-        location.setText(event.getLocation());
-        musicgenres.setText("Type : "+event.getMusicgenres());
-        Picasso.with(context).load(event.getImageurl()).into(eventImg);
+        if(convertView==null){
 
-        return view;
+            viewHolder = new ViewHolder();
+            LayoutInflater inflater = LayoutInflater.from(getContext());
+            convertView  =inflater.inflate(R.layout.event_layout, parent,false);
+
+            viewHolder.name = (TextView) convertView.findViewById(R.id.nameTextView);
+            viewHolder.date = (TextView) convertView.findViewById(R.id.dateTextView);
+            viewHolder.time = (TextView) convertView.findViewById(R.id.timeTextView);
+            viewHolder.description =(TextView) convertView.findViewById(R.id.descTextViewId);
+            viewHolder.location =(TextView) convertView.findViewById(R.id.locaTextViewId);
+            viewHolder.musicgenres =(TextView) convertView.findViewById(R.id.musicTypeTextViewId);
+            viewHolder.eventImg = (ImageView) convertView.findViewById(R.id.eventImageView);
+
+            convertView.setTag(viewHolder);
+        }
+        else{
+            viewHolder =(ViewHolder) convertView.getTag();
+        }
+
+        viewHolder.name.setText(event.getName());
+        viewHolder.date.setText(ConverterTools.toDateFormat(event.getDate()));
+        viewHolder.time.setText(event.getTime());
+        viewHolder.description.setText(event.getDescription());
+        viewHolder.location.setText(event.getLocation());
+        viewHolder.musicgenres.setText("Type : "+event.getMusicgenres());
+        Picasso.with(context).load(event.getImageurl()).into(viewHolder.eventImg);
+
+        return convertView;
     }
+
 }
