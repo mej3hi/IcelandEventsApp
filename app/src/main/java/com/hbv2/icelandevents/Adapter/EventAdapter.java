@@ -36,11 +36,11 @@ public class EventAdapter extends ArrayAdapter<Event> {
 
 
     private Context context;
-    private  ArrayList<Event> eventsList = new ArrayList<>();
+    private List<Event> eventsList;
     public EventAdapter(Context context, List<Event> event) {
         super(context, 0, event);
         this.context = context;
-        this.eventsList = (ArrayList<Event>) event;
+        this.eventsList =  event;
     }
 
 
