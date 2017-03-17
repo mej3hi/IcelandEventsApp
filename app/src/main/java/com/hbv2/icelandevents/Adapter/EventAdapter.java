@@ -48,7 +48,6 @@ public class EventAdapter extends ArrayAdapter<Event> {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         Event event = eventsList.get(position);
-
         ViewHolder viewHolder;
 
         if(convertView==null){

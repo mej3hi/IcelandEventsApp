@@ -9,14 +9,13 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.hbv2.icelandevents.API.UserAPI;
+
 import com.hbv2.icelandevents.Entities.User;
 import com.hbv2.icelandevents.ExtraUtilities.PopUpMsg;
-import com.hbv2.icelandevents.HttpRequest.HttpRequestCall;
+import com.hbv2.icelandevents.HttpRequest.HttpRequestUser;
 import com.hbv2.icelandevents.HttpResponse.HttpResponseMsg;
 import com.hbv2.icelandevents.R;
 import com.hbv2.icelandevents.Service.NetworkChecker;
-import com.hbv2.icelandevents.Service.ServiceGenerator;
 import com.hbv2.icelandevents.StoreUser;
 import com.mobsandgeeks.saripaar.Rule;
 import com.mobsandgeeks.saripaar.Validator;
@@ -29,7 +28,6 @@ import com.mobsandgeeks.saripaar.annotation.TextRule;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import retrofit2.Call;
 
 
 public class SignUpActivity extends AppCompatActivity implements Validator.ValidationListener {
@@ -134,9 +132,7 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
             user.setUsername(username.getText().toString());
             user.setPassword(password.getText().toString());
             user.setPasswordConfirm(passwordConf.getText().toString());
-
-            Call<String> call = ServiceGenerator.createService(UserAPI.class).postSignUp(user);
-            HttpRequestCall.callReponseMsg(call);
+            new HttpRequestUser().signUpPost(user);
 
         }else{
             PopUpMsg.toastMsg("Network isn't available",this);

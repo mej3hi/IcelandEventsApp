@@ -10,19 +10,16 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.hbv2.icelandevents.API.UserAPI;
 import com.hbv2.icelandevents.ExtraUtilities.PopUpMsg;
-import com.hbv2.icelandevents.HttpRequest.HttpRequestCall;
+import com.hbv2.icelandevents.HttpRequest.HttpRequestUser;
 import com.hbv2.icelandevents.HttpResponse.HttpResponseMsg;
 import com.hbv2.icelandevents.R;
 import com.hbv2.icelandevents.Service.NetworkChecker;
-import com.hbv2.icelandevents.Service.ServiceGenerator;
 import com.hbv2.icelandevents.StoreUser;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import retrofit2.Call;
 
 public class SignInActivity extends AppCompatActivity {
 
@@ -99,10 +96,9 @@ public class SignInActivity extends AppCompatActivity {
         errorMsg.setText("");
         if(NetworkChecker.isOnline(this)){
             loadingDisplay.setVisibility(View.VISIBLE);
-            String u = username.getText().toString();
-            String p = password.getText().toString();
-            Call<String> call = ServiceGenerator.createService(UserAPI.class,u,p).getSignIn();
-            HttpRequestCall.callReponseMsg(call);
+            String userName = username.getText().toString();
+            String passWord = password.getText().toString();;
+            new HttpRequestUser().signInGet(userName,passWord);
         }else{
             PopUpMsg.toastMsg("Network isn't available",this);
         }

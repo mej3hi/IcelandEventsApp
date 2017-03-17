@@ -27,6 +27,29 @@ import retrofit2.Call;
 
 public class HttpRequestEvent {
 
+
+    /**
+     * Send Get method url ("/m/").
+     * It get the main Event.
+     */
+    public void indexGet(){
+        EventAPI eventAPI = ServiceGenerator.createService(EventAPI.class);
+        Call<List<Event>> call = eventAPI.getIndex();
+        HttpRequestCall.callResponseEvent(call);
+    }
+
+    /**
+     * Send a Get method url ("/m/calander")
+     * It finds all event to this day
+     * @param day Is the day to look for.
+     */
+    public void calanderGet(String day){
+        EventAPI eventAPI = ServiceGenerator.createService(EventAPI.class);
+        Call<List<Event>> call = eventAPI.getCalander(day);
+        HttpRequestCall.callResponseEvent(call);
+    }
+
+
     /**
      * Send a Post mapping url ("/m/createEvent")
      * It store event form that user has create to database.

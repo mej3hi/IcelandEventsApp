@@ -15,19 +15,17 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 
-import com.hbv2.icelandevents.API.EventAPI;
 import com.hbv2.icelandevents.Adapter.EventAdapter;
 import com.hbv2.icelandevents.Entities.Event;
 import com.hbv2.icelandevents.Entities.UserInfo;
 import com.hbv2.icelandevents.ExtraUtilities.ConverterTools;
 import com.hbv2.icelandevents.ExtraUtilities.PopUpMsg;
-import com.hbv2.icelandevents.HttpRequest.HttpRequestCall;
+import com.hbv2.icelandevents.HttpRequest.HttpRequestEvent;
 import com.hbv2.icelandevents.HttpResponse.HttpResponseEvent;
 import com.hbv2.icelandevents.HttpResponse.HttpResponseMsg;
 import com.hbv2.icelandevents.R;
 import com.hbv2.icelandevents.Service.AutoLogin;
 import com.hbv2.icelandevents.Service.NetworkChecker;
-import com.hbv2.icelandevents.Service.ServiceGenerator;
 import com.hbv2.icelandevents.StoreUser;
 
 import org.greenrobot.eventbus.EventBus;
@@ -36,7 +34,6 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.Calendar;
 import java.util.List;
 
-import retrofit2.Call;
 
 
 public class IcelandEvents extends AppCompatActivity {
@@ -225,8 +222,7 @@ public class IcelandEvents extends AppCompatActivity {
     private void requestEvents(){
         if(NetworkChecker.isOnline(this)) {
             loadingDisplay.setVisibility(View.VISIBLE);
-            Call<List<Event>> call =  ServiceGenerator.createService(EventAPI.class).getIndex();
-            HttpRequestCall.callResponseEvent(call);
+            new HttpRequestEvent().indexGet();
         }else{
             PopUpMsg.toastMsg("Network isn't available",this);
         }
@@ -240,8 +236,7 @@ public class IcelandEvents extends AppCompatActivity {
     private void requestEventsByDate(String day){
         if(NetworkChecker.isOnline(this)) {
             loadingDisplay.setVisibility(View.VISIBLE);
-            Call<List<Event>> call =  ServiceGenerator.createService(EventAPI.class).getCalander(day);
-            HttpRequestCall.callResponseEvent(call);
+            new HttpRequestEvent().calanderGet(day);
         }else{
             PopUpMsg.toastMsg("Network isn't available",this);
         }

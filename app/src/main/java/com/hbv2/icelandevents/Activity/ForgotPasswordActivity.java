@@ -9,13 +9,11 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
-import com.hbv2.icelandevents.API.UserAPI;
 import com.hbv2.icelandevents.ExtraUtilities.PopUpMsg;
-import com.hbv2.icelandevents.HttpRequest.HttpRequestCall;
+import com.hbv2.icelandevents.HttpRequest.HttpRequestUser;
 import com.hbv2.icelandevents.HttpResponse.HttpResponseMsg;
 import com.hbv2.icelandevents.R;
 import com.hbv2.icelandevents.Service.NetworkChecker;
-import com.hbv2.icelandevents.Service.ServiceGenerator;
 import com.mobsandgeeks.saripaar.Rule;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.Email;
@@ -24,7 +22,6 @@ import com.mobsandgeeks.saripaar.annotation.Required;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import retrofit2.Call;
 
 public class ForgotPasswordActivity extends AppCompatActivity implements Validator.ValidationListener{
 
@@ -67,8 +64,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements Validat
         if(NetworkChecker.isOnline(this)){
             loadingDisplay.setVisibility(View.VISIBLE);
             String email = emailText.getText().toString();
-            Call<String> call = ServiceGenerator.createService(UserAPI.class).forgetPassword(email);
-            HttpRequestCall.callReponseMsg(call);
+            new HttpRequestUser().forgetPasswordPost(email);
         }else{
             PopUpMsg.toastMsg("Network isn't avilable",this);
         }
