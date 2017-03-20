@@ -6,7 +6,6 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -51,6 +50,15 @@
             android:name=".Activity.ResetPasswordActivity"
             android:label="@string/title_activity_reset_password"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activity.DetailEventActivity"
+            android:label="@string/title_activity_detail_event"
+            android:parentActivityName=".Activity.IcelandEvents"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.hbv2.icelandevents.Activity.IcelandEvents" />
+        </activity>
     </application>
 
 </manifest>

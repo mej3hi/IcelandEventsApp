@@ -26,7 +26,6 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.hbv2.icelandevents.Entities.Event;
 import com.hbv2.icelandevents.Entities.UserInfo;
 import com.hbv2.icelandevents.ExtraUtilities.ConverterTools;
@@ -79,7 +78,7 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        textName = (EditText) findViewById(R.id.eventNameText);
+        textName = (EditText) findViewById(R.id.nameText);
         textLocation = (EditText) findViewById(R.id.locationText);
         textDescription = (EditText) findViewById(R.id.descriptionText);
         textTime = (EditText) findViewById(R.id.timeText);
@@ -166,8 +165,7 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
      */
     private void getEvent(){
         String parsed = getIntent().getStringExtra("EVENT_NAME");
-        Gson gson = new Gson();
-        event = gson.fromJson(parsed,Event.class);
+        event = ConverterTools.toEvent(parsed);
     }
 
     /**
@@ -179,7 +177,7 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
         textDescription.setText(event.getDescription());
         textTime.setText(event.getTime());
         textDate.setText(ConverterTools.toDateFormat(event.getDate()));
-        textImageUrl.setText(event.getImageurl().replaceAll(".+/(.*)$","$1"));
+        textImageUrl.setText(event.getImageurl().replaceAll(".*/(.*)$","$1"));
         radioButtonSet(event.getMusicgenres());
     }
 
@@ -227,7 +225,7 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
             }
 
             event.setImageurl(filePath);
-            textImageUrl.setText(filePath.replaceAll(".+/(.*)$","$1"));
+            textImageUrl.setText(filePath.replaceAll(".*/(.*)$","$1"));
         }
     }
 

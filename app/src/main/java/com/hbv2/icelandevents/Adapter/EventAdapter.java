@@ -15,7 +15,6 @@ import com.hbv2.icelandevents.ExtraUtilities.ConverterTools;
 import com.hbv2.icelandevents.R;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,9 +27,6 @@ public class EventAdapter extends ArrayAdapter<Event> {
         TextView name;
         TextView date ;
         TextView time ;
-        TextView description;
-        TextView location;
-        TextView musicgenres;
         ImageView eventImg;
     }
 
@@ -59,9 +55,6 @@ public class EventAdapter extends ArrayAdapter<Event> {
             viewHolder.name = (TextView) convertView.findViewById(R.id.nameTextView);
             viewHolder.date = (TextView) convertView.findViewById(R.id.dateTextView);
             viewHolder.time = (TextView) convertView.findViewById(R.id.timeTextView);
-            viewHolder.description =(TextView) convertView.findViewById(R.id.descTextViewId);
-            viewHolder.location =(TextView) convertView.findViewById(R.id.locaTextViewId);
-            viewHolder.musicgenres =(TextView) convertView.findViewById(R.id.musicTypeTextViewId);
             viewHolder.eventImg = (ImageView) convertView.findViewById(R.id.eventImageView);
 
             convertView.setTag(viewHolder);
@@ -73,9 +66,6 @@ public class EventAdapter extends ArrayAdapter<Event> {
         viewHolder.name.setText(event.getName());
         viewHolder.date.setText(ConverterTools.toDateFormat(event.getDate()));
         viewHolder.time.setText(event.getTime());
-        viewHolder.description.setText(event.getDescription());
-        viewHolder.location.setText(event.getLocation());
-        viewHolder.musicgenres.setText("Type : "+event.getMusicgenres());
         Picasso.with(context).load(event.getImageurl()).into(viewHolder.eventImg);
 
         return convertView;

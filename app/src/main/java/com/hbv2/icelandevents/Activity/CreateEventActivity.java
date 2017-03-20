@@ -78,7 +78,7 @@ public class CreateEventActivity extends AppCompatActivity implements Validator.
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        textName = (EditText) findViewById(R.id.eventNameText);
+        textName = (EditText) findViewById(R.id.nameText);
         textLocation = (EditText) findViewById(R.id.locationText);
         textDescription = (EditText) findViewById(R.id.descriptionText);
         textTime = (EditText) findViewById(R.id.timeText);
@@ -204,7 +204,7 @@ public class CreateEventActivity extends AppCompatActivity implements Validator.
             }
 
             event.setImageurl(filePath);
-            textImageUrl.setText(filePath.replaceAll(".+/(.*)$","$1"));
+            textImageUrl.setText(filePath.replaceAll(".*/(.*)$","$1"));
         }
     }
 

@@ -33,7 +33,7 @@
                 android:inputType="textPersonName"
                 android:hint="Name of the Event"
                 android:ems="10"
-                android:id="@+id/eventNameText"
+                android:id="@+id/nameText"
                 android:textAlignment="center"
                 android:layout_alignParentTop="true"
                 android:layout_alignStart="@+id/timeText" />
@@ -46,9 +46,9 @@
                 android:ems="10"
                 android:id="@+id/locationText"
                 android:textAlignment="center"
-                android:layout_marginTop="10dp"
-                android:layout_below="@+id/eventNameText"
-                android:layout_alignStart="@+id/eventNameText" />
+                android:layout_marginTop="14dp"
+                android:layout_below="@+id/nameText"
+                android:layout_alignStart="@+id/nameText" />
 
 
             <EditText
@@ -60,7 +60,7 @@
                 android:textAlignment="center"
                 android:layout_below="@+id/timeText"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="16dp"
                 android:inputType="date"
                 android:focusable="false"
                 />
@@ -74,7 +74,7 @@
                 android:ems="10"
                 android:id="@+id/timeText"
                 android:textAlignment="center"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 android:layout_below="@+id/descriptionText"
                 android:layout_alignStart="@+id/dateText"
                 android:focusable="false" />
@@ -82,37 +82,28 @@
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="textMultiLine"
+                android:inputType="textPersonName"
                 android:hint="Description"
                 android:ems="10"
                 android:id="@+id/descriptionText"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:gravity="top|left"
-                android:scrollbars="vertical"
+                android:textAlignment="center"
+                android:layout_marginTop="19dp"
                 android:layout_below="@+id/locationText"
-                android:lines="5"
-                android:maxLength="250"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentStart="true"
-                android:textAlignment="center" />
-
-
+                android:layout_alignStart="@+id/locationText" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/imageUrlText"
                 android:layout_below="@+id/upImageBtn"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="15dp"
                 android:layout_centerHorizontal="true" />
 
             <RadioGroup
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="15dp"
                 android:layout_marginStart="40dp"
                 android:layout_below="@+id/dateText"
                 android:layout_alignParentStart="true"
@@ -124,7 +115,6 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/radioBtnOther"
                     android:checked="true"
-
                     />
 
                 <RadioButton
@@ -132,7 +122,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/radioBtnRock"
-
                     />
 
                 <RadioButton
@@ -140,7 +129,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/radioBtnPop"
-
                     />
 
                 <RadioButton
@@ -148,7 +136,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/radioBtnJazz"
-
                     />
             </RadioGroup>
 
@@ -160,23 +147,26 @@
                 android:onClick="upImageBtnOnclick"
                 android:layout_below="@+id/radioGroup"
                 android:layout_centerHorizontal="true" />
-            <Button
-                android:text="Remove"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/imageUrlText"
-                android:layout_toEndOf="@+id/upImageBtn"
-                android:onClick="removeBtnOnClick"
-                android:id="@+id/removeBtn" />
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/saveBtn"
                 android:onClick="saveBtnOnClick"
-                android:layout_below="@id/imageUrlText"
+                android:text="Save"
+                android:layout_below="@+id/upImageBtn"
                 android:layout_toStartOf="@+id/upImageBtn"
-                android:text="Save" />
+                android:layout_marginTop="18dp" />
+
+            <Button
+                android:text="Remove"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="removeBtnOnClick"
+                android:id="@+id/removeBtn"
+                android:layout_alignBaseline="@+id/saveBtn"
+                android:layout_alignBottom="@+id/saveBtn"
+                android:layout_toEndOf="@+id/upImageBtn" />
 
         </RelativeLayout>
     </ScrollView>

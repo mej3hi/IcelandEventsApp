@@ -12,10 +12,10 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.hbv2.icelandevents.Adapter.EventAdapter;
 import com.hbv2.icelandevents.Entities.Event;
 import com.hbv2.icelandevents.Entities.UserInfo;
+import com.hbv2.icelandevents.ExtraUtilities.ConverterTools;
 import com.hbv2.icelandevents.ExtraUtilities.PopUpMsg;
 import com.hbv2.icelandevents.HttpRequest.HttpRequestEvent;
 import com.hbv2.icelandevents.HttpResponse.HttpResponseEvent;
@@ -58,8 +58,7 @@ public class MyEventActivity extends AppCompatActivity {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Intent intent = new Intent(MyEventActivity.this, EditEventActivity.class);
             Event event = eventsList.get(position);
-            Gson gson = new Gson();
-            String parsed = gson.toJson(event);
+            String parsed = ConverterTools.toJson(event);
             intent.putExtra("EVENT_NAME",parsed);
 
             startActivity(intent);

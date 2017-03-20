@@ -30,6 +30,7 @@
     <string name="title_activity_reset_password">Reset Password</string>
     <string name="title_activity_image">image</string>
     <string name="choose_a_date">Choose a date</string>
+    <string name="title_activity_detail_event">DetailEventActivity</string>
 
 
 </resources>

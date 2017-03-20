@@ -8,12 +8,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 
 import com.hbv2.icelandevents.Adapter.EventAdapter;
 import com.hbv2.icelandevents.Entities.Event;
@@ -61,6 +61,7 @@ public class IcelandEvents extends AppCompatActivity {
         loadingDisplay.setVisibility(View.INVISIBLE);
         signInAs = (TextView) findViewById(R.id.signInAsIdTextView);
         calendarDate = (EditText) findViewById(R.id.calendarEditTextId);
+        eventListView.setOnItemClickListener(itemClickListener);
 
         UserInfo.setLogin(false);
         setDateTimeField();
@@ -155,6 +156,18 @@ public class IcelandEvents extends AppCompatActivity {
             }
         });
     }
+
+    AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            Intent intent = new Intent(IcelandEvents.this, DetailEventActivity.class);
+            Event event = eventsList.get(position);
+            String parsed = ConverterTools.toJson(event);
+            intent.putExtra("EVENT_DETAIL",parsed);
+
+            startActivity(intent);
+        }
+    };
 
     /**
      * Here we get the Respond from the backend server.
