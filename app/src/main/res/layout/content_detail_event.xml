@@ -64,6 +64,7 @@
         android:layout_below="@+id/musicgenresText"
         android:layout_alignStart="@+id/musicgenresText"
         android:layout_marginTop="22dp"
+        android:lines="8"
         android:id="@+id/descriptionText"
         android:layout_alignParentEnd="true" />
 
