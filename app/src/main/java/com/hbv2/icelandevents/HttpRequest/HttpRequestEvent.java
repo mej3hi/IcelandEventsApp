@@ -3,7 +3,6 @@ package com.hbv2.icelandevents.HttpRequest;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 
 import com.hbv2.icelandevents.API.EventAPI;
 import com.hbv2.icelandevents.Entities.Event;
@@ -92,8 +91,6 @@ public class HttpRequestEvent {
      * @param id Is the ID of event
      */
     public void removeEventGet(Long id){
-        Log.d("indexController","það tókst");
-
         EventAPI eventAPI = ServiceGenerator.createService(EventAPI.class);
         Call<String> call = eventAPI.getRemoveEvent(id);
         HttpRequestCall.callReponseMsg(call);
