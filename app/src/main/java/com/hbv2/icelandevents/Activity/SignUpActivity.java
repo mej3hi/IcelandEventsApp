@@ -98,7 +98,7 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
         loadingDisplay.setVisibility(View.INVISIBLE);
         if(response.getCode() == 200 && response.getMsg().equals("ok")){
             PopUpMsg.toastMsg("Sign Up Success",this);
-            StoreUser.storeUserInfo(username.getText().toString(),password.getText().toString(),this);
+            StoreUser.storeUserInfo(username.getText().toString(),password.getText().toString(),false,this);
             finish();
         }
         else if(response.getCode() == 200 && response.getMsg().equals("username_exists")) {

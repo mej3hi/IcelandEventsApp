@@ -66,7 +66,7 @@ public class SignInActivity extends AppCompatActivity {
         loadingDisplay.setVisibility(View.INVISIBLE);
         if(response.getCode() == 200 && response.getMsg().equals("ok")){
             PopUpMsg.toastMsg("Sign In Success",this);
-            StoreUser.storeUserInfo(username.getText().toString(),password.getText().toString(),this);
+            StoreUser.storeUserInfo(username.getText().toString(),password.getText().toString(),true,this);
             finish();
         }
         else if(response.getCode() == 401 ){

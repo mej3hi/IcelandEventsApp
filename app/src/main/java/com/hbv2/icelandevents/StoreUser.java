@@ -17,8 +17,8 @@ public class StoreUser {
      * @param password
      * @param base
      */
-    public static void storeUserInfo(String username,String password,Context base){
-        storeUser(username,password,true,base);
+    public static void storeUserInfo(String username,String password,boolean login,Context base){
+        storeUser(username,password,login,base);
     }
 
     public static void skipUserInfo(Context base){
