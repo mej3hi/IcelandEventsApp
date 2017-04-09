@@ -49,7 +49,7 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
 
     @Required(order = 8)
     @Password(order = 9)
-    @TextRule(order = 10, minLength = 8, maxLength = 32, message = "Please use between 6 and 32 characters.")
+    @TextRule(order = 10, minLength = 8, maxLength = 32, message = "Please use between 8 and 32 characters.")
     private EditText password;
 
     @Required(order = 11)
