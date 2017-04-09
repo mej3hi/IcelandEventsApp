@@ -71,19 +71,19 @@ public class ResetPasswordActivity extends AppCompatActivity implements Validato
     }
 
     /**
-     * Her we listen to the Change Password Button for on click and
-     * call on validation to check the Rest password from.
-     * @param view view is the GUI components
+     * Click listener for Change Password Button when clicked
+     * calls validator to validate the Change password form.
+     * @param view view is the GUI component
      */
-    public void changePasswOnClick(View view) {
+    public void changePasswordOnClick(View view) {
         validator.validate();
     }
 
     /**
-     * Here we send the Rest password from to the backend server and also check for
-     * internet connection before sending it.
+     * Sends HttpRequest containing a password and token
+     * Requesting to change the password
      */
-    public void changePasswordConfirm(){
+    public void changePassword(){
         if(NetworkChecker.isOnline(this)){
             loadingDisplay.setVisibility(View.VISIBLE);
             String token = confirmCode.getText().toString();
@@ -97,18 +97,18 @@ public class ResetPasswordActivity extends AppCompatActivity implements Validato
     }
 
     /**
-     * If the validation of the Rest password from is succeeded
-     * then we call in changePasswordConfirm method.
+     * Validation for the Reset password form was successful,
+     * therefore the changePassword() method is called
      */
     @Override
     public void onValidationSucceeded() {
-        changePasswordConfirm();
+        changePassword();
     }
 
     /**
-     *  If the validation find error on the Rest password from, then we show error msg.
-     * @param view View is the GUI components
-     * @param rule Rule is the error msg
+     * Validation did not succeed, thereby the first error message is shown
+     * @param view View is the GUI component
+     * @param rule Rule contains the error message
      */
     @Override
     public void onValidationFailed(View view, Rule<?> rule) {
@@ -123,8 +123,8 @@ public class ResetPasswordActivity extends AppCompatActivity implements Validato
     }
 
     /**
-     * Here we get the Respond from the backend server.
-     * @param response Response has the Code and Msg from backend server.
+     * Receiving the Respond from the backend server.
+     * @param response Response has the Code and Message from backend server
      */
     @Subscribe
     public void onResetPassword(HttpResponseMsg response) {
@@ -142,13 +142,11 @@ public class ResetPasswordActivity extends AppCompatActivity implements Validato
         }
     }
 
-
     /**
-     * Here we go back to the Sign in from,
-     * we call on Intent for SignInActivity.class
+     * Redirects user to SignInActivity
      */
     public void redirectToSignIn(){
-        Intent intent = new Intent(ResetPasswordActivity.this,SignInActivity.class);
+        Intent intent = new Intent(this,SignInActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
     }

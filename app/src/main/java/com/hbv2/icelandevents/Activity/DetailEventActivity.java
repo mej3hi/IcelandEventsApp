@@ -39,11 +39,17 @@ public class DetailEventActivity extends AppCompatActivity {
         setFields();
     }
 
+    /**
+     * Gets the event which user clicked in MyEventActivity
+     */
     private void getEvent(){
         String parsed = getIntent().getStringExtra("EVENT_DETAIL");
         event = ConverterTools.toEvent(parsed);
     }
 
+    /**
+     * Sets the fields with values from the retrieved event
+     */
     private void setFields(){
         setTitle(event.getName());
         Picasso.with(this).load(event.getImageurl()).into(eventImg);

@@ -58,8 +58,8 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     /**
-     * Here we get the Respond from the backend server.
-     * @param response Response has the Code and Msg from backend server.
+     * Receiving the Respond from the backend server.
+     * @param response Response has the Code and Message from backend server.
      */
     @Subscribe
     public void onSignIn(HttpResponseMsg response){
@@ -80,7 +80,8 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     /**
-     * Here we make the skip Button visible if we get true from activity.
+     * Skip Button is made visible when TRUE(boolean value)
+     * is passed to this activity from another activity
      */
     public void skipBtnVisibility(){
         if(getIntent().getBooleanExtra("SKIP_VISIBLE",false)){
@@ -89,8 +90,9 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     /**
-     * Here we send the Sign In from to the backend server and also check for
-     * internet connection before sending it.
+     * Sends HttpRequest containing username and password,
+     * Requesting user to be signed in
+     * Also checks for internet connection before sending it.
      */
     public void sendSignIn(){
         errorMsg.setText("");
@@ -105,19 +107,19 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     /**
-     * Her we listen to the Sign in Button for on click and
-     *  If pressed, then we call sendSignIn method.
-     * @param v v is the GUI components
+     * Click listener for Sign in button when clicked
+     * calls sendSignIn() method.
+     * @param v v is the GUI component
      */
     public void signInOnClick(View v){
         sendSignIn();
     }
 
     /**
-     * Her we listen to the Skip Button for on click.
-     * If pressed, then we store that information on the phone
-     * and go back to activity called Intent to this one.
-     * @param v V is the GUI components.
+     * Click listener for Skip button when clicked
+     * it stores that information on the phone
+     * and directs user to the IcelandEvents activity.
+     * @param v V is the GUI component
      */
     public void skipOnClick(View v){
         StoreUser.skipUserInfo(this);
@@ -125,11 +127,11 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     /**
-     * Her we listen to the ForgotPassword Button for on click.
-     * If pressed, then we call on Intent for ForgotPasswordActivity.class
-     * @param view View is the GUI components.
+     * Click listener for Forgot password Button when clicked
+     * it directs user to the ForgotPasswordActivity.
+     * @param view View is the GUI component
      */
-    public void forgotPasswBtn(View view) {
+    public void forgotPasswordBtn(View view) {
         Intent intent = new Intent(this, ForgotPasswordActivity.class);
         startActivity(intent);
     }

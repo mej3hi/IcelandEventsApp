@@ -115,8 +115,8 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
     }
 
     /**
-     * Here we are adding a DatePickerDialog and
-     * setting Listener for the textDate(EditText)
+     * Setting Click Listener for the textDate(EditText)
+     * to show DatePickerDialog when it's clicked
      */
     private void setDateField(){
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener(){
@@ -132,15 +132,17 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
         textDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new DatePickerDialog(EditEventActivity.this,date, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
-                        calendar.get(Calendar.DAY_OF_MONTH)).show();
+               DatePickerDialog dpd = new DatePickerDialog(EditEventActivity.this,date, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.DAY_OF_MONTH));
+                dpd.getDatePicker().setMinDate(ConverterTools.toDay());
+                dpd.show();
             }
         });
     }
 
     /**
-     * Here we are adding a TimePickerDialog and
-     * setting Listener for the textTime(EditText)
+     * Setting Click Listener for the textTime(EditText)
+     * to show TimePickerDialog when it's clicked
      */
     private void setTimeField(){
         final TimePickerDialog.OnTimeSetListener time =  new TimePickerDialog.OnTimeSetListener(){
@@ -161,7 +163,7 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
     }
 
     /**
-     * Retrieves the selected event from MyEvent
+     * Gets the event which user clicked in MyEventActivity
      */
     private void getEvent(){
         String parsed = getIntent().getStringExtra("EVENT_NAME");
@@ -169,7 +171,7 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
     }
 
     /**
-     * Sets the textfields with the retrieved Event information
+     * Sets the text fields with the values from the retrieved event
      */
     private void setFields(){
         textName.setText(event.getName());
@@ -182,7 +184,7 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
     }
 
     /**
-     * User selects an Image
+     * User selects an Image from a Chooser
      * @param view is the GUI Component
      */
     public void upImageBtnOnclick(View view) {
@@ -197,7 +199,7 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
     }
 
     /**
-     * Retrieving the image which user selected and its filepath
+     * Retrieving the image Uri from the image which user selected and its filepath
      */
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
@@ -229,6 +231,20 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
         }
     }
 
+    /**
+     * Click listener for Save Button when clicked
+     * calls validator to validate the event form.
+     * @param view
+     */
+    public void saveBtnOnClick(View view) {
+        validator.validate();
+    }
+
+    /**
+     * Validation for the Event form was successful,
+     * therefore setting all the parameters to the event
+     * entity and call the saveEvent() method
+     */
     @Override
     public void onValidationSucceeded() {
         String name = textName.getText().toString();
@@ -251,6 +267,12 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
         saveEvent();
     }
 
+    /**
+     * Validation did not succeed, thereby the first error message is shown
+     * @param view View is the GUI component
+     * @param rule Rule contains the error message
+     */
+    @Override
     public void onValidationFailed(View view, Rule<?> rule) {
         final String failureMessage = rule.getFailureMessage();
         if (view instanceof EditText) {
@@ -262,12 +284,9 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
         }
     }
 
-    public void saveBtnOnClick(View view) {
-        validator.validate();
-    }
-
     /**
-     * Sends HttpRequest containing the event object
+     * Sends HttpRequest containing the event entity
+     * requesting the event to be updated/saved
      */
     private void saveEvent(){
         if(NetworkChecker.isOnline(this)) {
@@ -278,6 +297,10 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
         }
     }
 
+    /**
+     * Pops up an Alert Dialog making sure
+     * whether user wants to remove the event
+     */
     public void removeBtnOnClick(View view) {
         new AlertDialog.Builder(this)
                 .setTitle("Confirmation")
@@ -291,6 +314,7 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
 
     /**
      * Sends HttpRequest containing the event id
+     * requesting the event to be removed
      */
     private void removeEvent(){
         if(NetworkChecker.isOnline(this)) {
@@ -303,7 +327,7 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
 
     /**
      * Receiving Respond from the backend server.
-     * @param response Response has the Code and the Msg from backend server.
+     * @param response Response has the Code and the Message from backend server
      */
     @Subscribe
     public void onEditEvent(HttpResponseMsg response){
@@ -319,7 +343,7 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
     }
 
     /**
-     * Selects the relevant radiobutton from the retrieved Event object
+     * Selects the relevant radio button from the retrieved event entity
      */
     private void radioButtonSet(String genre){
         switch(genre) {
@@ -340,7 +364,7 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
 
     /**
      * @return text value (other,pop,rock,jazz)
-     *         from the selected radiobutton
+     *         from the selected radio button
      */
     private String getRadioBtnValue(){
         RadioGroup group = (RadioGroup) findViewById(R.id.radioGroup);
@@ -348,12 +372,18 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
         return selected.getText().toString();
     }
 
+    /**
+     * Redirects user to SignInActivity
+     */
     private void redirectToSignIn(){
         Intent intent = new Intent(this, SignInActivity.class);
         startActivity(intent);
     }
 
-
+    /**
+     * Help function for the method: onActivityResult
+     * @return the filepath from the image which the user selected
+     */
     private String getFilepath(Cursor cursor, String[] column){
         if (cursor == null)
             return null;
@@ -369,7 +399,9 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
     }
 
     /**
-     * Request permission to retrieve an image
+     * Request permission to read external storage
+     * for retrieving image from library and other resources.
+     * (This is necessary for API level 23 and above)
      */
     private void requestPermission(){
         ActivityCompat.requestPermissions(this,
@@ -377,20 +409,19 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
                 123);
     }
 
+    /**
+     * Handling the user respond for the requested permission (accept/decline)
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
             case 123: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     upImageBtnOnclick(textImageUrl);
-
                 } else {
-
-                    PopUpMsg.dialogMsg("Request Permisson",
+                    PopUpMsg.dialogMsg("Permisson",
                             "The App must be granted permission, to retrieve image from gallery"
-                            , EditEventActivity.this);
+                            ,this);
                 }
             }
 

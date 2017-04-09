@@ -21,9 +21,6 @@ import retrofit2.http.Query;
 
 public interface EventAPI {
 
-    @GET("/mej3hi/tonlistv2/master/tonlist.json")
-    Call<List<Event>> getEvent();
-
     @GET("/m/")
     Call<List<Event>> getIndex();
 

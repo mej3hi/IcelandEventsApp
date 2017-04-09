@@ -26,6 +26,7 @@ import org.greenrobot.eventbus.Subscribe;
 public class ForgotPasswordActivity extends AppCompatActivity implements Validator.ValidationListener{
 
     private ProgressBar loadingDisplay;
+
     @Required(order = 1)
     @Email(order = 2, message= "Please enter a valid email address.")
     private EditText emailText;
@@ -57,8 +58,8 @@ public class ForgotPasswordActivity extends AppCompatActivity implements Validat
     }
 
     /**
-     * Here we send the Email form to the backend server and also check for
-     * internet connection before sending it.
+     * Sends HttpRequest containing email address
+     * requesting an email response with reset password token
      */
     public void sendMail(){
         if(NetworkChecker.isOnline(this)){
@@ -71,16 +72,16 @@ public class ForgotPasswordActivity extends AppCompatActivity implements Validat
     }
 
     /**
-     * Her we listen to the Rest Password Button for on click and
-     * call on validation to check the Email form.
-     * @param view view is the GUI components
+     * Click listener for Reset password button when clicked
+     * calls validator to validate the Email form.
+     * @param view view is the GUI component
      */
     public void resetPasswBtnOnClick(View view) {
         validator.validate();
     }
 
     /**
-     * If the validation of the Email form is succeeded then we call in sendMail method.
+     * Validation for the Email form was successful therefore sendMail() method is called
      */
     @Override
     public void onValidationSucceeded() {
@@ -88,9 +89,9 @@ public class ForgotPasswordActivity extends AppCompatActivity implements Validat
     }
 
     /**
-     *  If the validation find error on the Email form then we show error msg.
-     * @param view View is the GUI components
-     * @param rule Rule is the error msg
+     * Validation did not succeed, thereby the first error message is shown
+     * @param view View is the GUI component
+     * @param rule Rule contains the error message
      */
     public void onValidationFailed(View view, Rule<?> rule) {
         final String failureMessage = rule.getFailureMessage();
@@ -103,8 +104,8 @@ public class ForgotPasswordActivity extends AppCompatActivity implements Validat
         }
     }
     /**
-     * Here we get the Respond from the backend server.
-     * @param response Response has the Code and Msg from backend server.
+     * Receiving Respond from the backend server.
+     * @param response Response has the Code and the Message from backend server
      */
     @Subscribe
     public void onForgotPassword(HttpResponseMsg response) {

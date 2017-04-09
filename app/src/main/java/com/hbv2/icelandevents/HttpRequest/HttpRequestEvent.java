@@ -28,8 +28,8 @@ public class HttpRequestEvent {
 
 
     /**
-     * Send Get method url ("/m/").
-     * It get the main Event.
+     * Sends Get method url ("/m/").
+     * for getting the music events
      */
     public void indexGet(){
         EventAPI eventAPI = ServiceGenerator.createService(EventAPI.class);
@@ -38,8 +38,8 @@ public class HttpRequestEvent {
     }
 
     /**
-     * Send a Get method url ("/m/calander")
-     * It finds all event to this day
+     * Sends Get method url ("/m/calander")
+     * for getting all music events for this day
      * @param day Is the day to look for.
      */
     public void calanderGet(String day){
@@ -50,10 +50,10 @@ public class HttpRequestEvent {
 
 
     /**
-     * Send a Post mapping url ("/m/createEvent")
-     * It store event form that user has create to database.
-     * @param event The value form the form
-     * @param imageUri The path where the image is store
+     * Sends Post mapping url ("/m/createEvent")
+     * for storing the event which the user has created to database.
+     * @param event the event that is to be stored
+     * @param imageUri The path where the image is stored
      */
     public void createEventPost(Event event, String imageUri){
         File file = new File(imageUri);
@@ -76,8 +76,8 @@ public class HttpRequestEvent {
     }
 
     /**
-     * Send Get method url ("/m/myevents")
-     * It finds all events that user has made.
+     * Sends Get method url ("/m/myevents")
+     * for getting all the music events from that user
      */
     public void myEventGet(){
         EventAPI eventAPI = ServiceGenerator.createService(EventAPI.class);
@@ -86,8 +86,8 @@ public class HttpRequestEvent {
     }
 
     /**
-     * Send Get method url ("/m/removeEvent")
-     * It allow user to remove his own events.
+     * Sends Get method url ("/m/removeEvent")
+     * for removing an event from the user
      * @param id Is the ID of event
      */
     public void removeEventGet(Long id){
@@ -97,10 +97,10 @@ public class HttpRequestEvent {
     }
 
     /**
-     * Send Post method url ("/m/editEvent").
-     * It store event form that user has edit to database.
-     * @param event The value form the form
-     * @param imageUri The path where the image is store
+     * Send Post method url ("/m/editEvent")
+     * for updating the edited event from the user in database.
+     * @param event the event that is to be updated
+     * @param imageUri The path where the image is stored
      */
     public void editEventPost(Event event,String imageUri){
         Map<String, RequestBody> map = new HashMap<>();
@@ -131,10 +131,15 @@ public class HttpRequestEvent {
         HttpRequestCall.callReponseMsg(call);
     }
 
+
     private RequestBody toRequestBody (String value) {
         return RequestBody.create(MediaType.parse("text/plain"), value);
     }
 
+    /**
+     * @param file the image file
+     * @return Bitmap outStream
+     */
     private ByteArrayOutputStream scaleImg(File file){
         Bitmap b = BitmapFactory.decodeFile(file.getAbsolutePath());
         int destWidth = 640;

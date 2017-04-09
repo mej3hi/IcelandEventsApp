@@ -29,6 +29,10 @@ public class ConverterTools {
         return sdf.format(calendar.getTime());
     }
 
+    public static Long toDay(){
+        return System.currentTimeMillis() - 1000;
+    }
+
     public static String toJson(Event event){
         return new Gson().toJson(event);
     }

@@ -10,10 +10,9 @@ import retrofit2.Call;
 
 public class HttpRequestUser {
 
-
     /**
-     * Send Get method url ("/m/signIn").
-     * It Sign In the user
+     * Sends Get method url ("/m/signIn")
+     * for signing the user in
      * @param username Is the username from the form
      * @param password Is the password form the form
      */
@@ -24,8 +23,9 @@ public class HttpRequestUser {
     }
 
     /**
-     * Send Post method url ("/m/signUp").
-     * @param user Get the registration value from the form.
+     * Sends Post method url ("/m/signUp")
+     * for signing up new user.
+     * @param user the new user that is to be signed up
      */
     public void signUpPost(User user){
         UserAPI userAPI = ServiceGenerator.createService(UserAPI.class);
@@ -34,8 +34,8 @@ public class HttpRequestUser {
     }
 
     /**
-     * Send Post method url ("/m/forgetPassword").
-     * It send mail to the user with with token to restore his password.
+     * Sends Post method url ("/m/forgetPassword")
+     * for sending mail to the user with a token to restore his password.
      * @param email Is the email from the form.
      */
     public void forgetPasswordPost(String email) {
@@ -45,10 +45,10 @@ public class HttpRequestUser {
     }
 
     /**
-     * Send Post method url ("/resetPassword".
-     * It store the new password that user has create.
-     * @param token Is the token for that user.
-     * @param password Is the password that user create.
+     * Sends Post method url ("/resetPassword")
+     * for storing the new password to database.
+     * @param token Is the token for that user
+     * @param password Is the password that the user created
      */
     public void resetPasswordPost(String token,String password,String passwordConf){
         UserAPI userAPI = ServiceGenerator.createService(UserAPI.class);

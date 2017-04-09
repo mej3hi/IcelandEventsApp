@@ -90,8 +90,64 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
     }
 
     /**
-     * Here we get the Respond from the backend server.
-     * @param response Response has the Code and Msg from backend server.
+     * Click listener for Sign Up button when clicked
+     * calls validator to validate the Sign up form.
+     * @param v v is the GUI component
+     */
+    public void signUpBtnOnClick (View v){
+        validator.validate();
+    }
+
+    /**
+     * Validation for the Sign up form was successful,
+     * therefore the sendSignUp() method is called
+     */
+    @Override
+    public void onValidationSucceeded() {
+        sendSignUp();
+    }
+
+    /**
+     * Validation did not succeed, thereby the first error message is shown
+     * @param view View is the GUI components
+     * @param rule Rule contains the error msg
+     */
+    @Override
+    public void onValidationFailed(View view, Rule<?> rule) {
+        final String failureMessage = rule.getFailureMessage();
+        if (view instanceof EditText) {
+            EditText failed = (EditText) view;
+            failed.requestFocus();
+            failed.setError(failureMessage);
+        } else {
+            Toast.makeText(getApplicationContext(), failureMessage, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /**
+     * Sends HttpRequest containing user entity
+     * Requesting a new user to be signed up
+     * Also checks for internet connection before sending it.
+     */
+    public void sendSignUp(){
+        if(NetworkChecker.isOnline(this)){
+            loadingDisplay.setVisibility(View.VISIBLE);
+            User user = new User();
+            user.setName(name.getText().toString());
+            user.setEmail(email.getText().toString());
+            user.setUsername(username.getText().toString());
+            user.setPassword(password.getText().toString());
+            user.setPasswordConfirm(passwordConf.getText().toString());
+            new HttpRequestUser().signUpPost(user);
+
+        }else{
+            PopUpMsg.toastMsg("Network isn't available",this);
+        }
+    }
+
+    /**
+     * Receiving the Respond from the backend server.
+     * @param response Response has the Code and Message from backend server
      */
     @Subscribe
     public void onSignUp(HttpResponseMsg response){
@@ -117,60 +173,6 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
             String msg = "Something went wrong with the Sign up, please try again";
             PopUpMsg.dialogMsg(title,msg,this);
         }
-    }
-
-    /**
-     * Here we send the Sign Up form to the backend server and also check for
-     * internet connection before sending it.
-     */
-    public void sendSignUp(){
-        if(NetworkChecker.isOnline(this)){
-            loadingDisplay.setVisibility(View.VISIBLE);
-            User user = new User();
-            user.setName(name.getText().toString());
-            user.setEmail(email.getText().toString());
-            user.setUsername(username.getText().toString());
-            user.setPassword(password.getText().toString());
-            user.setPasswordConfirm(passwordConf.getText().toString());
-            new HttpRequestUser().signUpPost(user);
-
-        }else{
-            PopUpMsg.toastMsg("Network isn't available",this);
-        }
-    }
-
-    /**
-     * If the validation of the Sign Up form is succeeded then we call in sendSignUp method.
-     */
-    @Override
-    public void onValidationSucceeded() {
-        sendSignUp();
-    }
-
-    /**
-     *  If the validation find error on the Sign Up form then we show error msg.
-     * @param view View is the GUI components
-     * @param rule Rule is the error msg
-     */
-    @Override
-    public void onValidationFailed(View view, Rule<?> rule) {
-        final String failureMessage = rule.getFailureMessage();
-        if (view instanceof EditText) {
-            EditText failed = (EditText) view;
-            failed.requestFocus();
-            failed.setError(failureMessage);
-        } else {
-            Toast.makeText(getApplicationContext(), failureMessage, Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    /**
-     * Her we listen to the Sign up Button for on click and
-     * call on validation to check the sign up from.
-     * @param v v is the GUI components
-     */
-    public void signUpBtnOnClick (View v){
-            validator.validate();
     }
 
 }

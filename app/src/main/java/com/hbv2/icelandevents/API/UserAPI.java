@@ -26,5 +26,5 @@ public interface UserAPI  {
 
     @POST("/m/resetPassword")
     Call<String> resetPassword(@Query("token") String token, @Query("password") String password,
-                             @Query("passwordConfirm") String passwordConf);
+                               @Query("passwordConfirm") String passwordConf);
 }

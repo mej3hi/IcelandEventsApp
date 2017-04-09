@@ -7,6 +7,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
@@ -115,8 +116,8 @@ public class CreateEventActivity extends AppCompatActivity implements Validator.
     }
 
     /**
-     * Here we are adding a DatePickerDialog and
-     * setting Listener for the textDate(EditText)
+     * Setting Click Listener for the textDate(EditText)
+     * to show DatePickerDialog when it's clicked
      */
     private void setDateField(){
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener(){
@@ -132,15 +133,17 @@ public class CreateEventActivity extends AppCompatActivity implements Validator.
         textDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new DatePickerDialog(CreateEventActivity.this,date, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
-                        calendar.get(Calendar.DAY_OF_MONTH)).show();
+                DatePickerDialog dpd = new DatePickerDialog(CreateEventActivity.this,date, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.DAY_OF_MONTH));
+                dpd.getDatePicker().setMinDate(ConverterTools.toDay());
+                dpd.show();
             }
         });
     }
 
     /**
-     * Here we are adding a TimePickerDialog and
-     * setting Listener for the textTime(EditText)
+     * Setting Click Listener for the textTime(EditText)
+     * to show TimePickerDialog when it's clicked
      */
     private void setTimeField(){
         final TimePickerDialog.OnTimeSetListener time =  new TimePickerDialog.OnTimeSetListener(){
@@ -161,7 +164,7 @@ public class CreateEventActivity extends AppCompatActivity implements Validator.
     }
 
     /**
-     * User selects an Image
+     * User selects an Image from a Chooser
      * @param view is the GUI Component
      */
     public void upImageBtnOnclick(View view) {
@@ -176,12 +179,12 @@ public class CreateEventActivity extends AppCompatActivity implements Validator.
     }
 
     /**
-     * Retrieving the image which user selected and its filepath
+     * Retrieving the image Uri from the image which user selected and its filepath
      */
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
         if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
-            android.net.Uri selectedImage = imageReturnedIntent.getData();
+            Uri selectedImage = imageReturnedIntent.getData();
             String[] column = {MediaStore.Images.Media.DATA};
             Cursor cursor = getContentResolver().query(selectedImage, column, null, null, null);
 
@@ -198,8 +201,8 @@ public class CreateEventActivity extends AppCompatActivity implements Validator.
 
             if(filePath == null) {
                 PopUpMsg.dialogMsg("Image Failure",
-                        "Something went wrong, try uploading image from another resource"
-                        , CreateEventActivity.this);
+                        "Something went wrong, try to upload image from another resource"
+                        , this);
                 return;
             }
 
@@ -208,6 +211,20 @@ public class CreateEventActivity extends AppCompatActivity implements Validator.
         }
     }
 
+    /**
+     * Click listener for Create Button when clicked
+     * calls validator to validate the event form.
+     * @param view is the GUI component
+     */
+    public void createBtnOnClick(View view) {
+        validator.validate();
+    }
+
+    /**
+     * Validation for the Event form was successful,
+     * therefore setting all the parameters to the event
+     * entity and call the createEvent() method
+     */
     @Override
     public void onValidationSucceeded() {
         String name = textName.getText().toString();
@@ -231,6 +248,12 @@ public class CreateEventActivity extends AppCompatActivity implements Validator.
 
     }
 
+    /**
+     * Validation did not succeed, thereby the first error message is shown
+     * @param view View is the GUI component
+     * @param rule Rule contains the error message
+     */
+    @Override
     public void onValidationFailed(View view, Rule<?> rule) {
         final String failureMessage = rule.getFailureMessage();
         if (view instanceof EditText) {
@@ -242,12 +265,9 @@ public class CreateEventActivity extends AppCompatActivity implements Validator.
         }
     }
 
-    public void createBtnOnClick(View view) {
-        validator.validate();
-    }
-
     /**
-     * Sends HttpRequest containing the event object
+     * Sends HttpRequest containing the event entity
+     * requesting the event to be created
      */
     private void createEvent(){
         if(NetworkChecker.isOnline(this)) {
@@ -260,7 +280,7 @@ public class CreateEventActivity extends AppCompatActivity implements Validator.
 
     /**
      * Receiving Respond from the backend server.
-     * @param response Response has the Code and the Msg from backend server.
+     * @param response Response has the Code and the Message from backend server
      */
     @Subscribe
     public void onCreateEvent(HttpResponseMsg response){
@@ -277,7 +297,7 @@ public class CreateEventActivity extends AppCompatActivity implements Validator.
 
     /**
      * @return text value (other,pop,rock,jazz)
-     *         from the selected radiobutton
+     *         from the selected radio button
      */
     private String getRadioBtnValue(){
         RadioGroup group = (RadioGroup) findViewById(R.id.radioGroup);
@@ -285,11 +305,18 @@ public class CreateEventActivity extends AppCompatActivity implements Validator.
         return selected.getText().toString();
     }
 
+    /**
+     * Redirects user to SignInActivity
+     */
     private void redirectToSignIn(){
         Intent intent = new Intent(this, SignInActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * Help function for the method: onActivityResult
+     * @return the filepath from the image which the user selected
+     */
     private String getFilepath(Cursor cursor, String[] column){
         if (cursor == null)
             return null;
@@ -304,7 +331,9 @@ public class CreateEventActivity extends AppCompatActivity implements Validator.
     }
 
     /**
-     * Request permission to retrieve an image
+     * Request permission to read external storage
+     * for retrieving image from library and other resources.
+     * (This is necessary for API level 23 and above)
      */
     private void requestPermission(){
         ActivityCompat.requestPermissions(this,
@@ -312,6 +341,9 @@ public class CreateEventActivity extends AppCompatActivity implements Validator.
                 123);
     }
 
+    /**
+     * Handling the user respond for the requested permission (accept/decline)
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
@@ -320,9 +352,9 @@ public class CreateEventActivity extends AppCompatActivity implements Validator.
                     upImageBtnOnclick(textImageUrl);
 
                 } else {
-                    PopUpMsg.dialogMsg("Request Permisson",
+                    PopUpMsg.dialogMsg("Permisson",
                             "The App must be granted permission, to retrieve image from gallery"
-                            , CreateEventActivity.this);
+                            , this);
                 }
             }
 

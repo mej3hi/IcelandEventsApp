@@ -94,7 +94,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/forgotPasswBtnId"
-                android:onClick="forgotPasswBtn"
+                android:onClick="forgotPasswordBtn"
                 android:layout_below="@+id/skipBtnId"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="10dp"/>

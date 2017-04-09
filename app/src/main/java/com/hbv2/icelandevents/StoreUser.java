@@ -12,7 +12,7 @@ import java.io.FileOutputStream;
 public class StoreUser {
 
     /**
-     * Here we will sore User information about user
+     * Here we will store User information about user
      * @param username
      * @param password
      * @param base

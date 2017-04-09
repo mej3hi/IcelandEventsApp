@@ -18,7 +18,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 /**
- * It crate ArrayAdapter for the Event to display on screen on the phone 
+ * It crates ArrayAdapter for the Event to display on screen on the phone
  */
 
 public class EventAdapter extends ArrayAdapter<Event> {

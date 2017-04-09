@@ -16,9 +16,10 @@ import java.util.Objects;
 public class AutoLogin  {
 
     /**
-     * It will check whether user has create userInfo and call Sign In.
+     * Checks whether user has created userInfo if so
+     * then a HttpRequest is sent requesting user to be signed in.
      * @param base Is the Context
-     * @return It return TRUE if it has crate userInfo, else it return FALSE.
+     * @return It returns TRUE if it has created userInfo, else it return FALSE
      */
     public static boolean checkUserInfo(Context base){
         boolean userInfoExists = false;
@@ -37,6 +38,7 @@ public class AutoLogin  {
                 Log.d("AutoLogin",temp);
                 if(NetworkChecker.isOnline(base)) {
                     if(!Objects.equals(UserInfo.getUsername(), "") && !Objects.equals(UserInfo.getPassword(), "")){
+                        Log.d("debögg",UserInfo.getUsername() +"  "+UserInfo.getPassword());
                         new HttpRequestUser().signInGet(UserInfo.getUsername(),UserInfo.getPassword());
                     }
                 }else{

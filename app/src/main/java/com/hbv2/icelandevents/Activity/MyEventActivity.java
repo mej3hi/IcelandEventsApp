@@ -51,7 +51,7 @@ public class MyEventActivity extends AppCompatActivity {
 
 
     /**
-     * Listener when event is clicked that directs user to EditEventActivity
+     * Listener when event is clicked it directs user to EditEventActivity
      */
     AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
         @Override
@@ -80,7 +80,8 @@ public class MyEventActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.create_event) {
-            createEventMenuBtn();
+            Intent intent = new Intent(this, CreateEventActivity.class);
+            startActivity(intent);
             return true;
         }
 
@@ -103,7 +104,7 @@ public class MyEventActivity extends AppCompatActivity {
 
     /**
      * Receiving Respond from the backend server.
-     * @param response Response has the Code and the Msg from backend server.
+     * @param response Response has the Code and List<Event> from backend server
      */
     @Subscribe
     public void onMyEvent(HttpResponseEvent response) {
@@ -118,6 +119,9 @@ public class MyEventActivity extends AppCompatActivity {
             PopUpMsg.toastMsg("Something went wrong, please try again", this);
     }
 
+    /**
+     * Setting EventAdapter containing the event list to the eventListView
+     */
     private  void updateDisplay(){
         EventAdapter eventAdapter = new EventAdapter(this, eventsList);
         eventListView.setAdapter(eventAdapter);
@@ -135,11 +139,9 @@ public class MyEventActivity extends AppCompatActivity {
         }
     }
 
-    private void createEventMenuBtn(){
-        Intent intent = new Intent(this, CreateEventActivity.class);
-        startActivity(intent);
-    }
-
+    /**
+     * Redirects user to SignInActivity
+     */
     private void redirectToSignIn(){
         Intent intent = new Intent(this, SignInActivity.class);
         startActivity(intent);

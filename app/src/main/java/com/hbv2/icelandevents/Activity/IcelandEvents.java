@@ -66,11 +66,7 @@ public class IcelandEvents extends AppCompatActivity {
         UserInfo.setLogin(false);
         setDateTimeField();
         setListener();
-
-
     }
-
-
 
 
     @Override
@@ -131,8 +127,8 @@ public class IcelandEvents extends AppCompatActivity {
     }
 
     /**
-     * Her we are adding in DatePickerDialog and
-     * set Listener to the calendarDate(EditText)
+     * Setting Click Listener for the calendarDate(EditText)
+     * to show DatePickerDialog when it's clicked
      */
     private void setDateTimeField(){
         calendar = Calendar.getInstance();
@@ -150,13 +146,18 @@ public class IcelandEvents extends AppCompatActivity {
         calendarDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new DatePickerDialog(IcelandEvents.this,date, calendar.get(Calendar.YEAR),
+                DatePickerDialog dpd = new DatePickerDialog(IcelandEvents.this,date, calendar.get(Calendar.YEAR),
                         calendar.get(Calendar.MONTH),
-                        calendar.get(Calendar.DAY_OF_MONTH)).show();
+                        calendar.get(Calendar.DAY_OF_MONTH));
+                dpd.getDatePicker().setMinDate(ConverterTools.toDay());
+                dpd.show();
             }
         });
     }
 
+    /**
+     * Listener when event is clicked it directs user to DetailEventActivity
+     */
     AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -170,8 +171,8 @@ public class IcelandEvents extends AppCompatActivity {
     };
 
     /**
-     * Here we get the Respond from the backend server.
-     * @param response Response has the Code and Msg from backend server.
+     * Receiving the Respond from the backend server.
+     * @param response Response has the Code and Message from backend server.
      */
     @Subscribe
     public void onAutoLogin(HttpResponseMsg response){
@@ -185,7 +186,7 @@ public class IcelandEvents extends AppCompatActivity {
     }
 
     /**
-     * If the user is sign in we will this menu.
+     * If the user is signed in, signed in menu is shown
      */
     public void userSignedInMenu(){
         if(UserInfo.isLogin()){
@@ -196,7 +197,7 @@ public class IcelandEvents extends AppCompatActivity {
     }
 
     /**
-     * If the user is not sign in we will this menu.
+     * If the user is not signed in, a common menu is shown
      */
     public void userSignOutMenu(){
         if(!UserInfo.isLogin()){
@@ -207,8 +208,8 @@ public class IcelandEvents extends AppCompatActivity {
     }
 
     /**
-     * Here we get the Respond from the backend server.
-     * @param event Event has the Code and List<Event> from backend server.
+     * Receiving the Respond from the backend server.
+     * @param event Event has the Code and List<Event> from backend server
      */
     @Subscribe
     public void onEvent(HttpResponseEvent event) {
@@ -224,13 +225,14 @@ public class IcelandEvents extends AppCompatActivity {
             }
         }
         else {
-            PopUpMsg.toastMsg("Something went wrong trying get the Event",this);
+            PopUpMsg.toastMsg("Something went wrong when trying to get the events",this);
         }
     }
 
     /**
-     * Here we are sending request for the index Event and
-     * also check for internet connection before sending it.
+     * Sends HttpRequest
+     * Requesting the next 6 events.
+     * Also checks for internet connection before sending it
      */
     private void requestEvents(){
         if(NetworkChecker.isOnline(this)) {
@@ -242,9 +244,10 @@ public class IcelandEvents extends AppCompatActivity {
     }
 
     /**
-     * Here we are sending request for event for particularly day to look for and
-     * also check for internet connection before sending it.
-     * @param day Day is the day to look for.
+     * Sends HttpRequest containing a date
+     * Requesting all events for that day.
+     * Also checks for internet connection before sending it.
+     * @param day Day is the day to look for
      */
     private void requestEventsByDate(String day){
         if(NetworkChecker.isOnline(this)) {
@@ -256,7 +259,7 @@ public class IcelandEvents extends AppCompatActivity {
     }
 
     /**
-     * Here we add the Event to the EventListView(ListView) with EventAdapter.
+     * Setting EventAdapter containing the event list to the eventListView
      */
     public  void updateDisplay(){
         EventAdapter eventAdapter = new EventAdapter(this, eventsList);
@@ -264,9 +267,9 @@ public class IcelandEvents extends AppCompatActivity {
     }
 
     /**
-     * Here we check whether user is using the app for the first time and
-     * if so we call on Intent for SignInActivity.class,
-     * if not the we will autoLogin in the user.
+     * Checks whether user is using the app for the first time,
+     * if so user is directed to SignInActivity,
+     * if not then user will be automatically logged in.
      */
     private void checkUserInfo(){
         if(!UserInfo.isLogin()) {
@@ -279,8 +282,8 @@ public class IcelandEvents extends AppCompatActivity {
     }
 
     /**
-     * Here we set listener to the mainTitle and if click on the we will call
-     * on requestEvents method.
+     * Setting click listener to the mainTitle
+     * when clicked calls the requestEvents() method
      */
     private void setListener(){
         mainTitle.setOnClickListener(new View.OnClickListener() {

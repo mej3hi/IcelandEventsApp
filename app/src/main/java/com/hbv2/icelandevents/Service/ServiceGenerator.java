@@ -21,12 +21,12 @@ public class ServiceGenerator {
     private static final String BASE_URL = "https://hugbunadarverkefni2.herokuapp.com/";
 
     /**
-     * Here we crate httpClient to add header to the Http request.
+     * Here we created HttpClient to add header to the HttpRequest.
      */
     private static  OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
     /**
-     * Here we crate builder so we can call Http request and listen to Http respond.
+     * Here we created builder so we can send HttpRequest and listen to HttpRespond.
      */
     private static Retrofit.Builder builder = new Retrofit.Builder()
             .baseUrl(BASE_URL)
@@ -35,7 +35,7 @@ public class ServiceGenerator {
     private static Retrofit retrofit;
 
     /**
-     * Here we crate standard server.
+     * Here we created standard server.
      * @return createService(serviceClass, null ,null)
      */
     public static <S> S createService(Class<S> serviceClass){
@@ -43,7 +43,7 @@ public class ServiceGenerator {
     }
 
     /**
-     * Here we create server with Credentials from username and password
+     * Here we created server with Credentials from username and password
      * if the username and password is not empty.
      * @return It return createService(serviceClass,authToken) or  createService(serviceClass,null);
      */
@@ -56,10 +56,10 @@ public class ServiceGenerator {
     }
 
     /**
-     * Here we create server with authToken and add it to the
-     * header "Authorization" and authToken to it and
-     * also "Accept","application/json". to it
-     * @param authToken AuthToken is the Credentials from username and password.
+     * Here we created server with authToken and added it to the
+     * header "Authorization" and also added
+     * "Accept","application/json" to the header.
+     * @param authToken AuthToken is the Credentials from username and password
      * @return retrofit.create(serviceClass);
      */
     public static <S> S createService(Class<S> serviceClass, final String authToken){

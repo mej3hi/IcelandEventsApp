@@ -13,9 +13,9 @@ import android.widget.Toast;
 public class PopUpMsg {
 
     /**
-     * It display Dialog msg to the user with OK Button to press on.
-     * @param title Title is the tile of the dialog.
-     * @param msg Msg it msg to display on the dialog.
+     * It displays Dialog message with an OK Button to click on.
+     * @param title Title is the title of the dialog
+     * @param msg Msg is the dialog's message
      * @param context context is Context
      */
     public static void dialogMsg(String title, String msg, Context context){
@@ -34,8 +34,8 @@ public class PopUpMsg {
     }
 
     /**
-     * It display Toast msg to the user.
-     * @param msg Msg it msg to display on Toast.
+     * It displays Toast message to the user.
+     * @param msg Msg is the message for the Toast
      * @param context context is Context
      */
     public static void toastMsg(String msg,Context context){
