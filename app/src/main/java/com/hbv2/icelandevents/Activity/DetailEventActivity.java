@@ -40,7 +40,7 @@ public class DetailEventActivity extends AppCompatActivity {
     }
 
     /**
-     * Gets the event which user clicked in MyEventActivity.
+     * Gets the event which user clicked in IcelandEvents activity.
      */
     private void getEvent(){
         String parsed = getIntent().getStringExtra("EVENT_DETAIL");
