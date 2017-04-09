@@ -80,25 +80,8 @@ public class ResetPasswordActivity extends AppCompatActivity implements Validato
     }
 
     /**
-     * Sends HttpRequest containing a password and token
-     * Requesting to change the password
-     */
-    public void changePassword(){
-        if(NetworkChecker.isOnline(this)){
-            loadingDisplay.setVisibility(View.VISIBLE);
-            String token = confirmCode.getText().toString();
-            String password = newPassword.getText().toString();
-            String passwordConf = confirmPassword.getText().toString();
-            new HttpRequestUser().resetPasswordPost(token,password,passwordConf);
-        }
-        else{
-            PopUpMsg.toastMsg("Network isn´t available",this);
-        }
-    }
-
-    /**
      * Validation for the Reset password form was successful,
-     * therefore the changePassword() method is called
+     * therefore the changePassword() method is called.
      */
     @Override
     public void onValidationSucceeded() {
@@ -123,6 +106,24 @@ public class ResetPasswordActivity extends AppCompatActivity implements Validato
     }
 
     /**
+     * Sends HttpRequest containing a password and token
+     * Requesting to change the password.
+     * Also checks for internet connection before sending it.
+     */
+    public void changePassword(){
+        if(NetworkChecker.isOnline(this)){
+            loadingDisplay.setVisibility(View.VISIBLE);
+            String token = confirmCode.getText().toString();
+            String password = newPassword.getText().toString();
+            String passwordConf = confirmPassword.getText().toString();
+            new HttpRequestUser().resetPasswordPost(token,password,passwordConf);
+        }
+        else{
+            PopUpMsg.toastMsg("Network isn´t available",this);
+        }
+    }
+
+    /**
      * Receiving the Respond from the backend server.
      * @param response Response has the Code and Message from backend server
      */
@@ -143,7 +144,7 @@ public class ResetPasswordActivity extends AppCompatActivity implements Validato
     }
 
     /**
-     * Redirects user to SignInActivity
+     * Redirects user to SignInActivity.
      */
     public void redirectToSignIn(){
         Intent intent = new Intent(this,SignInActivity.class);

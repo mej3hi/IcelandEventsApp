@@ -59,7 +59,8 @@ public class ForgotPasswordActivity extends AppCompatActivity implements Validat
 
     /**
      * Sends HttpRequest containing email address
-     * requesting an email response with reset password token
+     * requesting an email response with reset password token.
+     * Also checks for internet connection before sending it.
      */
     public void sendMail(){
         if(NetworkChecker.isOnline(this)){
@@ -81,7 +82,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements Validat
     }
 
     /**
-     * Validation for the Email form was successful therefore sendMail() method is called
+     * Validation for the Email form was successful therefore sendMail() method is called.
      */
     @Override
     public void onValidationSucceeded() {
@@ -89,7 +90,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements Validat
     }
 
     /**
-     * Validation did not succeed, thereby the first error message is shown
+     * Validation did not succeed, thereby the first error message is shown.
      * @param view View is the GUI component
      * @param rule Rule contains the error message
      */

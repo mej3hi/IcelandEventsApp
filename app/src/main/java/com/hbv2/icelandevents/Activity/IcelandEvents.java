@@ -128,7 +128,7 @@ public class IcelandEvents extends AppCompatActivity {
 
     /**
      * Setting Click Listener for the calendarDate(EditText)
-     * to show DatePickerDialog when it's clicked
+     * to show DatePickerDialog when it's clicked.
      */
     private void setDateTimeField(){
         calendar = Calendar.getInstance();
@@ -156,7 +156,7 @@ public class IcelandEvents extends AppCompatActivity {
     }
 
     /**
-     * Listener when event is clicked it directs user to DetailEventActivity
+     * Listener when event is clicked it directs user to DetailEventActivity.
      */
     AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
         @Override
@@ -186,7 +186,7 @@ public class IcelandEvents extends AppCompatActivity {
     }
 
     /**
-     * If the user is signed in, signed in menu is shown
+     * If the user is signed in, signed in menu is shown.
      */
     public void userSignedInMenu(){
         if(UserInfo.isLogin()){
@@ -197,7 +197,7 @@ public class IcelandEvents extends AppCompatActivity {
     }
 
     /**
-     * If the user is not signed in, a common menu is shown
+     * If the user is not signed in, a common menu is shown.
      */
     public void userSignOutMenu(){
         if(!UserInfo.isLogin()){
@@ -232,7 +232,7 @@ public class IcelandEvents extends AppCompatActivity {
     /**
      * Sends HttpRequest
      * Requesting the next 6 events.
-     * Also checks for internet connection before sending it
+     * Also checks for internet connection before sending it.
      */
     private void requestEvents(){
         if(NetworkChecker.isOnline(this)) {
@@ -259,7 +259,7 @@ public class IcelandEvents extends AppCompatActivity {
     }
 
     /**
-     * Setting EventAdapter containing the event list to the eventListView
+     * Setting EventAdapter containing the event list to the eventListView.
      */
     public  void updateDisplay(){
         EventAdapter eventAdapter = new EventAdapter(this, eventsList);
@@ -283,7 +283,7 @@ public class IcelandEvents extends AppCompatActivity {
 
     /**
      * Setting click listener to the mainTitle
-     * when clicked calls the requestEvents() method
+     * when clicked calls the requestEvents() method.
      */
     private void setListener(){
         mainTitle.setOnClickListener(new View.OnClickListener() {

@@ -81,7 +81,7 @@ public class SignInActivity extends AppCompatActivity {
 
     /**
      * Skip Button is made visible when TRUE(boolean value)
-     * is passed to this activity from another activity
+     * is passed to this activity from another activity.
      */
     public void skipBtnVisibility(){
         if(getIntent().getBooleanExtra("SKIP_VISIBLE",false)){
@@ -91,7 +91,7 @@ public class SignInActivity extends AppCompatActivity {
 
     /**
      * Sends HttpRequest containing username and password,
-     * Requesting user to be signed in
+     * Requesting user to be signed in.
      * Also checks for internet connection before sending it.
      */
     public void sendSignIn(){

@@ -51,7 +51,7 @@ public class MyEventActivity extends AppCompatActivity {
 
 
     /**
-     * Listener when event is clicked it directs user to EditEventActivity
+     * Listener when event is clicked it directs user to EditEventActivity.
      */
     AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
         @Override
@@ -120,7 +120,7 @@ public class MyEventActivity extends AppCompatActivity {
     }
 
     /**
-     * Setting EventAdapter containing the event list to the eventListView
+     * Setting EventAdapter containing the event list to the eventListView.
      */
     private  void updateDisplay(){
         EventAdapter eventAdapter = new EventAdapter(this, eventsList);
@@ -128,7 +128,8 @@ public class MyEventActivity extends AppCompatActivity {
     }
 
     /**
-     * Sends HttpRequest that request all Events from user
+     * Sends HttpRequest that requests all Events from user.
+     * Also checks for internet connection before sending it.
      */
     private void requestEvents() {
         if(NetworkChecker.isOnline(this)){
@@ -140,7 +141,7 @@ public class MyEventActivity extends AppCompatActivity {
     }
 
     /**
-     * Redirects user to SignInActivity
+     * Redirects user to SignInActivity.
      */
     private void redirectToSignIn(){
         Intent intent = new Intent(this, SignInActivity.class);

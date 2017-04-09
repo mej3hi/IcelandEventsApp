@@ -117,7 +117,7 @@ public class CreateEventActivity extends AppCompatActivity implements Validator.
 
     /**
      * Setting Click Listener for the textDate(EditText)
-     * to show DatePickerDialog when it's clicked
+     * to show DatePickerDialog when it's clicked.
      */
     private void setDateField(){
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener(){
@@ -143,7 +143,7 @@ public class CreateEventActivity extends AppCompatActivity implements Validator.
 
     /**
      * Setting Click Listener for the textTime(EditText)
-     * to show TimePickerDialog when it's clicked
+     * to show TimePickerDialog when it's clicked.
      */
     private void setTimeField(){
         final TimePickerDialog.OnTimeSetListener time =  new TimePickerDialog.OnTimeSetListener(){
@@ -164,7 +164,7 @@ public class CreateEventActivity extends AppCompatActivity implements Validator.
     }
 
     /**
-     * User selects an Image from a Chooser
+     * User selects an Image from a Chooser.
      * @param view is the GUI Component
      */
     public void upImageBtnOnclick(View view) {
@@ -179,7 +179,7 @@ public class CreateEventActivity extends AppCompatActivity implements Validator.
     }
 
     /**
-     * Retrieving the image Uri from the image which user selected and its filepath
+     * Retrieving the image Uri from the image which user selected and its filepath.
      */
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
@@ -223,7 +223,7 @@ public class CreateEventActivity extends AppCompatActivity implements Validator.
     /**
      * Validation for the Event form was successful,
      * therefore setting all the parameters to the event
-     * entity and call the createEvent() method
+     * entity and call the createEvent() method.
      */
     @Override
     public void onValidationSucceeded() {
@@ -249,7 +249,7 @@ public class CreateEventActivity extends AppCompatActivity implements Validator.
     }
 
     /**
-     * Validation did not succeed, thereby the first error message is shown
+     * Validation did not succeed, thereby the first error message is shown.
      * @param view View is the GUI component
      * @param rule Rule contains the error message
      */
@@ -267,7 +267,8 @@ public class CreateEventActivity extends AppCompatActivity implements Validator.
 
     /**
      * Sends HttpRequest containing the event entity
-     * requesting the event to be created
+     * requesting the event to be created.
+     * Also checks for internet connection before sending it.
      */
     private void createEvent(){
         if(NetworkChecker.isOnline(this)) {
@@ -297,7 +298,7 @@ public class CreateEventActivity extends AppCompatActivity implements Validator.
 
     /**
      * @return text value (other,pop,rock,jazz)
-     *         from the selected radio button
+     *         from the selected radio button.
      */
     private String getRadioBtnValue(){
         RadioGroup group = (RadioGroup) findViewById(R.id.radioGroup);
@@ -306,7 +307,7 @@ public class CreateEventActivity extends AppCompatActivity implements Validator.
     }
 
     /**
-     * Redirects user to SignInActivity
+     * Redirects user to SignInActivity.
      */
     private void redirectToSignIn(){
         Intent intent = new Intent(this, SignInActivity.class);
@@ -314,7 +315,7 @@ public class CreateEventActivity extends AppCompatActivity implements Validator.
     }
 
     /**
-     * Help function for the method: onActivityResult
+     * Help function for the method: onActivityResult.
      * @return the filepath from the image which the user selected
      */
     private String getFilepath(Cursor cursor, String[] column){
@@ -342,7 +343,7 @@ public class CreateEventActivity extends AppCompatActivity implements Validator.
     }
 
     /**
-     * Handling the user respond for the requested permission (accept/decline)
+     * Handling the user respond for the requested permission (accept/decline).
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {

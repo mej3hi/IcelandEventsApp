@@ -116,7 +116,7 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
 
     /**
      * Setting Click Listener for the textDate(EditText)
-     * to show DatePickerDialog when it's clicked
+     * to show DatePickerDialog when it's clicked.
      */
     private void setDateField(){
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener(){
@@ -142,7 +142,7 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
 
     /**
      * Setting Click Listener for the textTime(EditText)
-     * to show TimePickerDialog when it's clicked
+     * to show TimePickerDialog when it's clicked.
      */
     private void setTimeField(){
         final TimePickerDialog.OnTimeSetListener time =  new TimePickerDialog.OnTimeSetListener(){
@@ -163,7 +163,7 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
     }
 
     /**
-     * Gets the event which user clicked in MyEventActivity
+     * Gets the event which user clicked in MyEventActivity.
      */
     private void getEvent(){
         String parsed = getIntent().getStringExtra("EVENT_NAME");
@@ -171,7 +171,7 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
     }
 
     /**
-     * Sets the text fields with the values from the retrieved event
+     * Sets the text fields with the values from the retrieved event.
      */
     private void setFields(){
         textName.setText(event.getName());
@@ -184,7 +184,7 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
     }
 
     /**
-     * User selects an Image from a Chooser
+     * User selects an Image from a Chooser.
      * @param view is the GUI Component
      */
     public void upImageBtnOnclick(View view) {
@@ -199,7 +199,7 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
     }
 
     /**
-     * Retrieving the image Uri from the image which user selected and its filepath
+     * Retrieving the image Uri from the image which user selected and its filepath.
      */
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
@@ -243,7 +243,7 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
     /**
      * Validation for the Event form was successful,
      * therefore setting all the parameters to the event
-     * entity and call the saveEvent() method
+     * entity and call the saveEvent() method.
      */
     @Override
     public void onValidationSucceeded() {
@@ -268,7 +268,7 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
     }
 
     /**
-     * Validation did not succeed, thereby the first error message is shown
+     * Validation did not succeed, thereby the first error message is shown.
      * @param view View is the GUI component
      * @param rule Rule contains the error message
      */
@@ -286,7 +286,7 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
 
     /**
      * Sends HttpRequest containing the event entity
-     * requesting the event to be updated/saved
+     * requesting the event to be updated/saved.
      */
     private void saveEvent(){
         if(NetworkChecker.isOnline(this)) {
@@ -299,7 +299,7 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
 
     /**
      * Pops up an Alert Dialog making sure
-     * whether user wants to remove the event
+     * whether user wants to remove the event.
      */
     public void removeBtnOnClick(View view) {
         new AlertDialog.Builder(this)
@@ -314,7 +314,8 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
 
     /**
      * Sends HttpRequest containing the event id
-     * requesting the event to be removed
+     * requesting the event to be removed.
+     * Also checks for internet connection before sending it.
      */
     private void removeEvent(){
         if(NetworkChecker.isOnline(this)) {
@@ -343,7 +344,7 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
     }
 
     /**
-     * Selects the relevant radio button from the retrieved event entity
+     * Selects the relevant radio button from the retrieved event entity.
      */
     private void radioButtonSet(String genre){
         switch(genre) {
@@ -364,7 +365,7 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
 
     /**
      * @return text value (other,pop,rock,jazz)
-     *         from the selected radio button
+     *         from the selected radio button.
      */
     private String getRadioBtnValue(){
         RadioGroup group = (RadioGroup) findViewById(R.id.radioGroup);
@@ -373,7 +374,7 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
     }
 
     /**
-     * Redirects user to SignInActivity
+     * Redirects user to SignInActivity.
      */
     private void redirectToSignIn(){
         Intent intent = new Intent(this, SignInActivity.class);
@@ -381,7 +382,7 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
     }
 
     /**
-     * Help function for the method: onActivityResult
+     * Help function for the method: onActivityResult.
      * @return the filepath from the image which the user selected
      */
     private String getFilepath(Cursor cursor, String[] column){
@@ -410,7 +411,7 @@ public class EditEventActivity extends AppCompatActivity implements Validator.Va
     }
 
     /**
-     * Handling the user respond for the requested permission (accept/decline)
+     * Handling the user respond for the requested permission (accept/decline).
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {

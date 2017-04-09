@@ -18,7 +18,7 @@ public class ServiceGenerator {
     /**
      * Is the Domain Name System (DNS) of the homepage.
      */
-    private static final String BASE_URL = "https://hugbunadarverkefni2.herokuapp.com/";
+    private static final String BASE_URL = "http://10.0.2.2:8080";
 
     /**
      * Here we created HttpClient to add header to the HttpRequest.

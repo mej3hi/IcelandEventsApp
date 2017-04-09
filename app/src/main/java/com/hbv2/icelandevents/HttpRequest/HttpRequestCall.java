@@ -22,7 +22,7 @@ public class HttpRequestCall {
     /**
      * Asynchronous call executed receiving the backend response
      * when succeeded and posting it to the EventBus. If not succeeded
-     * it posts HttpResponseMsg with code 500 to the EventBus
+     * it posts HttpResponseMsg with code 500 to the EventBus.
      */
     public static void callReponseMsg(Call<String> call){
         call.enqueue(new Callback<String>() {

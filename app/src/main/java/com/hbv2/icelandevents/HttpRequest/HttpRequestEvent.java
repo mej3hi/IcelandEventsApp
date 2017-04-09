@@ -29,7 +29,7 @@ public class HttpRequestEvent {
 
     /**
      * Sends Get method url ("/m/").
-     * for getting the music events
+     * for getting the music events.
      */
     public void indexGet(){
         EventAPI eventAPI = ServiceGenerator.createService(EventAPI.class);
@@ -39,7 +39,7 @@ public class HttpRequestEvent {
 
     /**
      * Sends Get method url ("/m/calander")
-     * for getting all music events for this day
+     * for getting all music events for this day.
      * @param day Is the day to look for.
      */
     public void calanderGet(String day){
@@ -77,7 +77,7 @@ public class HttpRequestEvent {
 
     /**
      * Sends Get method url ("/m/myevents")
-     * for getting all the music events from that user
+     * for getting all the music events from that user.
      */
     public void myEventGet(){
         EventAPI eventAPI = ServiceGenerator.createService(EventAPI.class);
@@ -87,7 +87,7 @@ public class HttpRequestEvent {
 
     /**
      * Sends Get method url ("/m/removeEvent")
-     * for removing an event from the user
+     * for removing an event from the user.
      * @param id Is the ID of event
      */
     public void removeEventGet(Long id){

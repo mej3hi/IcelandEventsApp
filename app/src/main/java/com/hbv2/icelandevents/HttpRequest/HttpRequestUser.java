@@ -12,7 +12,7 @@ public class HttpRequestUser {
 
     /**
      * Sends Get method url ("/m/signIn")
-     * for signing the user in
+     * for signing the user in.
      * @param username Is the username from the form
      * @param password Is the password form the form
      */

@@ -40,7 +40,7 @@ public class DetailEventActivity extends AppCompatActivity {
     }
 
     /**
-     * Gets the event which user clicked in MyEventActivity
+     * Gets the event which user clicked in MyEventActivity.
      */
     private void getEvent(){
         String parsed = getIntent().getStringExtra("EVENT_DETAIL");
@@ -48,7 +48,7 @@ public class DetailEventActivity extends AppCompatActivity {
     }
 
     /**
-     * Sets the fields with values from the retrieved event
+     * Sets the fields with values from the retrieved event.
      */
     private void setFields(){
         setTitle(event.getName());

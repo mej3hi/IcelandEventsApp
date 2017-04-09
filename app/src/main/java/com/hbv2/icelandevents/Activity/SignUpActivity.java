@@ -100,7 +100,7 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
 
     /**
      * Validation for the Sign up form was successful,
-     * therefore the sendSignUp() method is called
+     * therefore the sendSignUp() method is called.
      */
     @Override
     public void onValidationSucceeded() {
