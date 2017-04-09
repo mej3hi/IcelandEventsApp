@@ -103,6 +103,19 @@ public class MyEventActivity extends AppCompatActivity {
     }
 
     /**
+     * Sends HttpRequest that requests all Events from user.
+     * Also checks for internet connection before sending it.
+     */
+    private void requestEvents() {
+        if(NetworkChecker.isOnline(this)){
+            loadingDisplay.setVisibility(View.VISIBLE);
+            new HttpRequestEvent().myEventGet();
+        }else{
+            PopUpMsg.toastMsg("Network isn't available",this);
+        }
+    }
+
+    /**
      * Receiving Respond from the backend server.
      * @param response Response has the Code and List<Event> from backend server
      */
@@ -125,19 +138,6 @@ public class MyEventActivity extends AppCompatActivity {
     private  void updateDisplay(){
         EventAdapter eventAdapter = new EventAdapter(this, eventsList);
         eventListView.setAdapter(eventAdapter);
-    }
-
-    /**
-     * Sends HttpRequest that requests all Events from user.
-     * Also checks for internet connection before sending it.
-     */
-    private void requestEvents() {
-        if(NetworkChecker.isOnline(this)){
-            loadingDisplay.setVisibility(View.VISIBLE);
-            new HttpRequestEvent().myEventGet();
-        }else{
-            PopUpMsg.toastMsg("Network isn't available",this);
-        }
     }
 
     /**

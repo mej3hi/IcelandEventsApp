@@ -58,6 +58,32 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     /**
+     * Click listener for Sign in button when clicked
+     * calls sendSignIn() method.
+     * @param v v is the GUI component
+     */
+    public void signInOnClick(View v){
+        sendSignIn();
+    }
+
+    /**
+     * Sends HttpRequest containing username and password,
+     * Requesting user to be signed in.
+     * Also checks for internet connection before sending it.
+     */
+    public void sendSignIn(){
+        errorMsg.setText("");
+        if(NetworkChecker.isOnline(this)){
+            loadingDisplay.setVisibility(View.VISIBLE);
+            String userName = username.getText().toString();
+            String passWord = password.getText().toString();;
+            new HttpRequestUser().signInGet(userName,passWord);
+        }else{
+            PopUpMsg.toastMsg("Network isn't available",this);
+        }
+    }
+
+    /**
      * Receiving the Respond from the backend server.
      * @param response Response has the Code and Message from backend server.
      */
@@ -87,32 +113,6 @@ public class SignInActivity extends AppCompatActivity {
         if(getIntent().getBooleanExtra("SKIP_VISIBLE",false)){
             skipBtn.setVisibility(View.VISIBLE);
         }
-    }
-
-    /**
-     * Sends HttpRequest containing username and password,
-     * Requesting user to be signed in.
-     * Also checks for internet connection before sending it.
-     */
-    public void sendSignIn(){
-        errorMsg.setText("");
-        if(NetworkChecker.isOnline(this)){
-            loadingDisplay.setVisibility(View.VISIBLE);
-            String userName = username.getText().toString();
-            String passWord = password.getText().toString();;
-            new HttpRequestUser().signInGet(userName,passWord);
-        }else{
-            PopUpMsg.toastMsg("Network isn't available",this);
-        }
-    }
-
-    /**
-     * Click listener for Sign in button when clicked
-     * calls sendSignIn() method.
-     * @param v v is the GUI component
-     */
-    public void signInOnClick(View v){
-        sendSignIn();
     }
 
     /**

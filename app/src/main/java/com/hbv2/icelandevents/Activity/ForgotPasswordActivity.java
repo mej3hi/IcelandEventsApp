@@ -58,21 +58,6 @@ public class ForgotPasswordActivity extends AppCompatActivity implements Validat
     }
 
     /**
-     * Sends HttpRequest containing email address
-     * requesting an email response with reset password token.
-     * Also checks for internet connection before sending it.
-     */
-    public void sendMail(){
-        if(NetworkChecker.isOnline(this)){
-            loadingDisplay.setVisibility(View.VISIBLE);
-            String email = emailText.getText().toString();
-            new HttpRequestUser().forgetPasswordPost(email);
-        }else{
-            PopUpMsg.toastMsg("Network isn't avilable",this);
-        }
-    }
-
-    /**
      * Click listener for Reset password button when clicked
      * calls validator to validate the Email form.
      * @param view view is the GUI component
@@ -102,6 +87,21 @@ public class ForgotPasswordActivity extends AppCompatActivity implements Validat
             failed.setError(failureMessage);
         } else {
             PopUpMsg.toastMsg(failureMessage,this);
+        }
+    }
+
+    /**
+     * Sends HttpRequest containing email address
+     * requesting an email response with reset password token.
+     * Also checks for internet connection before sending it.
+     */
+    public void sendMail(){
+        if(NetworkChecker.isOnline(this)){
+            loadingDisplay.setVisibility(View.VISIBLE);
+            String email = emailText.getText().toString();
+            new HttpRequestUser().forgetPasswordPost(email);
+        }else{
+            PopUpMsg.toastMsg("Network isn't avilable",this);
         }
     }
     /**
