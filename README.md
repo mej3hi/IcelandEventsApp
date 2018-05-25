@@ -1,25 +1,32 @@
-# IcelandEventsApp
+# Iceland Events App
+
+Iceland Events er smáforrit fyrir Android snjalltæki sem hægt er að nota til að skoða upplýsingar um tónleikar sem verið að halda og einnig er hægt að setja inn tónleikar með því að búa sig til aðgang þar.
+
+## Leiðbeiningar
+Forritið er búið til í Android Studio og því þarf að hafa það sett upp til að geta keyrt forritið. Það þarf líka að hafa Iceland Events bakenda server í gangi til að appið getið virkað, hægt er að nálgast það á GitHub. https://github.com/mej3hi/tonlist  
+Hægt er að breyta DNS ef appið er ekki keyrt af sömu tölvu sem keyri bakendan með því að breyta BASE_URL. https://github.com/mej3hi/IcelandEventsApp/blob/master/app/src/main/java/com/hbv2/icelandevents/Service/ServiceGenerator.java
+
+### Setja upp
+Hægt er að hala niður forritinu á þessari síðu (clone or download)
+
+### Myndir
+
+![Alt tag](https://raw.githubusercontent.com/mej3hi/screenshot/master/myndIEA1.PNG)
 
 
-####Hérna er myndband um hvernig á að gera http request frá lynda.com til að ná í gögn frá bakendan.
-  * https://www.youtube.com/watch?v=_T0N3ot2BPI&index=1&list=PLVTeA3WccG_7Kgey8VtmFLCEVR5jeZNFK
+![Alt tag](https://raw.githubusercontent.com/mej3hi/screenshot/master/myndIEA2.PNG)
 
-####Hérna er síðum um hvernig á að nota retrofit (Heimasíða http://square.github.io/retrofit  )
 
-  * https://futurestud.io/tutorials/retrofit-getting-started-and-android-client 
-  * https://zeroturnaround.com/rebellabs/getting-started-with-retrofit-2/
-  * https://github.com/codepath/android_guides/wiki/Consuming-APIs-with-Retrofit
+![Alt tag](https://raw.githubusercontent.com/mej3hi/screenshot/master/myndIEA3.PNG)
 
-####Hérna er síðum arrayAdapter sem sér um að láta okkur gita Scrolla upp og niður þegar við er um að byrta meira en það sem keimst fyrir á skjáinn.
-  * https://guides.codepath.com/android/Using-an-ArrayAdapter-with-ListView 
-  * https://www.sitepoint.com/custom-data-layouts-with-your-own-android-arrayadapter/
-  * http://abhiandroid.com/ui/custom-arrayadapter-tutorial-example.html
 
-####Við erum að nota Picasso til að load up myndinar (Heimasíðan http://square.github.io/picasso/)
+![Alt tag](https://raw.githubusercontent.com/mej3hi/screenshot/master/myndIEA4.PNG)
 
-####Við erum að nota EventBus til að kalla á fall í activity class-an úr HttpRequest mappan ( Heimasíðan http://greenrobot.org/eventbus/)
-  * http://greenrobot.org/eventbus/documentation/how-to-get-started/
-  * http://en.proft.me/2017/02/9/eventbus-tutorial-examples/
-  * http://guides.codepath.com/android/communicating-with-an-event-bus
-  
-#### Við erum að nota Saripaar til að validate gögnin sem við sendum yfir til bakendan ( Heimasíðan https://github.com/ragunathjawahar/android-saripaar)
+### Höfundar
+Eiríkur Kristinn Hlöðversson  
+Magnús Blöndal Jóhannsson  
+Martin Einar Jensen  
+Skúli Einarsson
+
+
+
