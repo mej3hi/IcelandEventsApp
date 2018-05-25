@@ -1,4 +1,4 @@
-# Iceland Events App
+# Iceland Events app
 
 Iceland Events er smáforrit fyrir Android snjalltæki sem hægt er að nota til að skoða upplýsingar um tónleikar sem verið að halda og einnig er hægt að setja inn tónleikar með því að búa sig til aðgang þar.
 
